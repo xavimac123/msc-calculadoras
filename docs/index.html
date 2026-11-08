@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8"><script>window.MSC_PWA=true</script><link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#14181E"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="MSC Legal"><link rel="apple-touch-icon" href="icons/icon-180.png"><link rel="icon" href="icons/icon-192.png"><meta name="viewport" content="width=device-width,initial-scale=1"><title>MSC · Calculadoras legales</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&display=swap"><style id="css">
+:root{--oro:#A09046;--oroc:#C9BC82;--olivo:#6E6230;--carbon:#14181E;--marfil:#F7F5EE;--linea:#E3DFD0;--gris:#5B6068;--ok:#2F6B3A;--okf:#E5F0E4;--mal:#9B2C22;--malf:#F7E4E1;--avi:#8A5A00;--avif:#FBF0D9}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--marfil);color:var(--carbon);font-family:'Archivo',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;font-size:15px;line-height:1.45}
+header{background:var(--carbon);color:#fff;padding:14px 16px 0}
+.marca{display:flex;align-items:center;gap:10px}
+.iso{width:34px;height:34px;flex:none}
+.wm{font-stretch:118%;font-weight:700;letter-spacing:.06em;font-size:12.5px;line-height:1.15;color:var(--oro)}
+.wm small{display:block;color:var(--oroc);font-weight:500;letter-spacing:.14em;font-size:9.5px;margin-top:2px}
+nav{display:flex;gap:4px;margin-top:12px;overflow-x:auto}
+nav button{flex:1;min-width:0;background:none;border:0;color:#C9C6BA;font:inherit;font-weight:600;font-size:13.5px;padding:10px 6px 11px;border-bottom:3px solid transparent;cursor:pointer;white-space:nowrap}
+nav button[aria-selected=true]{color:#fff;border-bottom-color:var(--oro)}
+main{max-width:760px;margin:0 auto;padding:14px 14px 40px}
+h2{font-stretch:115%;font-size:18px;margin:6px 0 4px;letter-spacing:.01em}
+.sub{color:var(--gris);font-size:13px;margin:0 0 12px}
+.card{background:#fff;border:1px solid var(--linea);border-radius:10px;padding:14px;margin:0 0 12px}
+.card h3{margin:0 0 10px;font-size:14px;font-stretch:112%;letter-spacing:.02em;color:var(--olivo);text-transform:uppercase}
+label{display:block;font-size:12.5px;font-weight:600;color:var(--gris);margin:0 0 4px}
+input,select{width:100%;font:inherit;font-size:15px;padding:10px 11px;border:1px solid #CFCABA;border-radius:8px;background:#fff;color:var(--carbon);min-height:44px}
+input:focus,select:focus{outline:2px solid var(--oro);outline-offset:0;border-color:var(--oro)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.full{grid-column:1/-1}
+@media(max-width:430px){.grid3{grid-template-columns:1fr 1fr}}
+.chk{display:flex;align-items:center;gap:10px;font-size:14px;font-weight:500;color:var(--carbon);margin:4px 0;min-height:36px}
+.chk input{width:20px;height:20px;min-height:0;accent-color:var(--olivo)}
+.hint{font-size:12px;color:var(--gris);margin:4px 0 0}
+.tag{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:2px 7px;border-radius:20px;background:var(--avif);color:var(--avi);vertical-align:middle}
+.tag.v{background:var(--okf);color:var(--ok)}
+.seg{display:flex;border:1px solid #CFCABA;border-radius:8px;overflow:hidden}
+.seg button{flex:1;border:0;background:#fff;font:inherit;font-size:13.5px;font-weight:600;padding:10px 6px;color:var(--gris);cursor:pointer;min-height:44px}
+.seg button+button{border-left:1px solid #CFCABA}
+.seg button[aria-pressed=true]{background:var(--carbon);color:#fff}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th,td{padding:8px 6px;text-align:right;border-bottom:1px solid var(--linea);font-variant-numeric:tabular-nums}
+th:first-child,td:first-child{text-align:left}
+thead th{font-size:11.5px;color:var(--gris);font-weight:700;text-transform:uppercase;letter-spacing:.04em}
+tr.tot td{font-weight:700;border-top:2px solid var(--carbon)}
+tr.hi td{background:#FBF9F1}
+.scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.big{font-size:30px;font-weight:800;font-stretch:110%;letter-spacing:-.01em;margin:2px 0}
+.res{border-radius:10px;padding:14px;margin:0 0 12px;border:1px solid var(--linea);background:#fff}
+.res.ok{background:var(--okf);border-color:#BBD7B8}
+.res.mal{background:var(--malf);border-color:#E7BDB6}
+.res .estado{font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase}
+.res.ok .estado{color:var(--ok)}.res.mal .estado{color:var(--mal)}
+.accion{display:inline-block;margin-top:8px;padding:8px 14px;border-radius:8px;font-weight:800;font-stretch:110%;letter-spacing:.04em;text-transform:uppercase;font-size:14px}
+.res.ok .accion{background:var(--ok);color:#fff}.res.mal .accion{background:var(--mal);color:#fff}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;font:inherit;font-weight:700;font-size:14px;padding:10px 14px;border-radius:8px;border:1px solid var(--carbon);background:var(--carbon);color:#fff;cursor:pointer;min-height:44px}
+.btn.sec{background:#fff;color:var(--carbon)}
+.btn:disabled{opacity:.5;cursor:default}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
+.kpi{background:#fff;border:1px solid var(--linea);border-radius:10px;padding:10px}
+.kpi .l{font-size:11px;color:var(--gris);font-weight:700;text-transform:uppercase;letter-spacing:.04em}
+.kpi .n{font-size:17px;font-weight:800;font-variant-numeric:tabular-nums;margin-top:2px}
+.kpi.sel{border-color:var(--oro);box-shadow:inset 0 0 0 1px var(--oro)}
+.nota{font-size:12px;color:var(--gris);border-left:3px solid var(--oroc);padding:6px 10px;background:#FBF9F1;border-radius:0 6px 6px 0;margin:8px 0 0}
+details{margin-top:8px}summary{cursor:pointer;font-weight:600;font-size:13.5px;color:var(--olivo);padding:6px 0}
+.tabla-ed input{min-height:34px;padding:5px 6px;font-size:13px;text-align:right}
+.msg{font-size:13px;margin-top:8px}
+.msg.e{color:var(--mal)}.msg.o{color:var(--ok)}
+footer{max-width:760px;margin:0 auto;padding:0 14px 28px;font-size:11.5px;color:var(--gris)}
+[hidden]{display:none!important}
+</style></head><body><div id="root"></div><script type="application/json" id="data">{"version":1,"anioPensiones":"2026","tablas":{"2026":{"anio":"2026","sbu":482,"acuerdo":"Acuerdo Ministerial MDH-DM-2026-0005-A (29-ene-2026), Ministerio de Desarrollo Humano","descIESS":9.45,"niveles":[{"n":1,"desde":1,"hasta":1.25,"p":[28.12,29.49,39.71,43.13,52.18,54.23]},{"n":2,"desde":1.25,"hasta":3,"p":[34.84,36.96,47.45,49.51,47.45,49.51]},{"n":3,"desde":3,"hasta":4,"p":[38.49,40.83,38.49,40.83,38.49,40.83]},{"n":4,"desde":4,"hasta":6.5,"p":[39.79,42.21,39.79,42.21,39.79,42.21]},{"n":5,"desde":6.5,"hasta":9,"p":[41.14,43.64,41.14,43.64,41.14,43.64]},{"n":6,"desde":9,"hasta":null,"p":[42.53,45.12,42.53,45.12,42.53,45.12]}]}},"feriados":{"2026":[["2026-01-01","Año Nuevo"],["2026-01-02","Descanso decretado (puente de Año Nuevo)"],["2026-02-16","Carnaval"],["2026-02-17","Carnaval"],["2026-04-03","Viernes Santo"],["2026-05-01","Día del Trabajo"],["2026-05-25","Batalla de Pichincha (traslado)"],["2026-08-10","Primer Grito de Independencia"],["2026-10-09","Independencia de Guayaquil"],["2026-11-02","Día de Difuntos"],["2026-11-03","Independencia de Cuenca"],["2026-12-25","Navidad"]],"2027":[["2027-01-01","Año Nuevo"],["2027-02-08","Carnaval"],["2027-02-09","Carnaval"],["2027-03-26","Viernes Santo"],["2027-04-30","Día del Trabajo (traslado)"],["2027-05-24","Batalla de Pichincha"],["2027-08-09","Primer Grito de Independencia (traslado)"],["2027-10-08","Independencia de Guayaquil (traslado)"],["2027-11-01","Día de Difuntos (traslado)"],["2027-11-02","Independencia de Cuenca (traslado)"],["2027-12-25","Navidad"]]},"inhabilesExtra":[],"materias":[{"id":"civ-ord","n":"Civil · procedimiento ordinario","op":900,"modo":"pct","pct":15,"fijo":0},{"id":"civ-sum","n":"Civil · sumario / monitorio","op":600,"modo":"pct","pct":15,"fijo":0},{"id":"fam-ali","n":"Familia · alimentos","op":300,"modo":"fijo","pct":0,"fijo":150},{"id":"fam-div","n":"Familia · divorcio / tenencia / visitas","op":450,"modo":"fijo","pct":0,"fijo":200},{"id":"pen","n":"Penal · defensa o acusación particular","op":1200,"modo":"fijo","pct":0,"fijo":600},{"id":"tra-con","n":"Tránsito · contravención / impugnación","op":120,"modo":"fijo","pct":0,"fijo":80},{"id":"tra-del","n":"Tránsito · delito","op":900,"modo":"fijo","pct":0,"fijo":450},{"id":"lab","n":"Laboral · reclamo o demanda","op":400,"modo":"pct","pct":20,"fijo":0},{"id":"adm","n":"Gestión administrativa (trámites)","op":250,"modo":"fijo","pct":0,"fijo":100},{"id":"fis","n":"Fiscalía (diligencias y trámites)","op":200,"modo":"fijo","pct":0,"fijo":100},{"id":"car","n":"Cartera · recuperación para acreedor","op":200,"modo":"pct","pct":20,"fijo":0},{"id":"deu","n":"Deudas · defensa del deudor","op":300,"modo":"pct","pct":15,"fijo":0},{"id":"iess","n":"IESS · trámites (montepío, aportes, seguros, BIESS)","op":200,"modo":"fijo","pct":0,"fijo":100},{"id":"fis-siaf","n":"Fiscalía · ocultamiento de datos (SIAF)","op":150,"modo":"fijo","pct":0,"fijo":0}],"consulta":{"bajaFija":{"virtual":25,"presencial":30},"base":{"baja":25,"media":35,"alta":45},"tiempo":[["Hasta 30 min",1],["31 a 60 min",1.15],["Más de 60 min",1.3]],"virtual":-20,"presencial":20,"techo":60,"piso":20,"factor":{"civ":1,"fam":1,"pen":1.1,"tra":0.9,"lab":1,"adm":1,"iess":1,"fis":1,"car":1,"pdp":1.15}}}</script><script id="app">
+(function(){
+"use strict";
+var DATA=JSON.parse(document.getElementById('data').textContent);
+var PWA=!!window.MSC_PWA;
+if(PWA){try{var _s=JSON.parse(localStorage.getItem('msc:data'));if(_s&&_s.version===DATA.version){DATA=_s}}catch(e){}}
+var HEAD='<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>MSC · Calculadoras legales</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&display=swap">';
+var CSS=document.getElementById('css').textContent;
+var APP=document.getElementById('app').textContent;
+var ART=null,SAMPLE=null;
+try{if(window.claude&&claude.use){claude.use('artifact').then(function(a){ART=a;refreshSave();});claude.use('sample').then(function(s){SAMPLE=s;refreshSave();});}}catch(e){}
+
+/* ---------- utilidades ---------- */
+function $(s,c){return (c||document).querySelector(s)}
+function $$(s,c){return Array.prototype.slice.call((c||document).querySelectorAll(s))}
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function num(v){var n=parseFloat(String(v).replace(',','.'));return isFinite(n)?n:0}
+function usd(n){return (n<0?'-':'')+'$'+Math.abs(n).toLocaleString('es-EC',{minimumFractionDigits:2,maximumFractionDigits:2})}
+function pct(n){return n.toLocaleString('es-EC',{maximumFractionDigits:2})+'%'}
+function r2(n){return Math.round(n*100)/100}
+function iso(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+function parseD(s){var p=s.split('-');return new Date(+p[0],+p[1]-1,+p[2])}
+var DIAS=['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
+var MESES=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+function largo(d){return DIAS[d.getDay()]+' '+d.getDate()+' de '+MESES[d.getMonth()]+' de '+d.getFullYear()}
+function largoH(d){return largo(d)+', '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')}
+function store(k,v){try{if(v===undefined)return JSON.parse(localStorage.getItem('msc:'+k));localStorage.setItem('msc:'+k,JSON.stringify(v))}catch(e){return null}}
+
+/* ---------- publicar estado (guardar cambios en la app) ---------- */
+function buildDoc(){
+  var json=JSON.stringify(DATA).replace(/</g,'\\u003c');
+  return '<!DOCTYPE html>\n<html lang="es"><head>'+HEAD+'<style id="css">'+CSS+'</style></head><body><div id="root"></div><script type="application/json" id="data">'+json+'<\/script><script id="app">'+APP+'<\/script></body></html>';
+}
+function guardar(msgEl,okTxt){
+  if(!ART&&PWA){try{localStorage.setItem('msc:data',JSON.stringify(DATA));msgEl.className='msg o';msgEl.textContent='Guardado en este teléfono.';setTimeout(function(){location.reload()},900);return Promise.resolve(true)}catch(e){msgEl.className='msg e';msgEl.textContent='No se pudo guardar en este teléfono.';return Promise.resolve(false)}}
+ if(!ART){msgEl.className='msg e';msgEl.textContent='Guardar no está disponible en esta vista. Abra la app desde su enlace en claude.ai.';return Promise.resolve(false)}
+  msgEl.className='msg';msgEl.textContent='Guardando…';
+  return ART.publish(buildDoc()).then(function(){msgEl.className='msg o';msgEl.textContent=okTxt;return true},function(e){msgEl.className='msg e';msgEl.textContent=(e&&e.code==='conflict')?'La app se actualizó en otro dispositivo. Vuelva a intentarlo.':'No se pudo guardar ('+((e&&(e.code||e.message))||'error')+').';return false});
+}
+function refreshSave(){$$('[data-needs=art]').forEach(function(b){b.disabled=!ART&&!PWA});$$('[data-needs=sample]').forEach(function(b){b.hidden=!SAMPLE});}
+
+/* ---------- estructura ---------- */
+var ISO='<svg class="iso" viewBox="0 0 40 40" aria-hidden="true"><path d="M0 0h40v30L30 40H0z" fill="#A09046"/><path d="M9 29V11h4.2l6.8 9.4 6.8-9.4H31v18h-4V17.6l-7 9.4-7-9.4V29z" fill="#fff"/></svg>';
+var TABS=[['hon','Honorarios'],['pen','Pensiones'],['pla','Plazos'],['tra','Tránsito']];
+document.getElementById('root').innerHTML=
+ '<header><div class="marca">'+(DATA.logo?'<img src="'+DATA.logo+'" alt="" style="height:38px;width:auto;max-width:160px;display:block">':ISO)+'<div class="wm">MACÍAS SÁNCHEZ CONSULTORES<small>CALCULADORAS LEGALES · USO INTERNO</small></div></div>'+
+ '<nav role="tablist">'+TABS.map(function(t){return '<button role="tab" data-t="'+t[0]+'" aria-selected="false">'+t[1]+'</button>'}).join('')+'</nav></header>'+
+ '<main><section id="v-hon"></section><section id="v-pen" hidden></section><section id="v-pla" hidden></section><section id="v-tra" hidden></section></main>'+
+ '<footer>Herramienta de uso interno de Macías Sánchez Consultores. Resultados referenciales: verifique la norma vigente y el caso concreto antes de actuar. Abg. Mariano X. Macías Sánchez · Mat. 09-2022-736.</footer>';
+function show(t){if(!TABS.some(function(x){return x[0]===t}))t='hon';$$('nav button').forEach(function(b){b.setAttribute('aria-selected',b.dataset.t===t)});TABS.forEach(function(x){$('#v-'+x[0]).hidden=x[0]!==t});try{if(location.hash!=='#'+t)history.replaceState(null,'','#'+t)}catch(e){}store('tab',t)}
+$$('nav button').forEach(function(b){b.onclick=function(){show(b.dataset.t)}});
+window.addEventListener('hashchange',function(){show(location.hash.slice(1))});
+
+/* =========================================================
+   1. HONORARIOS
+   ========================================================= */
+var H={mat:DATA.materias[0].id,esc:1};
+function matById(id){return DATA.materias.filter(function(m){return m.id===id})[0]||DATA.materias[0]}
+function renderHon(){
+ var v=$('#v-hon');
+ v.innerHTML='<div class="seg" id="h-mod" style="margin:4px 0 12px"><button type="button" data-x="casos">Procesos y trámites</button><button type="button" data-x="cons">Consultas</button></div><div id="h-casos"><h2>Calculadora de honorarios</h2><p class="sub">Honorario operativo + prima de éxito, con IVA, retenciones, descuentos y ganancia neta. <span class="tag">Valores sugeridos: criterio propio</span></p>'+
+ '<div class="card"><h3>1 · Caso</h3><div class="grid">'+
+  '<div class="full"><label for="h-mat">Materia</label><select id="h-mat">'+DATA.materias.map(function(m){return '<option value="'+m.id+'">'+esc(m.n)+'</option>'}).join('')+'</select></div>'+
+  '<div><label for="h-op">Honorario operativo (inicio del proceso)</label><input id="h-op" type="number" inputmode="decimal" min="0" step="10"></div>'+
+  '<div><label for="h-gas">Gastos reembolsables (tasas, copias, peritos)</label><input id="h-gas" type="number" inputmode="decimal" min="0" step="5" value="0"></div>'+
+  '<div class="full"><label>Prima de éxito</label><div class="seg" id="h-modo"><button type="button" data-m="pct">% de lo obtenido</button><button type="button" data-m="fijo">Monto fijo</button></div></div>'+
+  '<div id="h-wpct"><label for="h-cua">Monto en disputa u obtenido</label><input id="h-cua" type="number" inputmode="decimal" min="0" step="50" value="0"></div>'+
+  '<div id="h-wpct2"><label for="h-pct">% de éxito sobre lo obtenido</label><input id="h-pct" type="number" inputmode="decimal" min="0" max="50" step="1"></div>'+
+  '<div id="h-wfij" class="full"><label for="h-fij">Prima de éxito total (100%)</label><input id="h-fij" type="number" inputmode="decimal" min="0" step="10"></div>'+
+  '<p class="hint full" id="h-ref"></p>'+
+ '</div></div>'+
+ '<div class="card"><h3>2 · Descuentos y forma de pago</h3>'+
+  '<div class="seg" id="h-pago"><button type="button" data-p="total">Pago total (−10%)</button><button type="button" data-p="cuotas">Cuotas</button><button type="button" data-p="etapa">Por etapa</button></div>'+
+  '<div class="grid" style="margin-top:10px"><div id="h-wcuo"><label for="h-cuo">Número de cuotas (máx. 3)</label><select id="h-cuo"><option>2</option><option selected>3</option></select></div>'+
+  '<div><label for="h-ofe">Oferta o descuento adicional (%)</label><input id="h-ofe" type="number" inputmode="decimal" min="0" max="50" step="1" value="0"></div></div>'+
+  '<p class="hint">Los descuentos se aplican solo al honorario operativo: no a la prima de éxito ni a los gastos reembolsables.</p>'+
+ '</div>'+
+ '<div class="card"><h3>3 · Impuestos</h3><div class="grid">'+
+  '<div><label for="h-iva">IVA (%)</label><input id="h-iva" type="number" inputmode="decimal" step="1" value="15"></div>'+
+  '<div><label for="h-ir">Impuesto a la renta efectivo estimado (%)</label><input id="h-ir" type="number" inputmode="decimal" step="1" value="10"></div>'+
+  '<label class="chk full"><input type="checkbox" id="h-age"> El cliente es agente de retención (empresa, contribuyente especial)</label>'+
+  '<div id="h-wret" class="grid full" hidden><div><label for="h-rir">Retención IR (%)</label><input id="h-rir" type="number" inputmode="decimal" step="1" value="10"></div><div><label for="h-riva">Retención IVA (% del IVA)</label><input id="h-riva" type="number" inputmode="decimal" step="10" value="100"></div></div>'+
+  '<div class="full"><label for="h-cos">Costos propios no reembolsables (movilización, impresiones)</label><input id="h-cos" type="number" inputmode="decimal" min="0" step="5" value="0"></div>'+
+ '</div><p class="hint">Régimen general: IVA 15% sobre honorarios. Retención en la fuente a honorarios de persona natural: 10% (Res. NAC-DGERCGC26-00000009, desde 1-mar-2026). La retención de IR es un anticipo del impuesto anual; el % efectivo es una estimación suya.</p></div>'+
+ '<h2 style="margin-top:16px">Resultado</h2><div class="seg" id="h-esc" style="margin-bottom:10px"><button type="button" data-e="0">Sin éxito</button><button type="button" data-e="0.5">Éxito parcial 50%</button><button type="button" data-e="1">Éxito total 100%</button></div>'+
+ '<div class="kpis" id="h-kpi"></div><div class="card scroll" id="h-tab"></div><div class="card" id="h-plan"></div>'+
+ '<div class="card"><h3>Parámetros de mercado para la prima de éxito</h3><div class="scroll"><table><thead><tr><th>Referencia</th><th>Rango</th></tr></thead><tbody>'+
+  '<tr><td>Mixto: honorario fijo + prima de éxito (España, uso frecuente)</td><td>10%–30%</td></tr>'+
+  '<tr><td>Tarifas de colegios de abogados de Colombia, civil (cuota litis)</td><td>20%–45%</td></tr>'+
+  '<tr><td>Cuota litis pura, sin honorario fijo (Colombia, uso frecuente)</td><td>30%–50%</td></tr>'+
+  '<tr><td>Contingency fees en EE. UU.</td><td>25%–50%</td></tr>'+
+ '</tbody></table></div><p class="nota">En Ecuador no existe un arancel oficial: el honorario es de libre pacto y debe constar por escrito. Como usted cobra además un honorario operativo, lo razonable es el rango mixto (10%–30%); se sugiere 15%–20%. Defina en el contrato qué es "éxito parcial" y "éxito total" de forma objetiva (sentencia ejecutoriada, monto recuperado, acuerdo homologado): la Corte Nacional ha interpretado de forma restrictiva el "resultado favorable" en contratos de cuota litis. En alimentos, use prima fija, no un % de la pensión del menor.</p></div>'+
+ '<div class="card"><h3>Valores sugeridos</h3><p class="hint" style="margin-top:0">Si cambió el honorario o la prima de esta materia y quiere que queden como sugeridos por defecto, guárdelos.</p><div class="row" style="margin-top:8px"><button class="btn sec" id="h-save" data-needs="art" type="button">Guardar como sugeridos</button></div><div class="msg" id="h-msg"></div></div></div><div id="h-cons" hidden></div>';
+ var st=store('hon')||{};
+ H.pago=st.pago||'total';H.esc=st.esc!=null?st.esc:1;
+ $('#h-mat').value=st.mat&&DATA.materias.some(function(m){return m.id===st.mat})?st.mat:DATA.materias[0].id;
+ loadMat(st.mat===$('#h-mat').value?st:null);
+ $('#h-mat').onchange=function(){loadMat(null);calcHon()};
+ $$('#h-modo button').forEach(function(b){b.onclick=function(){H.modo=b.dataset.m;calcHon()}});
+ $$('#h-pago button').forEach(function(b){b.onclick=function(){H.pago=b.dataset.p;calcHon()}});
+ $$('#h-esc button').forEach(function(b){b.onclick=function(){H.esc=+b.dataset.e;calcHon()}});
+ $$('#v-hon input,#v-hon select').forEach(function(i){if(i.id!=='h-mat')i.addEventListener('input',calcHon)});
+ $('#h-save').onclick=function(){var m=matById($('#h-mat').value);m.op=num($('#h-op').value);m.modo=H.modo;m.pct=num($('#h-pct').value);m.fijo=num($('#h-fij').value);guardar($('#h-msg'),'Valores sugeridos guardados para "'+m.n+'".')};
+ calcHon();
+ var mod=store('hmod')||'casos';function setMod(x){mod=x;$$('#h-mod button').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.x===x)});$('#h-casos').hidden=x!=='casos';$('#h-cons').hidden=x!=='cons';store('hmod',x)}
+ $$('#h-mod button').forEach(function(b){b.onclick=function(){setMod(b.dataset.x)}});
+ renderCons();setMod(mod);
+}
+function loadMat(st){
+ var m=matById($('#h-mat').value);
+ $('#h-op').value=st&&st.op!=null?st.op:m.op;
+ H.modo=st&&st.modo?st.modo:m.modo;
+ $('#h-pct').value=st&&st.pct!=null?st.pct:(m.pct||15);
+ $('#h-fij').value=st&&st.fijo!=null?st.fijo:m.fijo;
+ if(st){['gas','cua','ofe','iva','ir','rir','riva','cos'].forEach(function(k){if(st[k]!=null)$('#h-'+k).value=st[k]});$('#h-age').checked=!!st.age;if(st.cuo)$('#h-cuo').value=st.cuo}
+ $('#h-ref').innerHTML='Sugerido para esta materia: operativo '+usd(m.op)+' · prima de éxito '+(m.modo==='pct'?pct(m.pct)+' de lo obtenido':usd(m.fijo)+' fija')+'. <span class="tag">criterio propio</span>';
+}
+function calcEsc(s,I){
+ var prima=(I.modo==='pct'?I.cua*I.pct/100:I.fijo)*s;
+ var descPct=(I.pago==='total'?10:0)+I.ofe;
+ var desc=I.op*Math.min(descPct,100)/100;
+ var base=I.op-desc+prima;
+ var iva=base*I.iva/100;
+ var total=base+iva+I.gas;
+ var rir=I.age?base*I.rir/100:0, riva=I.age?iva*I.riva/100:0;
+ var recibe=total-rir-riva;
+ var ir=base*I.ir/100;
+ return {prima:prima,descPct:descPct,desc:desc,base:base,iva:iva,total:total,rir:rir,riva:riva,recibe:recibe,ivaSri:iva-riva,ir:ir,neta:base-I.cos-ir};
+}
+function calcHon(){
+ var I={op:num($('#h-op').value),gas:num($('#h-gas').value),cua:num($('#h-cua').value),pct:num($('#h-pct').value),fijo:num($('#h-fij').value),modo:H.modo,pago:H.pago,ofe:num($('#h-ofe').value),iva:num($('#h-iva').value),ir:num($('#h-ir').value),age:$('#h-age').checked,rir:num($('#h-rir').value),riva:num($('#h-riva').value),cos:num($('#h-cos').value),cuo:+$('#h-cuo').value};
+ $$('#h-modo button').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.m===H.modo)});
+ $$('#h-pago button').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.p===H.pago)});
+ $$('#h-esc button').forEach(function(b){b.setAttribute('aria-pressed',+b.dataset.e===H.esc)});
+ $('#h-wpct').hidden=$('#h-wpct2').hidden=H.modo!=='pct';$('#h-wfij').hidden=H.modo!=='fijo';
+ $('#h-wcuo').hidden=H.pago!=='cuotas';$('#h-wret').hidden=!I.age;
+ if(I.pct>50){$('#h-pct').value=50;I.pct=50}
+ var E=[0,0.5,1].map(function(s){return calcEsc(s,I)});
+ var sel=E[[0,0.5,1].indexOf(H.esc)];
+ var lbl=['Sin éxito','Parcial 50%','Total 100%'];
+ $('#h-kpi').innerHTML=[['Cliente paga',sel.total],['Usted recibe',sel.recibe],['Ganancia neta',sel.neta]].map(function(k,i){return '<div class="kpi'+(i===2?' sel':'')+'"><div class="l">'+k[0]+'</div><div class="n">'+usd(k[1])+'</div></div>'}).join('');
+ var rows=[
+  ['Honorario operativo',function(e){return I.op}],
+  ['Descuento ('+pct(sel.descPct)+')',function(e){return -e.desc}],
+  ['Prima de éxito',function(e){return e.prima}],
+  ['Base imponible',function(e){return e.base},'hi'],
+  ['IVA '+pct(I.iva),function(e){return e.iva}],
+  ['Gastos reembolsables',function(e){return I.gas}],
+  ['Total que paga el cliente',function(e){return e.total},'tot'],
+ ];
+ if(I.age){rows.push(['Retención IR '+pct(I.rir),function(e){return -e.rir}]);rows.push(['Retención IVA '+pct(I.riva),function(e){return -e.riva}]);rows.push(['Valor que usted recibe',function(e){return e.recibe},'tot'])}
+ rows.push(['IVA que usted paga al SRI',function(e){return e.ivaSri}]);
+ rows.push(['Costos propios',function(e){return -I.cos}]);
+ rows.push(['IR estimado '+pct(I.ir),function(e){return -e.ir}]);
+ rows.push(['Ganancia neta estimada',function(e){return e.neta},'tot']);
+ $('#h-tab').innerHTML='<table><thead><tr><th>Concepto</th>'+lbl.map(function(l,i){return '<th'+([0,0.5,1][i]===H.esc?' style="color:var(--carbon)"':'')+'>'+l+'</th>'}).join('')+'</tr></thead><tbody>'+
+  rows.map(function(r){return '<tr class="'+(r[2]||'')+'"><td>'+r[0]+'</td>'+E.map(function(e){return '<td>'+usd(r2(r[1](e)))+'</td>'}).join('')+'</tr>'}).join('')+'</tbody></table>'+
+  '<p class="hint">La ganancia neta ya descuenta el IVA (no es ingreso suyo), los gastos reembolsables (los paga el cliente y usted los traslada) y el IR estimado. La retención de IR '+(I.age?'que le hacen':'')+' se acredita a su IR anual: no es un costo adicional.</p>';
+ var opNeto=I.op-sel.desc, opIva=opNeto*(1+I.iva/100);
+ var plan='';
+ if(H.pago==='total')plan='<p style="margin:0">Pago único al firmar el contrato: <b>'+usd(opIva+I.gas)+'</b> (honorario con 10% de descuento + IVA'+(I.gas?' + gastos':'')+').</p>';
+ else if(H.pago==='cuotas'){var c=opIva/I.cuo;plan='<table><thead><tr><th>Cuota</th><th>Momento</th><th>Valor</th></tr></thead><tbody>'+Array.apply(null,Array(I.cuo)).map(function(_,i){return '<tr><td>'+(i+1)+(i===0?' (anticipo)':'')+'</td><td>'+(i===0?'Al firmar':(i===1?'30 días':'60 días'))+'</td><td>'+usd(c+(i===0?I.gas:0))+'</td></tr>'}).join('')+'</tbody></table>'}
+ else {var et=[['Demanda / inicio',.5],['Audiencia preliminar o única',.3],['Sentencia / cierre',.2]];plan='<table><thead><tr><th>Etapa</th><th>%</th><th>Valor</th></tr></thead><tbody>'+et.map(function(x,i){return '<tr><td>'+x[0]+'</td><td>'+pct(x[1]*100)+'</td><td>'+usd(opIva*x[1]+(i===0?I.gas:0))+'</td></tr>'}).join('')+'</tbody></table><p class="hint">Distribución 50/30/20 de criterio propio.</p>'}
+ if(sel.prima>0)plan+='<p class="hint">La prima de éxito ('+usd(sel.prima)+' + IVA = '+usd(sel.prima*(1+I.iva/100))+') se factura aparte, cuando se cumple la condición pactada.</p>';
+ $('#h-plan').innerHTML='<h3>Plan de pago del honorario operativo</h3>'+plan;
+ var st={mat:$('#h-mat').value,modo:H.modo,pago:H.pago,esc:H.esc,cuo:I.cuo,age:I.age};['op','gas','cua','pct','fijo','ofe','iva','ir','rir','riva','cos'].forEach(function(k){st[k]=I[k]});store('hon',st);
+}
+
+/* =========================================================
+   1b. CONSULTAS LEGALES
+   Cada documento: [texto, detalle]. El detalle va entre paréntesis con asterisco.
+   ========================================================= */
+var CED=['Cédula de identidad del cliente','*obligatorio; foto clara de ambos lados'];
+var AREAS=[
+ ['fam','Familia',[
+  ['Alimentos: fijar, subir o bajar la pensión',[
+   ['Partidas de nacimiento de los hijos','*obligatorio; se obtienen en línea en el Registro Civil'],
+   ['Datos del alimentante: nombres, cédula, domicilio y lugar de trabajo','*si no los tiene completos, indique los que conozca'],
+   ['Roles de pago, RUC, declaraciones o pruebas de ingresos del alimentante','*si existen; si no, se piden al juez mediante oficios'],
+   ['Número de proceso y tarjeta SUPA','*solo si ya hay pensión fijada'],
+   ['Facturas o recibos de gastos del menor: pensión escolar, salud, alimentación, arriendo','*si existen; sirven para pedir más que el mínimo'],
+   ['Certificado de discapacidad del menor','*solo si aplica']]],
+  ['Pensiones atrasadas / apremio personal',[
+   ['Número de proceso y código de tarjeta SUPA','*obligatorio'],
+   ['Liquidación o estado de cuenta del SUPA','*se descarga en la web de la Función Judicial'],
+   ['Comprobantes de pagos hechos por fuera del SUPA','*si existen']]],
+  ['Divorcio',[
+   ['Acta o partida de matrimonio actualizada','*obligatorio; Registro Civil'],
+   ['Partidas de nacimiento de los hijos menores','*si hay hijos'],
+   ['Certificados de bienes: Registro de la Propiedad, ANT (vehículos) y cuentas','*si existen bienes de la sociedad conyugal'],
+   ['Capitulaciones matrimoniales','*si existen'],
+   ['Último domicilio conocido del cónyuge','*necesario para citarlo'],
+   ['Prueba de la causal (abandono, violencia, etc.)','*solo en divorcio contencioso']]],
+  ['Tenencia, visitas o patria potestad',[
+   ['Partidas de nacimiento de los hijos','*obligatorio'],
+   ['Certificados escolares y médicos del menor','*si existen'],
+   ['Pruebas de quién cuida al menor: fotos, mensajes, testigos','*si existen'],
+   ['Resoluciones judiciales previas o medidas de protección','*si existen']]],
+  ['Unión de hecho (declarar o terminar)',[
+   ['Cédula del otro conviviente','*si la tiene'],
+   ['Pruebas de convivencia: domicilio común, facturas, fotos, testigos','*obligatorio para probar los 2 años'],
+   ['Partidas de nacimiento de hijos comunes','*si existen']]]]],
+ ['civ','Civil',[
+  ['Contratos e incumplimientos',[
+   ['Contrato firmado y sus anexos','*obligatorio; si fue verbal, indíquelo'],
+   ['Comprobantes de pagos y entregas','*si existen'],
+   ['Comunicaciones con la otra parte: correos, chats, cartas','*si existen; capturas con fecha visible'],
+   ['Datos de la otra parte: nombre, cédula o RUC, domicilio','*necesario para demandar']]],
+  ['Inmuebles: compraventa, linderos, arriendo, desalojo',[
+   ['Escritura del inmueble','*obligatorio si es propietario'],
+   ['Certificado de gravámenes del Registro de la Propiedad','*actualizado; se pide en línea'],
+   ['Pago del impuesto predial del año','*si es propietario'],
+   ['Contrato de arriendo y recibos','*en arriendo o desalojo'],
+   ['Fotos o planos del inmueble y linderos','*en conflictos de linderos']]],
+  ['Herencias y posesión efectiva',[
+   ['Partida de defunción del causante','*obligatorio'],
+   ['Partidas de nacimiento de los herederos (y de matrimonio si hay cónyuge)','*obligatorio'],
+   ['Certificados de bienes: Registro de la Propiedad, ANT, cuentas','*si existen'],
+   ['Testamento','*si existe'],
+   ['Posesión efectiva ya inscrita','*si ya se hizo']]],
+  ['Daños y perjuicios',[
+   ['Pruebas del daño: fotos, facturas de reparación, certificados médicos','*obligatorio'],
+   ['Datos del responsable','*si los conoce'],
+   ['Denuncia o parte policial','*si existe']]]]],
+ ['pen','Penal',[
+  ['Denuncia (víctima)',[
+   ['Relato cronológico de los hechos con fechas y lugares','*obligatorio; puede ser escrito a mano'],
+   ['Pruebas: fotos, videos, chats, audios, documentos','*si existen; no los borre del teléfono'],
+   ['Certificados médicos o informes','*si hubo lesiones'],
+   ['Datos de testigos y del presunto responsable','*si los conoce']]],
+  ['Defensa (procesado o investigado)',[
+   ['Notificación, citación o boleta recibida','*obligatorio'],
+   ['Número de noticia del delito, investigación previa o causa','*está en la notificación'],
+   ['Parte policial o denuncia en su contra','*si tiene copia'],
+   ['Pruebas a su favor y datos de testigos','*si existen'],
+   ['Certificado de antecedentes penales','*se descarga en línea']]],
+  ['Citación a rendir versión',[
+   ['Citación de la Fiscalía con fecha y hora','*obligatorio'],
+   ['Número de noticia del delito','*está en la citación'],
+   ['Documentos relacionados con los hechos','*si existen']]]]],
+ ['tra','Tránsito',[
+  ['Boleta o multa (contravención)',[
+   ['Boleta de citación o correo de notificación','*obligatorio; captura con fecha y hora visibles'],
+   ['Licencia de conducir y matrícula','*obligatorio'],
+   ['Fotos del lugar, señalización o radar','*si existen'],
+   ['Consulta de citaciones en la ANT o ATM','*se descarga en línea']]],
+  ['Accidente de tránsito',[
+   ['Parte policial del accidente','*si ya se emitió'],
+   ['Licencia, matrícula y póliza de seguro / SPPAT','*obligatorio'],
+   ['Fotos y videos del accidente','*si existen'],
+   ['Certificados médicos y facturas de daños','*si existen'],
+   ['Datos de los otros involucrados y testigos','*si los tiene']]],
+  ['Remarcación vehicular',[
+   ['Matrícula del vehículo','*obligatorio'],
+   ['Factura o contrato de compraventa','*obligatorio'],
+   ['Documento donde consta la observación o retención','*si existe'],
+   ['Improntas o informe técnico','*si ya se hicieron']]]]],
+ ['lab','Laboral',[
+  ['Despido o terminación',[
+   ['Contrato de trabajo','*si existe; si no hay, indíquelo'],
+   ['Comunicación de despido, desahucio o visto bueno','*si existe; o fecha y forma del despido'],
+   ['Roles de pago de los últimos 12 meses','*si existen'],
+   ['Historia laboral (mecanizado) del IESS','*se descarga en la web del IESS'],
+   ['Acta de finiquito','*si se la propusieron o ya la firmó']]],
+  ['Liquidación, décimos, utilidades, horas extra',[
+   ['Roles de pago','*obligatorio'],
+   ['Contrato de trabajo','*si existe'],
+   ['Registros de horario, asistencia o mensajes con horarios','*para horas extra'],
+   ['Historia laboral del IESS','*se descarga en línea']]],
+  ['Acoso laboral o despido ineficaz',[
+   ['Pruebas: mensajes, correos, testigos','*obligatorio'],
+   ['Certificado de embarazo, médico o de dirigencia sindical','*si aplica'],
+   ['Comunicación de despido y fecha exacta','*el plazo para reclamar es corto']]]]],
+ ['iess','IESS (trámites administrativos)',[
+  ['Montepío (viudez y orfandad)',[
+   ['Partida de defunción del afiliado o jubilado','*obligatorio'],
+   ['Acta de matrimonio o declaración de unión de hecho','*obligatorio para viudez'],
+   ['Partidas de nacimiento de los hijos','*para orfandad'],
+   ['Historia laboral del causante','*se descarga con su cédula'],
+   ['Cédulas de todos los beneficiarios','*obligatorio'],
+   ['Certificado de discapacidad de hijos mayores de 18','*si aplica']]],
+  ['Aportes no pagados o mal registrados',[
+   ['Historia laboral (mecanizado) del IESS','*obligatorio'],
+   ['Roles de pago y contrato','*si existen'],
+   ['Certificado o comunicaciones del empleador','*si existen'],
+   ['Resolución, glosa o reclamo previo al IESS','*si existe']]],
+  ['Seguros: subsidios, riesgos del trabajo, desempleo, cesantía',[
+   ['Historia laboral','*obligatorio'],
+   ['Certificado médico validado por el IESS','*para subsidios y riesgos del trabajo'],
+   ['Aviso de salida','*para desempleo o cesantía'],
+   ['Solicitud presentada y respuesta o negativa del IESS','*si existe']]],
+  ['BIESS: préstamos hipotecarios o quirografarios',[
+   ['Contrato del préstamo','*obligatorio'],
+   ['Tabla de amortización y estado de cuenta','*se descargan en la web del BIESS'],
+   ['Notificaciones de mora o de cobro','*si existen'],
+   ['Comprobantes de pago','*si existen']]],
+  ['Jubilación',[
+   ['Historia laboral','*obligatorio'],
+   ['Solicitud y resolución del IESS','*si ya la presentó'],
+   ['Certificado de discapacidad','*solo para jubilación por discapacidad']]]]],
+ ['fis','Fiscalía',[
+  ['Ocultamiento de datos (SIAF)',[
+   ['Número de noticia del delito o causa registrada en el SIAF','*obligatorio'],
+   ['Calidad en el proceso: víctima, testigo, denunciante o investigado','*obligatorio'],
+   ['Capturas de la consulta pública donde aparecen sus datos','*obligatorio; con fecha visible'],
+   ['Motivo del pedido: riesgo, afectación o perjuicio','*con pruebas si existen'],
+   ['Archivo o sentencia del proceso','*si el proceso ya terminó']]],
+  ['Revisión de causas',[
+   ['Número de noticia del delito o de causa','*si lo tiene; si no, basta la cédula'],
+   ['Cédula de la persona relacionada','*si es un tercero, con su autorización']]],
+  ['Acompañamiento a diligencias',[
+   ['Citación o notificación de la diligencia','*obligatorio'],
+   ['Número de investigación','*está en la citación'],
+   ['Documentos relacionados con los hechos','*si existen']]]]],
+ ['adm','Administrativo',[
+  ['Impugnar un acto (multa, sanción, negativa)',[
+   ['Acto administrativo notificado','*obligatorio'],
+   ['Fecha y medio de notificación','*obligatorio; define el plazo'],
+   ['Expediente o documentos presentados','*si existen'],
+   ['Pruebas contra lo resuelto','*si existen']]],
+  ['Petición sin respuesta (silencio administrativo)',[
+   ['Petición presentada con fe de recepción y fecha','*obligatorio'],
+   ['Respuesta recibida','*si la hay']]]]],
+ ['car','Cartera y deudas',[
+  ['Cobro para acreedor',[
+   ['Título: pagaré, letra de cambio, cheque, factura o contrato','*obligatorio; original'],
+   ['Comunicaciones de cobro enviadas','*si existen'],
+   ['Datos del deudor: cédula, domicilio, bienes conocidos','*necesario para demandar y embargar']]],
+  ['Defensa del deudor',[
+   ['Contrato y tabla de amortización','*si existen'],
+   ['Estados de cuenta','*obligatorio'],
+   ['Reporte de buró de crédito','*se solicita en línea'],
+   ['Registro de llamadas, mensajes y horarios de cobranza','*si hubo abusos; capturas con fecha'],
+   ['Comprobantes de pago','*si existen']]]]],
+ ['pdp','Protección de datos',[
+  ['Uso indebido de sus datos personales',[
+   ['Evidencias: capturas, mensajes, llamadas, publicaciones','*obligatorio; con fecha visible'],
+   ['Datos del responsable: empresa o persona','*si los conoce'],
+   ['Solicitudes de acceso, rectificación o eliminación y respuestas','*si existen']]],
+  ['Cumplimiento LOPDP para empresas',[
+   ['RUC y actividad','*obligatorio'],
+   ['Número aproximado de empleados y clientes','*obligatorio'],
+   ['Formularios, contratos y políticas actuales','*si existen'],
+   ['Sistemas o proveedores que usan datos personales','*si los conoce']]]]]
+];
+var COMPL={
+ baja:['Baja','Consulta puntual, sin revisión de documentos.',['Una sola pregunta concreta con respuesta conocida','No se leen documentos: solo se escucha y orienta','Ej.: ¿cuánto es la pensión mínima?, ¿qué plazo tengo para impugnar una multa?, ¿qué necesito para una posesión efectiva?']],
+ media:['Media','Con revisión de documentos: pocos documentos y una estrategia.',['Se revisan hasta unos 5 documentos o un expediente corto','Varios hechos que hay que ordenar para orientar','Ej.: revisar un contrato de arriendo, una liquidación laboral, la boleta y su notificación, un trámite de montepío']],
+ alta:['Alta','Varios documentos, partes o urgencia.',['Expediente extenso o más de 5 documentos','Varias partes, varias materias o un proceso judicial en curso','Urgencia (audiencia o vencimiento en pocos días) o riesgo penal o patrimonial alto','Ej.: preparar una versión en Fiscalía, herencia con varios herederos, analizar un juicio en marcha']]
+};
+var CN={};
+function docTxt(d){return d[0]+' ('+d[1]+')'}
+function renderCons(){
+ var C=DATA.consulta,v=$('#h-cons'),Q=DATA.cobro||(DATA.cobro={});
+ v.innerHTML='<h2>Honorario por consulta</h2><p class="sub">Sin prima de éxito. Valores <b>antes de IVA</b>: baja fija '+usd(C.bajaFija.virtual)+' virtual / '+usd(C.bajaFija.presencial)+' presencial, media promedio '+usd(C.base.media)+', alta hasta '+usd(C.techo)+'. <span class="tag">Criterio propio</span></p>'+
+ '<div class="card"><h3>1 · Consulta</h3><div class="grid">'+
+  '<div class="full"><label for="c-are">Materia</label><select id="c-are">'+AREAS.map(function(a){return '<option value="'+a[0]+'">'+esc(a[1])+'</option>'}).join('')+'</select></div>'+
+  '<div class="full"><label for="c-tem">Tipo de consulta</label><select id="c-tem"></select></div>'+
+  '<div class="full"><label for="c-asu">Asunto (breve)</label><input id="c-asu" placeholder="Ej.: revisión de pensión de 2 hijos"></div>'+
+ '</div></div>'+
+ '<div class="card"><h3>2 · ¿Qué complejidad cobrar?</h3>'+
+  '<label class="chk"><input type="checkbox" id="c-q1"> Debo revisar documentos antes o durante la consulta</label>'+
+  '<label class="chk"><input type="checkbox" id="c-q2"> Son más de 5 documentos o un expediente / juicio en curso</label>'+
+  '<label class="chk"><input type="checkbox" id="c-q3"> Hay urgencia: audiencia o vencimiento en pocos días</label>'+
+  '<label class="chk"><input type="checkbox" id="c-q4"> Varias partes o materias, o riesgo penal o patrimonial alto</label>'+
+  '<p class="hint" id="c-sug"></p>'+
+  '<div class="seg" id="c-com" style="margin-top:8px">'+Object.keys(COMPL).map(function(k){return '<button type="button" data-c="'+k+'">'+COMPL[k][0]+'</button>'}).join('')+'</div>'+
+  '<div id="c-comd" style="margin-top:8px"></div>'+
+  '<div class="grid" style="margin-top:10px"><div class="full"><label for="c-tie">Tiempo de desarrollo</label><select id="c-tie">'+C.tiempo.map(function(x,i){return '<option value="'+i+'">'+esc(x[0])+'</option>'}).join('')+'</select></div>'+
+  '<div class="full"><label>Modalidad</label><div class="seg" id="c-mod"><button type="button" data-m="virtual">Virtual ('+C.virtual+'%)</button><button type="button" data-m="presencial">Presencial (+'+C.presencial+'%)</button></div></div>'+
+  '<div class="full"><label for="c-des">Descuento puntual a este cliente (USD, antes de IVA)</label><input id="c-des" type="number" inputmode="decimal" min="0" step="1" value="0" placeholder="Ej.: 5"><p class="hint" id="c-dhint"></p></div></div>'+
+ '</div>'+
+ '<div class="res" id="c-res"></div>'+
+ '<div class="card"><h3>Documentos a pedir al cliente</h3><ul id="c-docs" style="margin:0;padding-left:18px"></ul></div>'+
+ '<div class="card"><h3>3 · Agendar y enviar por WhatsApp</h3><div class="grid">'+
+  '<div><label for="c-fec">Fecha</label><input id="c-fec" type="date"></div><div><label for="c-hor">Hora</label><input id="c-hor" type="time" value="10:00"></div>'+
+  '<div class="full" id="c-wlink"><label for="c-link">Enlace de la reunión virtual</label><input id="c-link" placeholder="Pegue el enlace de Meet, Zoom o WhatsApp"></div>'+
+  '<div class="full" id="c-wlug"><label for="c-lug">Lugar de la consulta presencial</label><input id="c-lug" placeholder="Dirección o referencia"></div>'+
+  '<div class="full"><label for="c-met">Método de pago</label><input id="c-met"></div>'+
+  '<div class="full"><label for="c-cta">Cuentas bancarias</label><textarea id="c-cta" rows="4" style="width:100%;font:inherit;font-size:14px;padding:10px;border:1px solid #CFCABA;border-radius:8px" placeholder="Banco · tipo de cuenta · número · titular · cédula"></textarea></div>'+
+  '<div class="full"><label for="c-gra">Mensaje de agradecimiento</label><input id="c-gra"></div>'+
+ '</div><div class="row" style="margin-top:10px"><button class="btn" id="c-copy" type="button">Copiar mensaje</button><button class="btn sec" id="c-wa" type="button">Abrir en WhatsApp</button><button class="btn sec" id="c-img" type="button">Generar imagen con logo</button><button class="btn sec" id="c-savec" type="button" data-needs="art">Guardar cuentas y textos</button></div>'+
+ '<div class="msg" id="c-cmsg"></div><div id="c-out"></div>'+
+ '<details><summary>Logo de la imagen y del encabezado</summary><p class="hint">'+(DATA.logo?'Se está usando su logo cargado.':'Ahora se usa un isotipo provisional. Suba su logo (PNG o SVG, mejor con fondo transparente) y guárdelo.')+'</p><input id="c-logo" type="file" accept="image/png,image/svg+xml,image/jpeg"><div class="row" style="margin-top:8px"><button class="btn sec" id="c-logos" type="button" data-needs="art">Guardar logo</button></div><div class="msg" id="c-lmsg"></div></details></div>'+
+ '<div class="card"><h3>Cómo cobrar mejor las consultas</h3><ul style="margin:0;padding-left:18px;font-size:14px">'+
+  '<li><b>Cobre antes de la consulta</b>, al agendar: evita inasistencias y regateo.</li>'+
+  '<li><b>Tiempo definido.</b> Anuncie 30 minutos; lo que exceda se cobra con el factor de tiempo.</li>'+
+  '<li><b>Abono al caso.</b> Si contrata el proceso en 30 días, descuente la consulta del honorario.</li>'+
+  '<li><b>Baja sin descuentos.</b> La consulta puntual tiene tarifa fija; los descuentos solo en media y alta.</li><li><b>Pida documentos antes.</b> Si el cliente los envía antes y usted los revisa, ya no es baja: cobre media.</li>'+
+  '<li><b>Revisión extensa aparte.</b> Expedientes largos se cotizan como servicio, no como consulta.</li>'+
+  '<li><b>Sin consultas gratuitas largas.</b> Solo 5 minutos de orientación inicial para saber si el caso es para usted.</li>'+
+ '</ul></div>'+
+ '<div class="card"><h3>Parámetros</h3><details><summary>Ajustar valores base y factores</summary><div class="grid" style="margin-top:8px">'+
+  '<div><label for="c-bv">Baja fija virtual (USD + IVA)</label><input id="c-bv" type="number" inputmode="decimal" step="1" value="'+C.bajaFija.virtual+'"></div><div><label for="c-bp">Baja fija presencial (USD + IVA)</label><input id="c-bp" type="number" inputmode="decimal" step="1" value="'+C.bajaFija.presencial+'"></div>'+
+  ['media','alta'].map(function(k){return '<div><label for="c-b-'+k+'">Base '+COMPL[k][0].toLowerCase()+' (USD + IVA)</label><input id="c-b-'+k+'" type="number" inputmode="decimal" step="1" value="'+C.base[k]+'"></div>'}).join('')+
+  '<div><label for="c-techo">Techo (USD + IVA)</label><input id="c-techo" type="number" inputmode="decimal" step="1" value="'+C.techo+'"></div>'+
+  '<div><label for="c-piso">Piso (USD + IVA)</label><input id="c-piso" type="number" inputmode="decimal" step="1" value="'+C.piso+'"></div>'+
+  '<div><label for="c-fac">Factor de la materia elegida</label><input id="c-fac" type="number" inputmode="decimal" step="0.05"></div>'+
+ '</div><p class="hint">Baja: tarifa fija según modalidad, sin descuento. Media y alta: base × tiempo × materia × modalidad, redondeado al dólar; nunca por debajo de la tarifa baja de la misma modalidad ni sobre el techo. El descuento solo aplica en media y alta, sin bajar de ese mínimo. Luego se suma el IVA.</p>'+
+ '<div class="row" style="margin-top:8px"><button class="btn sec" id="c-save" type="button" data-needs="art">Guardar parámetros</button></div><div class="msg" id="c-msg"></div></details></div>';
+ var st=store('cons')||{};
+ CN.com=st.com||'baja';CN.mod=st.mod||'virtual';
+ if(st.are&&AREAS.some(function(a){return a[0]===st.are}))$('#c-are').value=st.are;
+ fillTemas(st.tem);if(st.tie!=null)$('#c-tie').value=st.tie;
+ var man=new Date();man.setDate(man.getDate()+1);$('#c-fec').value=st.fec||iso(man);if(st.hor)$('#c-hor').value=st.hor;
+ if(st.asu)$('#c-asu').value=st.asu;if(st.link)$('#c-link').value=st.link;
+ $('#c-lug').value=st.lug!=null?st.lug:(Q.lugar||'');
+ $('#c-met').value=Q.metodo||'Transferencia o depósito bancario, antes de la consulta';
+ $('#c-cta').value=Q.cuentas||'';
+ $('#c-gra').value=Q.gracias||'Gracias por confiar en Macías Sánchez Consultores. Quedo atento a sus documentos.';
+ $('#c-are').onchange=function(){fillTemas();calcCons()};
+ ['c-tem','c-tie'].forEach(function(id){$('#'+id).onchange=calcCons});
+ ['c-des','c-asu','c-fec','c-hor','c-link','c-lug'].forEach(function(id){$('#'+id).oninput=calcCons});
+ ['c-q1','c-q2','c-q3','c-q4'].forEach(function(id){$('#'+id).onchange=function(){var s=sugerir();CN.com=s;calcCons()}});
+ ['media','alta'].forEach(function(k){$('#c-b-'+k).oninput=function(){C.base[k]=num(this.value);calcCons()}});
+ $('#c-bv').oninput=function(){C.bajaFija.virtual=num(this.value);calcCons()};$('#c-bp').oninput=function(){C.bajaFija.presencial=num(this.value);calcCons()};
+ $('#c-techo').oninput=function(){C.techo=num(this.value);calcCons()};$('#c-piso').oninput=function(){C.piso=num(this.value);calcCons()};
+ $('#c-fac').oninput=function(){C.factor[$('#c-are').value]=num(this.value)||1;calcCons()};
+ $$('#c-com button').forEach(function(b){b.onclick=function(){CN.com=b.dataset.c;calcCons()}});
+ $$('#c-mod button').forEach(function(b){b.onclick=function(){CN.mod=b.dataset.m;calcCons()}});
+ $('#c-copy').onclick=copiarMsg;$('#c-wa').onclick=function(){var l=document.createElement('a');l.href='https://wa.me/?text='+encodeURIComponent(textoMsg());l.target='_blank';l.rel='noopener';document.body.appendChild(l);l.click();l.remove()};$('#c-img').onclick=generarImg;
+ $('#c-savec').onclick=function(){Q.metodo=$('#c-met').value.trim();Q.cuentas=$('#c-cta').value.trim();Q.gracias=$('#c-gra').value.trim();Q.lugar=$('#c-lug').value.trim();guardar($('#c-cmsg'),'Cuentas y textos guardados.')};
+ $('#c-save').onclick=function(){guardar($('#c-msg'),'Parámetros de consulta guardados.')};
+ $('#c-logos').onclick=function(){var f=$('#c-logo').files[0],m=$('#c-lmsg');if(!f){m.className='msg e';m.textContent='Elija el archivo del logo.';return}if(f.size>600000){m.className='msg e';m.textContent='El archivo pesa más de 600 KB; use una versión más liviana.';return}var r=new FileReader();r.onload=function(){DATA.logo=r.result;guardar(m,'Logo guardado. La app se recarga con él.')};r.readAsDataURL(f)};
+ refreshSave();calcCons();
+}
+function sugerir(){var q=function(id){return $('#'+id).checked};if(q('c-q2')||q('c-q3')||q('c-q4'))return 'alta';if(q('c-q1'))return 'media';return 'baja'}
+function area(){var id=$('#c-are').value;return AREAS.filter(function(a){return a[0]===id})[0]}
+function fillTemas(sel){var a=area();$('#c-tem').innerHTML=a[2].map(function(t,i){return '<option value="'+i+'">'+esc(t[0])+'</option>'}).join('');if(sel!=null&&a[2][sel])$('#c-tem').value=sel}
+function precioCons(com,tieIdx,mod,areaId){
+ var C=DATA.consulta,f=C.factor[areaId]||1,t=(C.tiempo[tieIdx]||C.tiempo[0])[1],m=1+(mod==='virtual'?C.virtual:C.presencial)/100;
+ var bf=(C.bajaFija||{virtual:25,presencial:30})[mod];
+ if(com==='baja')return {red:bf,fin:bf,f:1,t:1,m:1,fija:true,min:bf};
+ var bruto=C.base[com]*t*f*m,red=Math.round(bruto),min=Math.max(C.piso,bf),fin=Math.min(Math.max(red,min),C.techo);
+ return {red:red,fin:fin,f:f,t:t,m:m,techo:red>C.techo,piso:red<min,min:min};
+}
+function cotiz(){
+ var a=area(),ti=+$('#c-tie').value,p=precioCons(CN.com,ti,CN.mod,a[0]);
+ var des=p.fija?0:Math.max(0,Math.min(num($('#c-des').value),p.fin-p.min)),base=r2(p.fin-des),iva=r2(base*0.15);
+ return {a:a,ti:ti,p:p,des:des,base:base,iva:iva,total:r2(base+iva),tema:a[2][+$('#c-tem').value]};
+}
+function calcCons(){
+ var C=DATA.consulta,k=cotiz(),p=k.p,s=sugerir();
+ $$('#c-com button').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.c===CN.com)});
+ $$('#c-mod button').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.m===CN.mod)});
+ $('#c-sug').innerHTML='Según sus respuestas corresponde: <b>'+COMPL[s][0]+'</b>'+(s!==CN.com?' · <span style="color:var(--mal)">usted eligió '+COMPL[CN.com][0].toLowerCase()+'</span>':'');
+ var d=COMPL[CN.com];$('#c-comd').innerHTML='<div class="nota" style="margin:0"><b>'+d[0]+' ('+(CN.com==='alta'?'hasta '+usd(C.techo):CN.com==='baja'?usd(C.bajaFija.virtual)+' virtual / '+usd(C.bajaFija.presencial)+' presencial':'promedio '+usd(C.base[CN.com]))+' + IVA):</b> '+esc(d[1])+'<ul style="margin:4px 0 0;padding-left:16px">'+d[2].map(function(x){return '<li>'+esc(x)+'</li>'}).join('')+'</ul></div>';
+ $('#c-fac').value=p.f;
+ $('#c-des').disabled=!!p.fija;$('#c-tie').disabled=!!p.fija;$('#c-dhint').textContent=p.fija?'En consultas de complejidad baja no se aplica descuento.':(k.des<num($('#c-des').value)?'El descuento se limitó: la consulta no puede quedar por debajo de '+usd(p.min)+' + IVA.':'');
+ $('#c-wlink').hidden=CN.mod!=='virtual';$('#c-wlug').hidden=CN.mod!=='presencial';
+ $('#c-res').className='res ok';
+ $('#c-res').innerHTML='<div class="estado" style="color:var(--olivo)">Consulta: '+usd(k.base)+' + IVA</div><div class="big">'+usd(k.total)+'</div><div>Total con IVA 15%</div>'+
+  '<table style="margin-top:8px"><tbody>'+
+  (p.fija?'<tr class="hi"><td>Tarifa fija baja · '+CN.mod+'</td><td>'+usd(p.fin)+'</td></tr><tr><td colspan="2" style="text-align:left;color:var(--gris);font-size:12.5px">Consulta puntual: tarifa fija, sin descuento ni recargo por tiempo.</td></tr>':'<tr><td>Base complejidad '+d[0].toLowerCase()+'</td><td>'+usd(C.base[CN.com])+'</td></tr>'+
+  '<tr><td>× Tiempo ('+esc(C.tiempo[k.ti][0].toLowerCase())+')</td><td>×'+p.t.toLocaleString('es-EC')+'</td></tr>'+
+  '<tr><td>× Materia ('+esc(k.a[1])+')</td><td>×'+p.f.toLocaleString('es-EC')+'</td></tr>'+
+  '<tr><td>× Modalidad '+CN.mod+'</td><td>×'+p.m.toLocaleString('es-EC')+'</td></tr>'+
+  '<tr class="hi"><td>Valor calculado</td><td>'+usd(p.red)+'</td></tr>'+
+  (p.techo?'<tr><td>Se aplica el techo</td><td>'+usd(C.techo)+'</td></tr>':'')+(p.piso?'<tr><td>Mínimo: no baja de la tarifa baja '+CN.mod+'</td><td>'+usd(p.min)+'</td></tr>':''))+
+  (k.des?'<tr><td>(−) Descuento puntual</td><td>'+usd(-k.des)+'</td></tr>':'')+
+  '<tr class="tot"><td>Base imponible</td><td>'+usd(k.base)+'</td></tr><tr><td>IVA 15%</td><td>'+usd(k.iva)+'</td></tr><tr class="tot"><td>Total factura</td><td>'+usd(k.total)+'</td></tr></tbody></table>'+
+  '<p class="hint">Factúrela como "Consulta legal – '+esc(k.a[1])+'".</p>';
+ $('#c-docs').innerHTML=[CED].concat(k.tema[1]).map(function(x){return '<li style="margin-bottom:4px">'+esc(x[0])+' <span style="color:var(--gris);font-size:13px">('+esc(x[1])+')</span></li>'}).join('');
+ store('cons',{are:k.a[0],tem:+$('#c-tem').value,tie:k.ti,com:CN.com,mod:CN.mod,fec:$('#c-fec').value,hor:$('#c-hor').value,asu:$('#c-asu').value,link:$('#c-link').value,lug:$('#c-lug').value});
+}
+function cita(){
+ var k=cotiz(),f=$('#c-fec').value,h=$('#c-hor').value;
+ return {k:k,fecha:f?largo(parseD(f)):'(por definir)',hora:h||'(por definir)',lugar:CN.mod==='virtual'?($('#c-link').value.trim()||'(enlace por enviar)'):($('#c-lug').value.trim()||'(lugar por confirmar)'),
+  asunto:$('#c-asu').value.trim()||k.tema[0],metodo:$('#c-met').value.trim(),cuentas:$('#c-cta').value.trim(),gracias:$('#c-gra').value.trim()};
+}
+function textoMsg(){
+ var c=cita(),k=c.k;
+ var txt='*MACÍAS SÁNCHEZ CONSULTORES*\nAbg. Mariano X. Macías Sánchez\n\n*Confirmación de consulta legal*\n'+
+  '• Tipo de consulta: '+k.tema[0]+'\n• Materia: '+k.a[1]+'\n• Asunto: '+c.asunto+'\n\n'+
+  '*Agenda*\n• Fecha: '+c.fecha+'\n• Hora: '+c.hora+'\n• Modalidad: '+(CN.mod==='virtual'?'Virtual\n• Enlace: ':'Presencial\n• Lugar: ')+c.lugar+'\n\n'+
+  '*Costo*\n• Consulta: '+usd(k.base)+' + IVA ('+usd(k.iva)+') = *'+usd(k.total)+'*\n\n'+
+  '*Método de pago*\n'+(c.metodo||'—')+(c.cuentas?'\n'+c.cuentas:'')+'\n\n'+
+  '*Documentos para la consulta*\n'+[CED].concat(k.tema[1]).map(function(d){return '• '+docTxt(d)}).join('\n')+'\n\n'+(c.gracias||'');
+ return txt;
+}
+function copiarMsg(){
+ var txt=textoMsg();
+ var m=$('#c-cmsg');
+ try{navigator.clipboard.writeText(txt).then(function(){m.className='msg o';m.textContent='Mensaje copiado. Péguelo en WhatsApp (adjunte la imagen si la generó).'},function(){mostrarTxt(txt)})}catch(e){mostrarTxt(txt)}
+}
+function mostrarTxt(txt){var m=$('#c-cmsg');m.className='msg';m.innerHTML='Copie el texto:<textarea style="width:100%;min-height:200px;margin-top:6px;font:inherit;font-size:13px;padding:8px;border:1px solid #CFCABA;border-radius:8px">'+esc(txt)+'</textarea>'}
+function logoImg(){return new Promise(function(res){var src=DATA.logo||('data:image/svg+xml;charset=utf-8,'+encodeURIComponent(ISO.replace('class="iso"','xmlns="http://www.w3.org/2000/svg" width="200" height="200"')));var i=new Image();i.onload=function(){res(i)};i.onerror=function(){res(null)};i.src=src})}
+function generarImg(){
+ var c=cita(),k=c.k,m=$('#c-cmsg');m.className='msg';m.textContent='Generando imagen…';
+ var W=1080,P=72,FF="'Archivo',system-ui,sans-serif";
+ var cv=document.createElement('canvas'),x=cv.getContext('2d');
+ function wrap(t,max,font){x.font=font;var out=[];String(t).split('\n').forEach(function(par){var w=par.split(' '),l='';w.forEach(function(s){var tt=l?l+' '+s:s;if(x.measureText(tt).width>max&&l){out.push(l);l=s}else l=tt});out.push(l)});return out}
+ var rows=[['Tipo de consulta',k.tema[0]],['Materia',k.a[1]],['Asunto',c.asunto],['Fecha',c.fecha],['Hora',c.hora],[CN.mod==='virtual'?'Modalidad virtual · enlace':'Modalidad presencial · lugar',c.lugar]];
+ Promise.all([logoImg(),(document.fonts&&document.fonts.ready)||Promise.resolve()]).then(function(r){
+  var lg=r[0],fl='500 34px '+FF,fv='700 38px '+FF;
+  cv.width=W;cv.height=10;x=cv.getContext('2d');
+  var blocks=rows.map(function(rw){return {l:rw[0],v:wrap(rw[1],W-2*P,fv)}});
+  var pago=wrap((c.metodo||'')+(c.cuentas?'\n'+c.cuentas:''),W-2*P,'500 32px '+FF);
+  var gra=wrap(c.gracias||'',W-2*P,'italic 500 32px '+FF);
+  var H=300+blocks.reduce(function(s,b){return s+52+b.v.length*48+18},0)+190+70+pago.length*44+60+gra.length*44+150;
+  cv.width=W;cv.height=H;x=cv.getContext('2d');
+  x.fillStyle='#F7F5EE';x.fillRect(0,0,W,H);
+  x.fillStyle='#14181E';x.fillRect(0,0,W,240);
+  if(lg){var lh=130,lw=lg.width&&lg.height?Math.min(lh*lg.width/lg.height,W-2*P):lh;x.drawImage(lg,P,55,lw,lh);if(!DATA.logo){x.fillStyle='#A09046';x.font='700 40px '+FF;x.fillText('MACÍAS SÁNCHEZ CONSULTORES',P+lw+30,112);x.fillStyle='#C9BC82';x.font='500 28px '+FF;x.fillText('Abg. Mariano X. Macías Sánchez',P+lw+30,160)}}
+  x.fillStyle='#A09046';x.fillRect(0,240,W,8);
+  var y=310;x.fillStyle='#14181E';x.font='800 50px '+FF;x.fillText('Confirmación de consulta legal',P,y);y+=30;
+  blocks.forEach(function(b){y+=52;x.fillStyle='#6E6230';x.font='600 28px '+FF;x.fillText(b.l.toUpperCase(),P,y);x.fillStyle='#14181E';x.font=fv;b.v.forEach(function(l){y+=48;x.fillText(l,P,y)});y+=18});
+  y+=30;x.fillStyle='#14181E';x.fillRect(P,y,W-2*P,150);x.fillStyle='#C9BC82';x.font='600 28px '+FF;x.fillText('COSTO DE LA CONSULTA',P+36,y+50);
+  x.fillStyle='#fff';x.font='800 52px '+FF;x.fillText(usd(k.base)+' + IVA',P+36,y+115);x.fillStyle='#C9BC82';x.font='600 30px '+FF;var tt='Total '+usd(k.total);x.fillText(tt,W-P-36-x.measureText(tt).width,y+113);
+  y+=150+70;x.fillStyle='#6E6230';x.font='600 28px '+FF;x.fillText('MÉTODO DE PAGO',P,y);x.fillStyle='#14181E';x.font='500 32px '+FF;pago.forEach(function(l){y+=44;x.fillText(l,P,y)});
+  y+=60;x.fillStyle='#3A3F47';x.font='italic 500 32px '+FF;gra.forEach(function(l){y+=44;x.fillText(l,P,y)});
+  x.fillStyle='#A09046';x.fillRect(0,H-90,W,90);x.fillStyle='#14181E';x.font='600 28px '+FF;var ft='0979151014 · msconsultores.ec@gmail.com · Guayaquil';x.fillText(ft,(W-x.measureText(ft).width)/2,H-36);
+  cv.toBlob(function(blob){
+   var url=URL.createObjectURL(blob);
+   $('#c-out').innerHTML='<img src="'+url+'" alt="Confirmación de consulta" style="width:100%;margin-top:10px;border:1px solid var(--linea);border-radius:8px"><p class="hint">En el celular puede mantener presionada la imagen para guardarla o compartirla.</p><button class="btn sec" id="c-dl" type="button">Guardar / compartir imagen</button>';
+   m.className='msg o';m.textContent='Imagen lista. Envíela por WhatsApp junto con el mensaje.';
+   $('#c-dl').onclick=function(){var fn='consulta-msc-'+($('#c-fec').value||'cita')+'.png';try{var fl=new File([blob],fn,{type:'image/png'});if(navigator.canShare&&navigator.canShare({files:[fl]})){navigator.share({files:[fl],title:'Confirmación de consulta'}).then(function(){m.className='msg o';m.textContent='Imagen compartida.'},function(){});return}}catch(e){}
+    if(PWA){var a=document.createElement('a');a.href=url;a.download=fn;document.body.appendChild(a);a.click();a.remove();return}
+    Promise.resolve(window.claude&&window.claude.use?window.claude.use('downloads'):null).then(function(dl){if(!dl){m.className='msg e';m.textContent='Guardar no está disponible aquí: mantenga presionada la imagen.';return}return dl.save({filename:'consulta-msc-'+($('#c-fec').value||'cita')+'.png',data:blob}).then(function(){m.className='msg o';m.textContent='Imagen guardada.'},function(e){m.className='msg e';m.textContent=e&&e.code==='declined'?'Guardado cancelado.':'No se pudo guardar: mantenga presionada la imagen.'})}).catch(function(){m.className='msg e';m.textContent='Mantenga presionada la imagen para guardarla.'})};
+  },'image/png');
+ });
+}
+
+/* =========================================================
+   2. PENSIONES ALIMENTICIAS
+   ========================================================= */
+var COLS=['1 hijo · 0–2 años','1 hijo · 3+ años','2 hijos · 0–2 años','2 hijos · 3+ años','3+ hijos · 0–2 años','3+ hijos · 3+ años'];
+function tabla(){return DATA.tablas[DATA.anioPensiones]||DATA.tablas[Object.keys(DATA.tablas).sort().pop()]}
+function renderPen(){
+ var v=$('#v-pen'),T=tabla();
+ var anios=Object.keys(DATA.tablas).sort();
+ v.innerHTML='<h2>Pensión alimenticia mínima</h2><p class="sub">Tabla de Pensiones Alimenticias Mínimas para niñas, niños y adolescentes. <span class="tag v">Tabla '+esc(T.anio)+'</span></p>'+
+ '<div class="card"><h3>Datos del alimentante</h3><div class="grid">'+
+  '<div class="full"><label for="p-anio">Tabla aplicable</label><select id="p-anio">'+anios.map(function(a){return '<option'+(a===T.anio?' selected':'')+'>'+a+'</option>'}).join('')+'</select></div>'+
+  '<div class="full"><label for="p-ing">Ingreso mensual bruto (USD)</label><input id="p-ing" type="number" inputmode="decimal" min="0" step="10" value="1200"></div>'+
+  '<label class="chk full"><input type="checkbox" id="p-iess" checked> Afiliado al IESS: descontar aporte personal ('+pct(T.descIESS)+')</label>'+
+  '<div><label for="p-hij">Número de hijos</label><select id="p-hij"><option value="1">1</option><option value="2">2</option><option value="3">3 o más</option></select></div>'+
+  '<div><label for="p-eda">Edad del hijo mayor</label><select id="p-eda"><option value="0">0 a 2 años</option><option value="1" selected>3 años o más</option></select></div>'+
+ '</div><p class="hint">Con hijos de edades distintas se aplica el porcentaje del hijo de mayor edad. Si el ingreso no se justifica o es menor a 1 SBU, se toma 1 SBU.</p></div>'+
+ '<div class="res" id="p-res"></div>'+
+ '<div class="card"><h3>Tabla '+esc(T.anio)+' · % del ingreso</h3><div class="scroll"><table><thead><tr><th>Nivel</th><th>Ingreso (SBU)</th>'+COLS.map(function(c){return '<th>'+c+'</th>'}).join('')+'</tr></thead><tbody id="p-tb"></tbody></table></div>'+
+  '<p class="hint">SBU '+esc(T.anio)+': '+usd(T.sbu)+'. Fuente: '+esc(T.acuerdo)+'.</p><p class="nota">No incluye la tabla para hijos con discapacidad (montos adicionales según grado). El juez puede fijar más que la tabla, nunca menos.</p></div>'+
+ '<div class="card"><h3>Actualizar con la tabla de un nuevo año</h3>'+
+  '<p class="hint" style="margin-top:0">Suba la imagen de la tabla oficial (por ejemplo, la de 2027). Claude la lee y le muestra los valores para que los revise antes de guardarlos.</p>'+
+  '<div class="grid" style="margin-top:8px"><div><label for="p-nanio">Año de la tabla</label><input id="p-nanio" type="number" inputmode="numeric" value="'+(Math.max.apply(null,anios.map(Number))+1)+'"></div><div><label for="p-nsbu">SBU de ese año (USD)</label><input id="p-nsbu" type="number" inputmode="decimal" placeholder="Ej.: 500"></div>'+
+  '<div class="full"><label for="p-img">Imagen de la tabla (JPG o PNG)</label><input id="p-img" type="file" accept="image/*"></div></div>'+
+  '<div class="row" style="margin-top:10px"><button class="btn" id="p-leer" type="button" data-needs="sample">Leer la imagen con Claude</button><button class="btn sec" id="p-manual" type="button">Ingresar a mano</button></div>'+
+  '<div class="msg" id="p-msg"></div><div id="p-ed"></div></div>';
+ $('#p-tb').innerHTML=T.niveles.map(function(n){return '<tr data-n="'+n.n+'"><td>'+n.n+'</td><td>'+(n.hasta==null?'más de '+n.desde:n.desde+' – '+n.hasta)+'</td>'+n.p.map(function(x){return '<td>'+pct(x)+'</td>'}).join('')+'</tr>'}).join('');
+ var st=store('pen')||{};
+ if(st.ing!=null)$('#p-ing').value=st.ing;if(st.iess!=null)$('#p-iess').checked=st.iess;if(st.hij)$('#p-hij').value=st.hij;if(st.eda!=null)$('#p-eda').value=st.eda;
+ $('#p-anio').onchange=function(){DATA.anioPensiones=this.value;renderPen()};
+ $$('#v-pen input:not([type=file]):not(#p-nanio):not(#p-nsbu),#v-pen select:not(#p-anio)').forEach(function(i){i.addEventListener('input',calcPen)});
+ $('#p-leer').onclick=leerImagen;
+ $('#p-manual').onclick=function(){editorTabla(JSON.parse(JSON.stringify(tabla().niveles)))};
+ refreshSave();calcPen();
+}
+function calcPen(){
+ var T=tabla(),ing=num($('#p-ing').value),iess=$('#p-iess').checked,h=+$('#p-hij').value,e=+$('#p-eda').value;
+ var neto=iess?ing*(1-T.descIESS/100):ing, base=Math.max(neto,T.sbu), sb=base/T.sbu;
+ var niv=T.niveles.filter(function(n){return sb>n.desde-1e-9&&(n.hasta==null||sb<=n.hasta+1e-9)})[0]||T.niveles[0];
+ var col=(h-1)*2+e, p=niv.p[col], pen=r2(base*p/100);
+ $$('#p-tb tr').forEach(function(tr){tr.className=+tr.dataset.n===niv.n?'hi':''});
+ $('#p-res').innerHTML='<div class="estado" style="color:var(--olivo)">Pensión mínima mensual</div><div class="big">'+usd(pen)+'</div>'+
+  (h>1?'<div>≈ '+usd(r2(pen/h))+' por cada hijo'+(h===3?' (si son 3)':'')+'</div>':'')+
+  '<table style="margin-top:10px"><tbody>'+
+  '<tr><td>Ingreso bruto</td><td>'+usd(ing)+'</td></tr>'+
+  (iess?'<tr><td>(−) Aporte IESS '+pct(T.descIESS)+'</td><td>'+usd(-r2(ing*T.descIESS/100))+'</td></tr>':'')+
+  (base>neto?'<tr><td>Ingreso menor a 1 SBU: se toma</td><td>'+usd(T.sbu)+'</td></tr>':'')+
+  '<tr class="hi"><td>Base de cálculo</td><td>'+usd(r2(base))+'</td></tr>'+
+  '<tr><td>Equivale a</td><td>'+sb.toLocaleString('es-EC',{maximumFractionDigits:2})+' SBU</td></tr>'+
+  '<tr><td>Nivel · columna</td><td>Nivel '+niv.n+' · '+COLS[col]+'</td></tr>'+
+  '<tr><td>Porcentaje</td><td>'+pct(p)+'</td></tr></tbody></table>';
+ store('pen',{ing:ing,iess:iess,hij:h,eda:e});
+}
+function leerImagen(){
+ var f=$('#p-img').files[0],m=$('#p-msg');
+ if(!f){m.className='msg e';m.textContent='Elija primero la imagen de la tabla.';return}
+ if(!SAMPLE){m.className='msg e';m.textContent='La lectura con Claude no está disponible aquí. Use "Ingresar a mano".';return}
+ var btn=$('#p-leer');btn.disabled=true;m.className='msg';m.textContent='Claude está leyendo la tabla…';
+ var prompt='Esta imagen es la Tabla de Pensiones Alimenticias Mínimas de Ecuador (Ministerio de Desarrollo Humano / MIES). Extrae SOLO la tabla general para niñas, niños y adolescentes (no la de discapacidad ni adultos mayores). Responde únicamente con JSON válido, sin texto adicional, con esta forma exacta: {"sbu": número o null, "acuerdo": "número de acuerdo ministerial si aparece, o cadena vacía", "niveles": [{"n":1,"desde":número en SBU,"hasta":número en SBU o null si es el último,"p":[seis porcentajes como números, en este orden: 1 hijo 0-2 años, 1 hijo 3 años o más, 2 hijos 0-2 años, 2 hijos 3 años o más, 3 o más hijos 0-2 años, 3 o más hijos 3 años o más]}]}. Si en un nivel hay un único porcentaje para uno o más hijos, repítelo en las columnas que correspondan. Usa punto decimal. No inventes valores: si algo no se lee, pon null.';
+ Promise.resolve(SAMPLE.limits?SAMPLE.limits():{images:true}).then(function(lim){
+  if(lim&&lim.images===false)throw {message:'esta vista no acepta imágenes'};
+  var call=SAMPLE.json?SAMPLE.json(prompt,{images:[f],modelTier:'complex'}):SAMPLE(prompt,{images:[f],modelTier:'complex'}).then(function(r){var t=r.text,a=t.indexOf('{'),b=t.lastIndexOf('}');return JSON.parse(t.slice(a,b+1))});
+  return call;
+ }).then(function(j){
+  btn.disabled=false;
+  if(!j||!j.niveles||!j.niveles.length)throw {message:'no se reconoció la tabla'};
+  if(j.sbu&&!num($('#p-nsbu').value))$('#p-nsbu').value=j.sbu;
+  m.className='msg o';m.textContent='Tabla leída. Revise cada valor contra la imagen antes de guardar.';
+  editorTabla(j.niveles.map(function(n,i){return {n:i+1,desde:n.desde,hasta:n.hasta,p:(n.p||[]).slice(0,6)}}),j.acuerdo||'');
+ }).catch(function(e){btn.disabled=false;m.className='msg e';m.textContent='No se pudo leer la imagen'+(e&&e.message?': '+e.message:'')+'. Puede ingresar los valores a mano.';if(e&&e.code==='not_granted')btn.hidden=true});
+}
+function editorTabla(niv,acu){
+ while(niv.length<6)niv.push({n:niv.length+1,desde:null,hasta:null,p:[]});
+ var ed=$('#p-ed');
+ ed.innerHTML='<div class="scroll tabla-ed" style="margin-top:12px"><table><thead><tr><th>Nivel</th><th>Desde SBU</th><th>Hasta SBU</th>'+COLS.map(function(c){return '<th>'+c+'</th>'}).join('')+'</tr></thead><tbody>'+
+  niv.map(function(n,i){return '<tr><td>'+(i+1)+'</td><td><input data-k="desde" data-i="'+i+'" value="'+(n.desde==null?'':n.desde)+'" inputmode="decimal"></td><td><input data-k="hasta" data-i="'+i+'" value="'+(n.hasta==null?'':n.hasta)+'" placeholder="—" inputmode="decimal"></td>'+[0,1,2,3,4,5].map(function(c){var x=n.p[c];return '<td><input data-k="p" data-c="'+c+'" data-i="'+i+'" value="'+(x==null?'':x)+'" inputmode="decimal"></td>'}).join('')+'</tr>'}).join('')+
+  '</tbody></table></div><div style="margin-top:8px"><label for="p-nacu">Acuerdo ministerial / fuente</label><input id="p-nacu" value="'+esc(acu||'')+'" placeholder="Ej.: Acuerdo Ministerial MDH-DM-2027-…"></div>'+
+  '<p class="hint">Deje "Hasta" vacío en el último nivel. Porcentajes sin el signo %.</p><div class="row" style="margin-top:8px"><button class="btn" id="p-guardar" type="button" data-needs="art">Guardar tabla y usarla</button><button class="btn sec" id="p-cancel" type="button">Cancelar</button></div><div class="msg" id="p-msg2"></div>';
+ $('#p-cancel').onclick=function(){ed.innerHTML=''};
+ $('#p-guardar').onclick=function(){
+  var m=$('#p-msg2'),anio=String(Math.round(num($('#p-nanio').value))),sbu=num($('#p-nsbu').value);
+  if(anio.length!==4){m.className='msg e';m.textContent='Indique el año de la tabla.';return}
+  if(!(sbu>0)){m.className='msg e';m.textContent='Indique el SBU de ese año.';return}
+  var out=niv.map(function(_,i){return {n:i+1,desde:null,hasta:null,p:[]}}),bad=false;
+  $$('input',ed).forEach(function(inp){if(!inp.dataset.k)return;var i=+inp.dataset.i,v=inp.value.trim();if(inp.dataset.k==='p'){var x=num(v);if(v===''||!(x>0&&x<100))bad=true;out[i].p[+inp.dataset.c]=x}else out[i][inp.dataset.k]=v===''?null:num(v)});
+  out.forEach(function(n,i){if(n.desde==null)bad=true;if(n.hasta==null&&i<out.length-1)bad=true});
+  if(bad){m.className='msg e';m.textContent='Hay celdas vacías o fuera de rango (los porcentajes van entre 0 y 100). Revíselas.';return}
+  DATA.tablas[anio]={anio:anio,sbu:sbu,acuerdo:$('#p-nacu').value.trim()||'Tabla '+anio+' (cargada por el usuario)',descIESS:tabla().descIESS,niveles:out};
+  DATA.anioPensiones=anio;
+  guardar(m,'Tabla '+anio+' guardada. La app se recarga con ella.').then(function(ok){if(!ok){renderPen()}});
+ };
+ refreshSave();
+}
+
+/* =========================================================
+   3. PLAZOS Y TÉRMINOS
+   ========================================================= */
+var PRE=[
+ {g:'COGEP · Judicial',items:[
+  ['Contestar demanda · procedimiento ordinario',30,'t','Art. 291',1],
+  ['Contestar reconvención · ordinario',30,'t','Art. 291',1],
+  ['Contestar demanda · sumario',15,'t','Art. 333.3',1],
+  ['Contestar demanda · sumario, institución pública',30,'t','Art. 333.3',1],
+  ['Contestar demanda · despido ineficaz',10,'t','Art. 333.3',1],
+  ['Oponerse · procedimiento ejecutivo',15,'t','Art. 351',1],
+  ['Oponerse · procedimiento monitorio',15,'t','Art. 358',0],
+  ['Audiencia sumario/monitorio (máximo, desde contestación)',30,'t','Art. 333',1],
+  ['Audiencia ejecutivo (máximo, desde fin de oposición)',20,'t','Art. 354',1],
+  ['Fundamentar apelación',10,'t','Art. 257',0],
+  ['Recurso de casación',30,'t','Art. 266',0],
+  ['Aclaración o ampliación',3,'t','Art. 255',0]]},
+ {g:'COA · Administrativo',items:[
+  ['Recurso de apelación',10,'t','Art. 224',1],
+  ['Silencio administrativo (respuesta a petición)',30,'t','Art. 207',1],
+  ['Resolución del recurso de apelación',1,'m','Art. 230',1],
+  ['Recurso extraordinario de revisión (regla general)',1,'a','Art. 232',0]]},
+ {g:'COIP · Tránsito',items:[
+  ['Impugnar boleta de citación de tránsito',3,'t','Art. 644',1]]}
+];
+var TIPO={t:'término (días hábiles)',p:'plazo (días calendario)',m:'plazo en meses',a:'plazo en años'};
+function feriadosSet(){var s={};Object.keys(DATA.feriados).forEach(function(y){DATA.feriados[y].forEach(function(f){s[f[0]]=f[1]})});(DATA.inhabilesExtra||[]).concat(store('extra')||[]).forEach(function(f){s[f[0]]=f[1]});return s}
+function inhabil(d,F){var w=d.getDay();if(w===0)return 'domingo';if(w===6)return 'sábado';return F[iso(d)]||''}
+function aniosCub(){return Object.keys(DATA.feriados)}
+function computar(desde,n,tipo,F){
+ var d=new Date(desde.getTime()),saltos=[];
+ if(tipo==='t'){var c=0;while(c<n){d.setDate(d.getDate()+1);var r=inhabil(d,F);if(r){if(F[iso(d)])saltos.push([new Date(d),r])}else c++}}
+ else{if(tipo==='p')d.setDate(d.getDate()+n);else{var dia=d.getDate();d.setDate(1);if(tipo==='m')d.setMonth(d.getMonth()+n);else d.setFullYear(d.getFullYear()+n);d.setDate(Math.min(dia,new Date(d.getFullYear(),d.getMonth()+1,0).getDate()))}
+  var mov=false;while(inhabil(d,F)){if(F[iso(d)])saltos.push([new Date(d),F[iso(d)]]);d.setDate(d.getDate()+1);mov=true}if(mov)saltos.push(['mov'])}
+ return {fin:d,saltos:saltos};
+}
+function renderPla(){
+ var v=$('#v-pla');
+ v.innerHTML='<h2>Plazos y términos</h2><p class="sub">Término: solo días hábiles (sin sábados, domingos ni feriados). Plazo: días calendario; si vence en día inhábil, pasa al siguiente hábil. El cómputo empieza el día siguiente a la notificación.</p>'+
+ '<div class="card"><h3>Cálculo</h3><div class="grid">'+
+  '<div class="full"><label for="l-pre">Actuación</label><select id="l-pre">'+PRE.map(function(g,gi){return '<optgroup label="'+g.g+'">'+g.items.map(function(it,ii){return '<option value="'+gi+'-'+ii+'">'+esc(it[0])+' · '+it[1]+' '+({t:'días término',p:'días plazo',m:it[1]===1?'mes':'meses',a:it[1]===1?'año':'años'}[it[2]])+'</option>'}).join('')+'</optgroup>'}).join('')+'<optgroup label="Otro"><option value="custom">Personalizado…</option></optgroup></select></div>'+
+  '<div><label for="l-fec">Fecha de notificación o citación</label><input id="l-fec" type="date"></div>'+
+  '<div id="l-wn"><label for="l-n">Cantidad</label><input id="l-n" type="number" inputmode="numeric" min="1" step="1"></div>'+
+  '<div class="full" id="l-wt"><label>Tipo de cómputo</label><div class="seg" id="l-tipo"><button type="button" data-k="t">Término</button><button type="button" data-k="p">Plazo</button><button type="button" data-k="m">Meses</button></div></div>'+
+ '</div><p class="hint" id="l-base"></p></div>'+
+ '<div class="res" id="l-res"></div>'+
+ '<div class="card"><h3>Días inhábiles adicionales</h3><p class="hint" style="margin-top:0">Ya están cargados los feriados nacionales '+aniosCub().join(' y ')+'. Agregue feriados locales (p. ej. Fundación de Guayaquil), suspensiones de labores o días declarados inhábiles por el Consejo de la Judicatura.</p>'+
+  '<div class="grid" style="margin-top:8px"><div><label for="l-xd">Fecha</label><input id="l-xd" type="date"></div><div><label for="l-xn">Motivo</label><input id="l-xn" placeholder="Ej.: Fundación de Guayaquil"></div></div>'+
+  '<div class="row" style="margin-top:8px"><button class="btn sec" id="l-xadd" type="button">Agregar en este dispositivo</button><button class="btn sec" id="l-xsave" type="button" data-needs="art">Guardar en la app</button></div><div class="msg" id="l-xmsg"></div><div id="l-xlist"></div>'+
+  '<details><summary>Ver feriados nacionales cargados</summary><div class="scroll"><table><tbody>'+aniosCub().map(function(y){return DATA.feriados[y].map(function(f){return '<tr><td>'+largo(parseD(f[0]))+'</td><td style="text-align:left">'+esc(f[1])+'</td></tr>'}).join('')}).join('')+'</tbody></table></div><p class="hint">Fuente: calendario oficial de feriados 2026–2030 del Viceministerio de Turismo, con traslados aplicados. 2 de enero de 2026: descanso por Decreto Ejecutivo 249.</p></details></div>'+
+ '<p class="nota">Las actuaciones marcadas "verificar" vienen de la norma pero no se contrastaron con el texto vigente en esta versión. Confirme el artículo antes de usar el resultado. Para materias especiales (niñez, laboral, constitucional) revise si la ley fija reglas propias.</p>';
+ var st=store('pla')||{};
+ var hoy=new Date();$('#l-fec').value=st.fec||iso(hoy);
+ $('#l-pre').value=st.pre||'0-0';
+ L.tipo=st.tipo||'t';
+ if(st.pre==='custom'&&st.n)$('#l-n').value=st.n;
+ $('#l-pre').onchange=function(){var p=pre();if(p){$('#l-n').value=p[1];L.tipo=p[2]}calcPla()};
+ if($('#l-pre').value!=='custom'){var p0=pre();$('#l-n').value=p0[1];L.tipo=p0[2]}
+ $$('#l-tipo button').forEach(function(b){b.onclick=function(){L.tipo=b.dataset.k;calcPla()}});
+ $('#l-fec').oninput=$('#l-n').oninput=calcPla;
+ $('#l-xadd').onclick=function(){var d=$('#l-xd').value,n=$('#l-xn').value.trim()||'Día inhábil';if(!d)return;var x=store('extra')||[];x.push([d,n]);store('extra',x);listExtra();calcPla()};
+ $('#l-xsave').onclick=function(){var x=store('extra')||[];DATA.inhabilesExtra=(DATA.inhabilesExtra||[]).concat(x);store('extra',[]);guardar($('#l-xmsg'),'Días inhábiles guardados en la app.')};
+ listExtra();refreshSave();calcPla();
+}
+var L={tipo:'t'};
+function pre(){var v=$('#l-pre').value;if(v==='custom')return null;var a=v.split('-');return PRE[+a[0]].items[+a[1]]}
+function listExtra(){var all=(DATA.inhabilesExtra||[]).map(function(f){return f.concat('app')}).concat((store('extra')||[]).map(function(f){return f.concat('local')}));$('#l-xlist').innerHTML=all.length?'<table style="margin-top:8px"><tbody>'+all.map(function(f){return '<tr><td>'+largo(parseD(f[0]))+'</td><td style="text-align:left">'+esc(f[1])+(f[2]==='local'?' <span class="tag">solo este dispositivo</span>':'')+'</td></tr>'}).join('')+'</tbody></table>':''}
+function calcPla(){
+ var p=pre(),custom=!p;
+ $('#l-wt').hidden=!custom;
+ $$('#l-tipo button').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.k===L.tipo)});
+ var n=Math.max(1,Math.round(num($('#l-n').value))),fs=$('#l-fec').value,tipo=custom?L.tipo:p[2];
+ $('#l-n').disabled=!custom;
+ $('#l-base').innerHTML=p?'Base: '+(p[0].indexOf('tránsito')>-1||p[3]==='Art. 644'?'COIP':(PRE[+$('#l-pre').value.split('-')[0]].g.split(' ')[0]))+' '+p[3]+' · '+TIPO[p[2]]+' '+(p[4]?'<span class="tag v">verificado</span>':'<span class="tag">verificar</span>'):'Cómputo personalizado: '+TIPO[tipo]+'.';
+ if(!fs){$('#l-res').innerHTML='<p>Indique la fecha.</p>';return}
+ var desde=parseD(fs),F=feriadosSet(),r=computar(desde,n,tipo,F);
+ var y=r.fin.getFullYear(),cub=aniosCub().indexOf(String(y))>-1&&aniosCub().indexOf(String(desde.getFullYear()))>-1;
+ var hoy=new Date();hoy.setHours(0,0,0,0);
+ var rest=0,d=new Date(hoy);if(r.fin>=hoy){while(d<r.fin){d.setDate(d.getDate()+1);if(tipo!=='t'||!inhabil(d,F))rest++}}
+ var venc=r.fin<hoy;
+ var ini=inhabil(desde,F);
+ $('#l-res').className='res '+(venc?'mal':'ok');
+ $('#l-res').innerHTML='<div class="estado">'+(venc?'Vencido':'Vence')+'</div><div class="big" style="font-size:22px">'+largo(r.fin)+'</div>'+
+  '<div>'+n+' '+({t:'días hábiles',p:'días calendario',m:n===1?'mes':'meses',a:n===1?'año':'años'}[tipo])+' desde la notificación del '+largo(desde)+'.</div>'+
+  (venc?'':'<div style="margin-top:4px"><b>'+(rest===0?'Vence hoy':'Quedan '+rest+' '+(tipo==='t'?'días hábiles':'días'))+'</b> contando desde hoy.</div>')+
+  (ini?'<p class="hint">La notificación fue en día inhábil ('+esc(ini)+'): el cómputo empieza igual al día siguiente; confirme el criterio del juzgado.</p>':'')+
+  (r.saltos.filter(function(s){return s[0]!=='mov'}).length?'<p class="hint">Feriados excluidos o saltados: '+r.saltos.filter(function(s){return s[0]!=='mov'}).map(function(s){return s[0].getDate()+' '+MESES[s[0].getMonth()].slice(0,3)+' ('+esc(s[1])+')'}).join(', ')+'.</p>':'')+
+  (r.saltos.some(function(s){return s[0]==='mov'})?'<p class="hint">El plazo vencía en día inhábil y se trasladó al siguiente día hábil.</p>':'')+
+  (cub?'':'<p class="hint" style="color:var(--mal)">El cómputo cae en un año sin feriados cargados: el resultado solo descuenta fines de semana.</p>');
+ store('pla',{fec:fs,pre:$('#l-pre').value,tipo:L.tipo,n:n});
+}
+
+/* =========================================================
+   4. TRÁNSITO · ART. 179 LOTTTSV
+   ========================================================= */
+function renderTra(){
+ var v=$('#v-tra');
+ v.innerHTML='<h2>Notificación de boleta de tránsito</h2><p class="sub">Art. 179 LOTTTSV: la citación que no se entrega personalmente se remite al domicilio o al correo electrónico registrado del propietario en un plazo no mayor de 72 horas desde la infracción.</p>'+
+ '<div class="card"><h3>Fechas</h3><div class="grid">'+
+  '<div class="full"><label for="t-inf">Fecha y hora de la infracción</label><input id="t-inf" type="datetime-local"></div>'+
+  '<div class="full"><label for="t-not">Fecha y hora en que llegó el correo de notificación</label><input id="t-not" type="datetime-local"></div>'+
+ '</div><p class="hint">Use la hora de la boleta y la del correo recibido (guarde captura del correo con su fecha).</p></div>'+
+ '<div class="res" id="t-res"></div>'+
+ '<p class="nota">La impugnación se presenta dentro del término de 3 días desde la notificación (art. 644 COIP), contados en días hábiles. Aunque la notificación esté en término, puede impugnarse por el fondo (error en la placa, señalización, prueba de la detección electrónica). Para contravenciones detectadas por medios electrónicos rige también el art. 179.b LOTTTSV.</p>';
+ var st=store('tra')||{};
+ if(st.inf)$('#t-inf').value=st.inf;if(st.not)$('#t-not').value=st.not;
+ $('#t-inf').oninput=$('#t-not').oninput=calcTra;calcTra();
+}
+function calcTra(){
+ var a=$('#t-inf').value,b=$('#t-not').value,r=$('#t-res');
+ store('tra',{inf:a,not:b});
+ if(!a||!b){r.className='res';r.innerHTML='<p style="margin:0">Ingrese ambas fechas para ver el resultado.</p>';return}
+ var A=new Date(a),B=new Date(b),h=(B-A)/36e5;
+ if(h<0){r.className='res mal';r.innerHTML='<div class="estado">Revise las fechas</div><p style="margin:4px 0 0">La notificación no puede ser anterior a la infracción.</p>';return}
+ var ok=h<=72,F=feriadosSet(),lim=computar(new Date(B.getFullYear(),B.getMonth(),B.getDate()),3,'t',F).fin;
+ var dd=Math.floor(h/24),hh=Math.floor(h-dd*24),mm=Math.round((h-Math.floor(h))*60);if(mm===60){mm=0;hh++}
+ var tope=new Date(A.getTime()+72*36e5);
+ r.className='res '+(ok?'ok':'mal');
+ r.innerHTML='<div class="estado">'+(ok?'En término':'Extemporáneo')+'</div><div class="big">'+(Math.round(h*10)/10).toLocaleString('es-EC')+' horas</div>'+
+  '<div>'+dd+' día'+(dd===1?'':'s')+', '+hh+' h '+mm+' min entre la infracción y la notificación. Límite: '+largoH(tope)+'.</div>'+
+  '<div class="accion">'+(ok?'Pagar multa':'Impugnar')+'</div>'+
+  '<p style="margin:10px 0 0">'+(ok?'La notificación se hizo dentro de las 72 horas. Salvo que haya argumentos de fondo, corresponde pagar la multa.':'La notificación excedió las 72 horas del art. 179 LOTTTSV: hay base para impugnar por notificación tardía.')+'</p>'+
+  '<p style="margin:6px 0 0"><b>Fecha límite para impugnar:</b> '+largo(lim)+' (3 días hábiles desde la notificación).</p>';
+}
+
+/* ---------- arranque ---------- */
+renderHon();renderPen();renderPla();renderTra();
+show(location.hash.slice(1)||store('tab')||'hon');
+refreshSave();
+})();
+</script><script>if("serviceWorker" in navigator){window.addEventListener("load",function(){navigator.serviceWorker.register("sw.js").catch(function(){})})}</script></body></html>

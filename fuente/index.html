@@ -8,8 +8,8 @@ header{background:var(--carbon);color:#fff;padding:14px 16px 0}
 .iso{width:34px;height:34px;flex:none}
 .wm{font-stretch:118%;font-weight:700;letter-spacing:.06em;font-size:12.5px;line-height:1.15;color:var(--oro)}
 .wm small{display:block;color:var(--oroc);font-weight:500;letter-spacing:.14em;font-size:9.5px;margin-top:2px}
-nav{display:flex;gap:4px;margin-top:12px;overflow-x:auto}
-nav button{flex:1;min-width:0;background:none;border:0;color:#C9C6BA;font:inherit;font-weight:600;font-size:13.5px;padding:10px 6px 11px;border-bottom:3px solid transparent;cursor:pointer;white-space:nowrap}
+nav{display:flex;gap:2px;margin-top:12px;overflow-x:auto;scrollbar-width:none}nav::-webkit-scrollbar{display:none}
+nav button{flex:1 0 auto;min-width:0;background:none;border:0;color:#C9C6BA;font:inherit;font-weight:600;font-size:13.5px;padding:10px 6px 11px;border-bottom:3px solid transparent;cursor:pointer;white-space:nowrap}
 nav button[aria-selected=true]{color:#fff;border-bottom-color:var(--oro)}
 main{max-width:760px;margin:0 auto;padding:14px 14px 40px}
 h2{font-stretch:115%;font-size:18px;margin:6px 0 4px;letter-spacing:.01em}
@@ -63,12 +63,12 @@ details{margin-top:8px}summary{cursor:pointer;font-weight:600;font-size:13.5px;c
 .msg.e{color:var(--mal)}.msg.o{color:var(--ok)}
 footer{max-width:760px;margin:0 auto;padding:0 14px 28px;font-size:11.5px;color:var(--gris)}
 [hidden]{display:none!important}
-</style></head><body><div id="root"></div><script type="application/json" id="data">{"version":1,"anioPensiones":"2026","tablas":{"2026":{"anio":"2026","sbu":482,"acuerdo":"Acuerdo Ministerial MDH-DM-2026-0005-A (29-ene-2026), Ministerio de Desarrollo Humano","descIESS":9.45,"niveles":[{"n":1,"desde":1,"hasta":1.25,"p":[28.12,29.49,39.71,43.13,52.18,54.23]},{"n":2,"desde":1.25,"hasta":3,"p":[34.84,36.96,47.45,49.51,47.45,49.51]},{"n":3,"desde":3,"hasta":4,"p":[38.49,40.83,38.49,40.83,38.49,40.83]},{"n":4,"desde":4,"hasta":6.5,"p":[39.79,42.21,39.79,42.21,39.79,42.21]},{"n":5,"desde":6.5,"hasta":9,"p":[41.14,43.64,41.14,43.64,41.14,43.64]},{"n":6,"desde":9,"hasta":null,"p":[42.53,45.12,42.53,45.12,42.53,45.12]}]}},"feriados":{"2026":[["2026-01-01","Año Nuevo"],["2026-01-02","Descanso decretado (puente de Año Nuevo)"],["2026-02-16","Carnaval"],["2026-02-17","Carnaval"],["2026-04-03","Viernes Santo"],["2026-05-01","Día del Trabajo"],["2026-05-25","Batalla de Pichincha (traslado)"],["2026-08-10","Primer Grito de Independencia"],["2026-10-09","Independencia de Guayaquil"],["2026-11-02","Día de Difuntos"],["2026-11-03","Independencia de Cuenca"],["2026-12-25","Navidad"]],"2027":[["2027-01-01","Año Nuevo"],["2027-02-08","Carnaval"],["2027-02-09","Carnaval"],["2027-03-26","Viernes Santo"],["2027-04-30","Día del Trabajo (traslado)"],["2027-05-24","Batalla de Pichincha"],["2027-08-09","Primer Grito de Independencia (traslado)"],["2027-10-08","Independencia de Guayaquil (traslado)"],["2027-11-01","Día de Difuntos (traslado)"],["2027-11-02","Independencia de Cuenca (traslado)"],["2027-12-25","Navidad"]]},"inhabilesExtra":[],"materias":[{"id":"civ-ord","n":"Civil · procedimiento ordinario","op":900,"modo":"pct","pct":15,"fijo":0},{"id":"civ-sum","n":"Civil · sumario / monitorio","op":600,"modo":"pct","pct":15,"fijo":0},{"id":"fam-ali","n":"Familia · alimentos","op":300,"modo":"fijo","pct":0,"fijo":150},{"id":"fam-div","n":"Familia · divorcio / tenencia / visitas","op":450,"modo":"fijo","pct":0,"fijo":200},{"id":"pen","n":"Penal · defensa o acusación particular","op":1200,"modo":"fijo","pct":0,"fijo":600},{"id":"tra-con","n":"Tránsito · contravención / impugnación","op":120,"modo":"fijo","pct":0,"fijo":80},{"id":"tra-del","n":"Tránsito · delito","op":900,"modo":"fijo","pct":0,"fijo":450},{"id":"lab","n":"Laboral · reclamo o demanda","op":400,"modo":"pct","pct":20,"fijo":0},{"id":"adm","n":"Gestión administrativa (trámites)","op":250,"modo":"fijo","pct":0,"fijo":100},{"id":"fis","n":"Fiscalía (diligencias y trámites)","op":200,"modo":"fijo","pct":0,"fijo":100},{"id":"car","n":"Cartera · recuperación para acreedor","op":200,"modo":"pct","pct":20,"fijo":0},{"id":"deu","n":"Deudas · defensa del deudor","op":300,"modo":"pct","pct":15,"fijo":0},{"id":"iess","n":"IESS · trámites (montepío, aportes, seguros, BIESS)","op":200,"modo":"fijo","pct":0,"fijo":100},{"id":"fis-siaf","n":"Fiscalía · ocultamiento de datos (SIAF)","op":150,"modo":"fijo","pct":0,"fijo":0}],"consulta":{"bajaFija":{"virtual":25,"presencial":30},"base":{"baja":25,"media":35,"alta":45},"tiempo":[["Hasta 30 min",1],["31 a 60 min",1.15],["Más de 60 min",1.3]],"virtual":-20,"presencial":20,"techo":60,"piso":20,"factor":{"civ":1,"fam":1,"pen":1.1,"tra":0.9,"lab":1,"adm":1,"iess":1,"fis":1,"car":1,"pdp":1.15}}}</script><script id="app">
+</style></head><body><div id="root"></div><script type="application/json" id="data">{"version":1,"anioPensiones":"2026","tablas":{"2026":{"anio":"2026","sbu":482,"acuerdo":"Acuerdo Ministerial MDH-DM-2026-0005-A (29-ene-2026), Ministerio de Desarrollo Humano","descIESS":9.45,"niveles":[{"n":1,"desde":1,"hasta":1.25,"p":[28.12,29.49,39.71,43.13,52.18,54.23]},{"n":2,"desde":1.25,"hasta":3,"p":[34.84,36.96,47.45,49.51,47.45,49.51]},{"n":3,"desde":3,"hasta":4,"p":[38.49,40.83,38.49,40.83,38.49,40.83]},{"n":4,"desde":4,"hasta":6.5,"p":[39.79,42.21,39.79,42.21,39.79,42.21]},{"n":5,"desde":6.5,"hasta":9,"p":[41.14,43.64,41.14,43.64,41.14,43.64]},{"n":6,"desde":9,"hasta":null,"p":[42.53,45.12,42.53,45.12,42.53,45.12]}]}},"feriados":{"2026":[["2026-01-01","Año Nuevo"],["2026-01-02","Descanso decretado (puente de Año Nuevo)"],["2026-02-16","Carnaval"],["2026-02-17","Carnaval"],["2026-04-03","Viernes Santo"],["2026-05-01","Día del Trabajo"],["2026-05-25","Batalla de Pichincha (traslado)"],["2026-08-10","Primer Grito de Independencia"],["2026-10-09","Independencia de Guayaquil"],["2026-11-02","Día de Difuntos"],["2026-11-03","Independencia de Cuenca"],["2026-12-25","Navidad"]],"2027":[["2027-01-01","Año Nuevo"],["2027-02-08","Carnaval"],["2027-02-09","Carnaval"],["2027-03-26","Viernes Santo"],["2027-04-30","Día del Trabajo (traslado)"],["2027-05-24","Batalla de Pichincha"],["2027-08-09","Primer Grito de Independencia (traslado)"],["2027-10-08","Independencia de Guayaquil (traslado)"],["2027-11-01","Día de Difuntos (traslado)"],["2027-11-02","Independencia de Cuenca (traslado)"],["2027-12-25","Navidad"]]},"inhabilesExtra":[],"materias":[{"id":"civ-ord","n":"Civil · procedimiento ordinario","op":900,"modo":"pct","pct":15,"fijo":0},{"id":"civ-sum","n":"Civil · sumario / monitorio","op":600,"modo":"pct","pct":15,"fijo":0},{"id":"fam-ali","n":"Familia · alimentos","op":300,"modo":"fijo","pct":0,"fijo":150},{"id":"fam-div","n":"Familia · divorcio / tenencia / visitas","op":450,"modo":"fijo","pct":0,"fijo":200},{"id":"pen","n":"Penal · defensa o acusación particular","op":1200,"modo":"fijo","pct":0,"fijo":600},{"id":"tra-con","n":"Tránsito · contravención / impugnación","op":120,"modo":"fijo","pct":0,"fijo":80},{"id":"tra-del","n":"Tránsito · delito","op":900,"modo":"fijo","pct":0,"fijo":450},{"id":"lab","n":"Laboral · reclamo o demanda","op":400,"modo":"pct","pct":20,"fijo":0},{"id":"adm","n":"Gestión administrativa (trámites)","op":250,"modo":"fijo","pct":0,"fijo":100},{"id":"fis","n":"Fiscalía (diligencias y trámites)","op":200,"modo":"fijo","pct":0,"fijo":100},{"id":"car","n":"Cartera · recuperación para acreedor","op":200,"modo":"pct","pct":20,"fijo":0},{"id":"deu","n":"Deudas · defensa del deudor","op":300,"modo":"pct","pct":15,"fijo":0},{"id":"iess","n":"IESS · trámites (montepío, aportes, seguros, BIESS)","op":200,"modo":"fijo","pct":0,"fijo":100},{"id":"fis-siaf","n":"Fiscalía · ocultamiento de datos (SIAF)","op":150,"modo":"fijo","pct":0,"fijo":0}],"consulta":{"bajaFija":{"virtual":25,"presencial":30},"base":{"baja":25,"media":35,"alta":45},"tiempo":[["Hasta 30 min",1],["31 a 60 min",1.15],["Más de 60 min",1.3]],"virtual":-20,"presencial":20,"techo":60,"piso":20,"factor":{"civ":1,"fam":1,"pen":1.1,"tra":0.9,"lab":1,"adm":1,"iess":1,"fis":1,"car":1,"pdp":1.15}},"catalogo":[{"cod":"CON-01","mat":"CON","n":"Consulta legal – complejidad baja, virtual","desc":"Consulta puntual sin revisión de documentos","unidad":"consulta","valor":25,"iva":true,"fact":"Consulta legal – Consulta legal – complejidad baja, virtual"},{"cod":"CON-02","mat":"CON","n":"Consulta legal – complejidad baja, presencial","desc":"Consulta puntual sin revisión de documentos","unidad":"consulta","valor":30,"iva":true,"fact":"Consulta legal – Consulta legal – complejidad baja, presencial"},{"cod":"CON-03","mat":"CON","n":"Consulta legal – complejidad media","desc":"Consulta con revisión de documentos","unidad":"consulta","valor":35,"iva":true,"fact":"Consulta legal – Consulta legal – complejidad media"},{"cod":"CON-04","mat":"CON","n":"Consulta legal – complejidad alta","desc":"Expediente extenso, varias partes o urgencia (hasta $60)","unidad":"consulta","valor":60,"iva":true,"fact":"Consulta legal – Consulta legal – complejidad alta"},{"cod":"FAM-01","mat":"FAM","n":"Alimentos: fijación, aumento o reducción de pensión","desc":"Demanda, audiencia única y seguimiento hasta resolución","unidad":"servicio","valor":300,"iva":true,"fact":"Honorarios profesionales – Alimentos: fijación, aumento o reducción de pensión"},{"cod":"FAM-02","mat":"FAM","n":"Pensiones atrasadas y apremio","desc":"Liquidación, pedido de apremio y seguimiento","unidad":"servicio","valor":200,"iva":true,"fact":"Honorarios profesionales – Pensiones atrasadas y apremio"},{"cod":"FAM-03","mat":"FAM","n":"Divorcio por mutuo acuerdo","desc":"Trámite notarial o judicial de mutuo acuerdo","unidad":"servicio","valor":350,"iva":true,"fact":"Honorarios profesionales – Divorcio por mutuo acuerdo"},{"cod":"FAM-04","mat":"FAM","n":"Divorcio contencioso","desc":"Demanda, audiencias y sentencia de primera instancia","unidad":"servicio","valor":600,"iva":true,"fact":"Honorarios profesionales – Divorcio contencioso"},{"cod":"FAM-05","mat":"FAM","n":"Tenencia, régimen de visitas o patria potestad","desc":"Demanda o contestación y audiencia","unidad":"servicio","valor":450,"iva":true,"fact":"Honorarios profesionales – Tenencia, régimen de visitas o patria potestad"},{"cod":"FAM-06","mat":"FAM","n":"Unión de hecho: declaración o terminación","desc":"Trámite notarial o judicial","unidad":"servicio","valor":250,"iva":true,"fact":"Honorarios profesionales – Unión de hecho: declaración o terminación"},{"cod":"CIV-01","mat":"CIV","n":"Procedimiento ordinario","desc":"Demanda o contestación hasta sentencia de primera instancia","unidad":"servicio","valor":900,"iva":true,"fact":"Honorarios profesionales – Procedimiento ordinario"},{"cod":"CIV-02","mat":"CIV","n":"Procedimiento sumario","desc":"Demanda o contestación y audiencia única","unidad":"servicio","valor":600,"iva":true,"fact":"Honorarios profesionales – Procedimiento sumario"},{"cod":"CIV-03","mat":"CIV","n":"Procedimiento monitorio","desc":"Demanda de cobro con documento y seguimiento","unidad":"servicio","valor":400,"iva":true,"fact":"Honorarios profesionales – Procedimiento monitorio"},{"cod":"CIV-04","mat":"CIV","n":"Procedimiento ejecutivo","desc":"Cobro de título ejecutivo hasta audiencia","unidad":"servicio","valor":500,"iva":true,"fact":"Honorarios profesionales – Procedimiento ejecutivo"},{"cod":"CIV-05","mat":"CIV","n":"Posesión efectiva","desc":"Trámite notarial e inscripción","unidad":"servicio","valor":200,"iva":true,"fact":"Honorarios profesionales – Posesión efectiva"},{"cod":"CIV-06","mat":"CIV","n":"Elaboración o revisión de contrato","desc":"Redacción o revisión con observaciones","unidad":"servicio","valor":120,"iva":true,"fact":"Honorarios profesionales – Elaboración o revisión de contrato"},{"cod":"CIV-07","mat":"CIV","n":"Inquilinato y desalojo","desc":"Demanda de terminación de arriendo y desalojo","unidad":"servicio","valor":400,"iva":true,"fact":"Honorarios profesionales – Inquilinato y desalojo"},{"cod":"PEN-01","mat":"PEN","n":"Defensa en investigación previa","desc":"Asistencia en versiones, diligencias y escritos","unidad":"etapa","valor":600,"iva":true,"fact":"Honorarios profesionales – Defensa en investigación previa"},{"cod":"PEN-02","mat":"PEN","n":"Defensa en etapa de juicio","desc":"Preparación y audiencia de juicio","unidad":"etapa","valor":800,"iva":true,"fact":"Honorarios profesionales – Defensa en etapa de juicio"},{"cod":"PEN-03","mat":"PEN","n":"Acusación particular","desc":"Presentación y seguimiento de la acusación","unidad":"servicio","valor":700,"iva":true,"fact":"Honorarios profesionales – Acusación particular"},{"cod":"PEN-04","mat":"PEN","n":"Denuncia penal","desc":"Redacción y presentación de la denuncia","unidad":"servicio","valor":150,"iva":true,"fact":"Honorarios profesionales – Denuncia penal"},{"cod":"TRA-01","mat":"TRA","n":"Impugnación de contravención de tránsito","desc":"Escrito de impugnación y audiencia","unidad":"servicio","valor":120,"iva":true,"fact":"Honorarios profesionales – Impugnación de contravención de tránsito"},{"cod":"TRA-02","mat":"TRA","n":"Defensa en delito de tránsito","desc":"Defensa técnica en el proceso","unidad":"servicio","valor":900,"iva":true,"fact":"Honorarios profesionales – Defensa en delito de tránsito"},{"cod":"TRA-03","mat":"TRA","n":"Gestión por accidente de tránsito","desc":"Reclamo de daños, acuerdo o reparación","unidad":"servicio","valor":300,"iva":true,"fact":"Honorarios profesionales – Gestión por accidente de tránsito"},{"cod":"LAB-01","mat":"LAB","n":"Reclamo administrativo laboral","desc":"Denuncia o reclamo ante el Ministerio del Trabajo","unidad":"servicio","valor":250,"iva":true,"fact":"Honorarios profesionales – Reclamo administrativo laboral"},{"cod":"LAB-02","mat":"LAB","n":"Demanda laboral","desc":"Demanda y audiencias hasta sentencia de primera instancia","unidad":"servicio","valor":400,"iva":true,"fact":"Honorarios profesionales – Demanda laboral"},{"cod":"LAB-03","mat":"LAB","n":"Revisión o elaboración de acta de finiquito","desc":"Cálculo y revisión de la liquidación","unidad":"servicio","valor":80,"iva":true,"fact":"Honorarios profesionales – Revisión o elaboración de acta de finiquito"},{"cod":"IESS-01","mat":"IESS","n":"Trámite de montepío","desc":"Solicitud, documentos y seguimiento en el IESS","unidad":"servicio","valor":200,"iva":true,"fact":"Honorarios profesionales – Trámite de montepío"},{"cod":"IESS-02","mat":"IESS","n":"Reclamo de aportes o responsabilidad patronal","desc":"Reclamo administrativo ante el IESS","unidad":"servicio","valor":250,"iva":true,"fact":"Honorarios profesionales – Reclamo de aportes o responsabilidad patronal"},{"cod":"IESS-03","mat":"IESS","n":"Subsidios, riesgos del trabajo, desempleo o cesantía","desc":"Solicitud o reclamo ante el IESS","unidad":"servicio","valor":150,"iva":true,"fact":"Honorarios profesionales – Subsidios, riesgos del trabajo, desempleo o cesantía"},{"cod":"IESS-04","mat":"IESS","n":"Gestión de préstamos BIESS","desc":"Reclamo, refinanciamiento o novación","unidad":"servicio","valor":200,"iva":true,"fact":"Honorarios profesionales – Gestión de préstamos BIESS"},{"cod":"IESS-05","mat":"IESS","n":"Trámite de jubilación","desc":"Solicitud y seguimiento ante el IESS","unidad":"servicio","valor":200,"iva":true,"fact":"Honorarios profesionales – Trámite de jubilación"},{"cod":"FIS-01","mat":"FIS","n":"Ocultamiento de datos en el SIAF","desc":"Solicitud de reserva de datos personales en la Fiscalía","unidad":"servicio","valor":150,"iva":true,"fact":"Honorarios profesionales – Ocultamiento de datos en el SIAF"},{"cod":"FIS-02","mat":"FIS","n":"Revisión de causas en Fiscalía","desc":"Consulta y reporte del estado de la causa","unidad":"servicio","valor":40,"iva":true,"fact":"Honorarios profesionales – Revisión de causas en Fiscalía"},{"cod":"FIS-03","mat":"FIS","n":"Acompañamiento a versión o diligencia","desc":"Asistencia del abogado en la diligencia","unidad":"servicio","valor":120,"iva":true,"fact":"Honorarios profesionales – Acompañamiento a versión o diligencia"},{"cod":"FIS-04","mat":"FIS","n":"Remarcación vehicular","desc":"Trámite y acompañamiento de la diligencia","unidad":"servicio","valor":200,"iva":true,"fact":"Honorarios profesionales – Remarcación vehicular"},{"cod":"ADM-01","mat":"ADM","n":"Recurso de apelación administrativo","desc":"Redacción y presentación del recurso","unidad":"servicio","valor":250,"iva":true,"fact":"Honorarios profesionales – Recurso de apelación administrativo"},{"cod":"ADM-02","mat":"ADM","n":"Petición administrativa y seguimiento","desc":"Petición, insistencia y control de plazos","unidad":"servicio","valor":120,"iva":true,"fact":"Honorarios profesionales – Petición administrativa y seguimiento"},{"cod":"CAR-01","mat":"CAR","n":"Gestión extrajudicial de cobro","desc":"Requerimiento formal y negociación (por deudor)","unidad":"servicio","valor":60,"iva":true,"fact":"Honorarios profesionales – Gestión extrajudicial de cobro"},{"cod":"CAR-02","mat":"CAR","n":"Demanda de cobro","desc":"Monitorio o ejecutivo para el acreedor","unidad":"servicio","valor":400,"iva":true,"fact":"Honorarios profesionales – Demanda de cobro"},{"cod":"DEU-01","mat":"DEU","n":"Reclamo ante entidad financiera o buró","desc":"Reclamo, rectificación de datos y defensa del consumidor","unidad":"servicio","valor":150,"iva":true,"fact":"Honorarios profesionales – Reclamo ante entidad financiera o buró"},{"cod":"DEU-02","mat":"DEU","n":"Defensa del deudor en juicio de cobro","desc":"Contestación, excepciones y audiencia","unidad":"servicio","valor":400,"iva":true,"fact":"Honorarios profesionales – Defensa del deudor en juicio de cobro"},{"cod":"PDP-01","mat":"PDP","n":"Solicitud de derechos LOPDP","desc":"Acceso, rectificación o eliminación de datos","unidad":"servicio","valor":80,"iva":true,"fact":"Honorarios profesionales – Solicitud de derechos LOPDP"},{"cod":"GAS-01","mat":"GAS","n":"Tasas, copias certificadas y notariales","desc":"Se cobra según comprobante","unidad":"reembolso","valor":0,"iva":false,"fact":"Reembolso de gastos – Tasas, copias certificadas y notariales"},{"cod":"GAS-02","mat":"GAS","n":"Honorarios de perito","desc":"Se cobra según comprobante","unidad":"reembolso","valor":0,"iva":false,"fact":"Reembolso de gastos – Honorarios de perito"},{"cod":"GAS-03","mat":"GAS","n":"Citación por prensa o diligencias de terceros","desc":"Se cobra según comprobante","unidad":"reembolso","valor":0,"iva":false,"fact":"Reembolso de gastos – Citación por prensa o diligencias de terceros"}],"prf":{"vigencia":15,"firmaNombre":"Abg. Mariano X. Macías Sánchez","firmaCargo":"Abogado · Matrícula 09-2022-736"}}</script><script id="app">
 (function(){
 "use strict";
 var DATA=JSON.parse(document.getElementById('data').textContent);
 var PWA=!!window.MSC_PWA;
-if(PWA){try{var _s=JSON.parse(localStorage.getItem('msc:data'));if(_s&&_s.version===DATA.version){DATA=_s}}catch(e){}}
+if(PWA){try{var _s=JSON.parse(localStorage.getItem('msc:data'));if(_s&&_s.version===DATA.version){Object.keys(DATA).forEach(function(k){if(!(k in _s))_s[k]=DATA[k]});DATA=_s}}catch(e){}}
 var HEAD='<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>MSC · Calculadoras legales</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&display=swap">';
 var CSS=document.getElementById('css').textContent;
 var APP=document.getElementById('app').textContent;
@@ -106,13 +106,13 @@ function refreshSave(){$$('[data-needs=art]').forEach(function(b){b.disabled=!AR
 
 /* ---------- estructura ---------- */
 var ISO='<svg class="iso" viewBox="0 0 40 40" aria-hidden="true"><path d="M0 0h40v30L30 40H0z" fill="#A09046"/><path d="M9 29V11h4.2l6.8 9.4 6.8-9.4H31v18h-4V17.6l-7 9.4-7-9.4V29z" fill="#fff"/></svg>';
-var TABS=[['hon','Honorarios'],['pen','Pensiones'],['pla','Plazos'],['tra','Tránsito']];
+var TABS=[['hon','Honorarios'],['prf','Proforma'],['cat','Catálogo'],['pen','Pensiones'],['pla','Plazos'],['tra','Tránsito']];
 document.getElementById('root').innerHTML=
  '<header><div class="marca">'+(DATA.logo?'<img src="'+DATA.logo+'" alt="" style="height:38px;width:auto;max-width:160px;display:block">':ISO)+'<div class="wm">MACÍAS SÁNCHEZ CONSULTORES<small>CALCULADORAS LEGALES · USO INTERNO</small></div></div>'+
  '<nav role="tablist">'+TABS.map(function(t){return '<button role="tab" data-t="'+t[0]+'" aria-selected="false">'+t[1]+'</button>'}).join('')+'</nav></header>'+
- '<main><section id="v-hon"></section><section id="v-pen" hidden></section><section id="v-pla" hidden></section><section id="v-tra" hidden></section></main>'+
+ '<main><section id="v-hon"></section><section id="v-prf" hidden></section><section id="v-cat" hidden></section><section id="v-pen" hidden></section><section id="v-pla" hidden></section><section id="v-tra" hidden></section></main>'+
  '<footer>Herramienta de uso interno de Macías Sánchez Consultores. Resultados referenciales: verifique la norma vigente y el caso concreto antes de actuar. Abg. Mariano X. Macías Sánchez · Mat. 09-2022-736.</footer>';
-function show(t){if(!TABS.some(function(x){return x[0]===t}))t='hon';$$('nav button').forEach(function(b){b.setAttribute('aria-selected',b.dataset.t===t)});TABS.forEach(function(x){$('#v-'+x[0]).hidden=x[0]!==t});try{if(location.hash!=='#'+t)history.replaceState(null,'','#'+t)}catch(e){}store('tab',t)}
+function show(t){if(!TABS.some(function(x){return x[0]===t}))t='hon';if(t==='prf'&&document.getElementById('f-cli'))renderPrf();$$('nav button').forEach(function(b){b.setAttribute('aria-selected',b.dataset.t===t)});TABS.forEach(function(x){$('#v-'+x[0]).hidden=x[0]!==t});try{if(location.hash!=='#'+t)history.replaceState(null,'','#'+t)}catch(e){}store('tab',t)}
 $$('nav button').forEach(function(b){b.onclick=function(){show(b.dataset.t)}});
 window.addEventListener('hashchange',function(){show(location.hash.slice(1))});
 
@@ -587,6 +587,320 @@ function generarImg(){
 }
 
 /* =========================================================
+   5. CATÁLOGO DE SERVICIOS
+   ========================================================= */
+var MATS={CON:'Consultas',FAM:'Familia',CIV:'Civil',PEN:'Penal',TRA:'Tránsito',LAB:'Laboral',IESS:'IESS',FIS:'Fiscalía',ADM:'Administrativo',CAR:'Cartera',DEU:'Deudas',PDP:'Protección de datos',GAS:'Gastos reembolsables'};
+var UNID={servicio:'por servicio',etapa:'por etapa',consulta:'por consulta',hora:'por hora',reembolso:'reembolso (sin IVA)'};
+function cat(){return DATA.catalogo||[]}
+function srvByCod(c){return cat().filter(function(s){return s.cod===c})[0]}
+function persistLocal(){if(PWA){try{localStorage.setItem('msc:data',JSON.stringify(DATA))}catch(e){}}}
+var CT={q:'',ed:null};
+function renderCat(){
+ var v=$('#v-cat');
+ v.innerHTML='<h2>Catálogo de servicios</h2><p class="sub">Códigos para la proforma y la factura. Valores sugeridos antes de IVA. <span class="tag">Criterio propio</span></p>'+
+ '<div class="card"><div class="grid"><div class="full"><label for="k-q">Buscar</label><input id="k-q" placeholder="Código, materia o servicio"></div></div>'+
+ '<div class="row" style="margin-top:10px"><button class="btn" id="k-new" type="button">Nuevo servicio</button><button class="btn sec" id="k-csv" type="button">Exportar CSV (Excel)</button><button class="btn sec" id="k-save" type="button" data-needs="art">Guardar catálogo</button></div><div class="msg" id="k-msg"></div></div>'+
+ '<div id="k-form"></div><div id="k-list"></div>'+
+ '<p class="nota">En su sistema de facturación use el <b>código</b> como "código principal" del ítem y la <b>descripción para factura</b> como descripción. Los gastos reembolsables van sin IVA y deben respaldarse con el comprobante del tercero.</p>';
+ $('#k-q').oninput=function(){CT.q=this.value.toLowerCase();listCat()};
+ $('#k-new').onclick=function(){formCat(null)};
+ $('#k-csv').onclick=csvCat;
+ $('#k-save').onclick=function(){guardar($('#k-msg'),'Catálogo guardado.')};
+ refreshSave();listCat();
+}
+function listCat(){
+ var q=CT.q,g={};
+ cat().forEach(function(s,i){if(q&&(s.cod+' '+s.n+' '+(MATS[s.mat]||'')+' '+s.desc).toLowerCase().indexOf(q)<0)return;(g[s.mat]=g[s.mat]||[]).push([s,i])});
+ var keys=Object.keys(MATS).filter(function(k){return g[k]});
+ $('#k-list').innerHTML=keys.length?keys.map(function(k){return '<div class="card"><h3>'+esc(MATS[k])+'</h3>'+g[k].map(function(p){var s=p[0];return '<div style="padding:8px 0;border-bottom:1px solid var(--linea)"><div class="row" style="justify-content:space-between;flex-wrap:nowrap;align-items:flex-start"><div style="min-width:0"><span class="tag v" style="margin-right:6px">'+esc(s.cod)+'</span><b>'+esc(s.n)+'</b><div class="hint" style="margin-top:2px">'+esc(s.desc)+'</div><div class="hint">'+esc(UNID[s.unidad]||s.unidad)+(s.iva?' · IVA 15%':' · sin IVA')+'</div></div><div style="text-align:right;flex:none;padding-left:8px"><div style="font-weight:800">'+(s.unidad==='reembolso'?'según gasto':usd(s.valor))+'</div><button class="btn sec" data-ed="'+p[1]+'" type="button" style="min-height:34px;padding:4px 10px;margin-top:4px;font-size:12.5px">Editar</button></div></div></div>'}).join('')+'</div>'}).join(''):'<p class="hint">No hay servicios que coincidan.</p>';
+ $$('#k-list [data-ed]').forEach(function(b){b.onclick=function(){formCat(+b.dataset.ed)}});
+}
+function nextCod(mat){var n=0;cat().forEach(function(s){if(s.mat===mat){var x=parseInt(s.cod.split('-').pop(),10);if(x>n)n=x}});return mat+'-'+String(n+1).padStart(2,'0')}
+function formCat(i){
+ var s=i==null?{cod:'',mat:'FAM',n:'',desc:'',unidad:'servicio',valor:0,iva:true,fact:''}:cat()[i];
+ var f=$('#k-form');
+ f.innerHTML='<div class="card" style="border-color:var(--oro)"><h3>'+(i==null?'Nuevo servicio':'Editar '+esc(s.cod))+'</h3><div class="grid">'+
+  '<div><label for="k-mat">Materia</label><select id="k-mat">'+Object.keys(MATS).map(function(k){return '<option value="'+k+'"'+(k===s.mat?' selected':'')+'>'+esc(MATS[k])+'</option>'}).join('')+'</select></div>'+
+  '<div><label for="k-cod">Código</label><input id="k-cod" value="'+esc(s.cod)+'"></div>'+
+  '<div class="full"><label for="k-n">Servicio</label><input id="k-n" value="'+esc(s.n)+'"></div>'+
+  '<div class="full"><label for="k-d">Descripción (qué incluye)</label><input id="k-d" value="'+esc(s.desc)+'"></div>'+
+  '<div><label for="k-u">Unidad</label><select id="k-u">'+Object.keys(UNID).map(function(k){return '<option value="'+k+'"'+(k===s.unidad?' selected':'')+'>'+UNID[k]+'</option>'}).join('')+'</select></div>'+
+  '<div><label for="k-v">Valor sugerido (USD, sin IVA)</label><input id="k-v" type="number" inputmode="decimal" step="5" value="'+s.valor+'"></div>'+
+  '<label class="chk full"><input type="checkbox" id="k-iva"'+(s.iva?' checked':'')+'> Grava IVA 15%</label>'+
+  '<div class="full"><label for="k-f">Descripción para factura</label><input id="k-f" value="'+esc(s.fact)+'" placeholder="Se completa sola si la deja vacía"></div>'+
+ '</div><div class="row" style="margin-top:10px"><button class="btn" id="k-ok" type="button">Aplicar</button><button class="btn sec" id="k-x" type="button">Cancelar</button>'+(i!=null?'<button class="btn sec" id="k-del" type="button" style="color:var(--mal);border-color:var(--mal)">Eliminar</button>':'')+'</div><div class="msg" id="k-fm"></div></div>';
+ if(i==null){$('#k-cod').value=nextCod('FAM');$('#k-mat').onchange=function(){$('#k-cod').value=nextCod(this.value);if(this.value==='GAS'){$('#k-u').value='reembolso';$('#k-iva').checked=false}}}
+ $('#k-x').onclick=function(){f.innerHTML=''};
+ if($('#k-del'))$('#k-del').onclick=function(){if($('#k-del').dataset.c){DATA.catalogo.splice(i,1);persistLocal();f.innerHTML='';listCat();$('#k-msg').className='msg';$('#k-msg').textContent='Servicio eliminado. Pulse "Guardar catálogo" para conservar el cambio.'}else{$('#k-del').dataset.c=1;$('#k-del').textContent='Confirmar eliminación'}};
+ $('#k-ok').onclick=function(){
+  var cod=$('#k-cod').value.trim().toUpperCase(),n=$('#k-n').value.trim(),m=$('#k-fm');
+  if(!cod||!n){m.className='msg e';m.textContent='Código y servicio son obligatorios.';return}
+  if(cat().some(function(x,j){return x.cod===cod&&j!==i})){m.className='msg e';m.textContent='Ese código ya existe.';return}
+  var o={cod:cod,mat:$('#k-mat').value,n:n,desc:$('#k-d').value.trim(),unidad:$('#k-u').value,valor:num($('#k-v').value),iva:$('#k-iva').checked,fact:$('#k-f').value.trim()||((($('#k-u').value==='reembolso')?'Reembolso de gastos – ':'Honorarios profesionales – ')+n)};
+  if(i==null)DATA.catalogo.push(o);else DATA.catalogo[i]=o;
+  DATA.catalogo.sort(function(a,b){var ka=Object.keys(MATS).indexOf(a.mat),kb=Object.keys(MATS).indexOf(b.mat);return ka-kb||a.cod.localeCompare(b.cod)});
+  persistLocal();f.innerHTML='';listCat();$('#k-msg').className='msg';$('#k-msg').textContent='Cambio aplicado. Pulse "Guardar catálogo" para conservarlo.';
+ };
+ f.scrollIntoView({behavior:'smooth',block:'start'});
+}
+function csvCat(){
+ var q=function(x){x=String(x==null?'':x);return /[;"\n]/.test(x)?'"'+x.replace(/"/g,'""')+'"':x};
+ var rows=[['Código','Materia','Servicio','Descripción','Unidad','Valor sin IVA','IVA','Descripción para factura']].concat(cat().map(function(s){return [s.cod,MATS[s.mat]||s.mat,s.n,s.desc,UNID[s.unidad]||s.unidad,String(s.valor).replace('.',','),s.iva?'15%':'0%',s.fact]}));
+ var csv='﻿'+rows.map(function(r){return r.map(q).join(';')}).join('\r\n');
+ bajar(new Blob([csv],{type:'text/csv'}),'catalogo-servicios-msc.csv',$('#k-msg'));
+}
+/* descarga o comparte un archivo según el entorno */
+function bajar(blob,fn,m,compartir){
+ var ok=function(t){if(m){m.className='msg o';m.textContent=t}},er=function(t){if(m){m.className='msg e';m.textContent=t}};
+ if(compartir){try{var fl=new File([blob],fn,{type:blob.type});if(navigator.canShare&&navigator.canShare({files:[fl]})){return navigator.share({files:[fl],title:fn}).then(function(){ok('Archivo compartido.')},function(){})}}catch(e){}}
+ if(PWA){var u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download=fn;document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(u)},4000);ok('Archivo descargado: '+fn);return Promise.resolve()}
+ return Promise.resolve(window.claude&&window.claude.use?window.claude.use('downloads'):null).then(function(dl){if(!dl){er('La descarga no está disponible aquí. Use la app instalada.');return}return dl.save({filename:fn,data:blob}).then(function(){ok('Archivo guardado: '+fn)},function(e){er(e&&e.code==='declined'?'Descarga cancelada.':'No se pudo descargar ('+((e&&e.code)||'error')+').')})});
+}
+
+/* =========================================================
+   6. PROFORMA
+   ========================================================= */
+var PF={items:[],pago:'total'};
+function prfNum(peek){var y=String(new Date().getFullYear()),s=store('prfseq')||{};var n=(s[y]||0)+1;if(!peek){s[y]=n;store('prfseq',s)}return 'PRF-'+y+'-'+String(n).padStart(3,'0')}
+function renderPrf(){
+ var v=$('#v-prf'),Q=DATA.cobro||(DATA.cobro={}),P=DATA.prf;
+ v.innerHTML='<h2>Proforma</h2><p class="sub">Cotización con servicios del catálogo, forma de pago, cuentas y firma. Exporta PDF y Word, y se comparte por WhatsApp o correo.</p>'+
+ '<div class="card"><h3>1 · Cliente</h3><div class="grid">'+
+  '<div class="full"><label for="f-cli">Nombre o razón social</label><input id="f-cli" autocomplete="off"></div>'+
+  '<div><label for="f-ced">Cédula o RUC</label><input id="f-ced" inputmode="numeric"></div><div><label for="f-tel">Teléfono</label><input id="f-tel" inputmode="tel"></div>'+
+  '<div class="full"><label for="f-mail">Correo</label><input id="f-mail" type="email"></div>'+
+  '<label class="chk full"><input type="checkbox" id="f-age"> Es agente de retención (empresa o contribuyente especial)</label>'+
+ '</div></div>'+
+ '<div class="card"><h3>2 · Servicios</h3><div class="grid"><div class="full"><label for="f-add">Agregar del catálogo</label><select id="f-add"><option value="">Elegir servicio…</option>'+Object.keys(MATS).map(function(k){var l=cat().filter(function(s){return s.mat===k});return l.length?'<optgroup label="'+esc(MATS[k])+'">'+l.map(function(s){return '<option value="'+esc(s.cod)+'">'+esc(s.cod+' · '+s.n)+'</option>'}).join('')+'</optgroup>':''}).join('')+'</select></div></div>'+
+  '<div id="f-items" style="margin-top:8px"></div><button class="btn sec" id="f-libre" type="button" style="margin-top:8px">Agregar ítem libre</button></div>'+
+ '<div class="card"><h3>3 · Detalle del trabajo</h3><div class="grid">'+
+  '<div class="full"><label for="f-det">Alcance y actividades incluidas</label><textarea id="f-det" rows="4" style="width:100%;font:inherit;font-size:14px;padding:10px;border:1px solid #CFCABA;border-radius:8px" placeholder="Ej.: redacción y presentación de la demanda, comparecencia a audiencia única, seguimiento hasta sentencia de primera instancia."></textarea></div>'+
+  '<div><label for="f-dur">Duración estimada</label><input id="f-dur" placeholder="Ej.: 3 a 6 meses"></div><div><label for="f-vig">Vigencia (días)</label><input id="f-vig" type="number" inputmode="numeric" value="'+(P.vigencia||15)+'"></div>'+
+  '<div class="full"><label for="f-exc">No incluye</label><input id="f-exc" placeholder="Ej.: recursos de casación, peritajes, tasas y copias"></div>'+
+ '</div></div>'+
+ '<div class="card"><h3>4 · Forma de pago</h3><div class="seg" id="f-pago"><button type="button" data-p="total">Pago total (−10%)</button><button type="button" data-p="cuotas">Cuotas</button><button type="button" data-p="etapas">Por etapas</button></div>'+
+  '<div id="f-pdet" style="margin-top:10px"></div><p class="hint">El 10% por pago total se aplica solo a honorarios, no a gastos reembolsables.</p></div>'+
+ '<div class="res" id="f-res"></div>'+
+ '<div class="card"><h3>5 · Cuentas y firma</h3><div class="grid">'+
+  '<div class="full"><label for="f-cta">Cuentas bancarias</label><textarea id="f-cta" rows="3" style="width:100%;font:inherit;font-size:14px;padding:10px;border:1px solid #CFCABA;border-radius:8px" placeholder="Banco · tipo de cuenta · número · titular · cédula"></textarea></div>'+
+  '<div class="full"><label for="f-fn">Firma de responsabilidad</label><input id="f-fn" value="'+esc(P.firmaNombre)+'"></div>'+
+  '<div class="full"><label for="f-fc">Cargo / matrícula</label><input id="f-fc" value="'+esc(P.firmaCargo)+'"></div>'+
+  '<div class="full"><label for="f-fimg">Imagen de su firma (opcional, PNG con fondo transparente)</label><input id="f-fimg" type="file" accept="image/png,image/jpeg"></div>'+
+ '</div><div class="row" style="margin-top:8px"><button class="btn sec" id="f-sv" type="button" data-needs="art">Guardar cuentas y firma</button></div><div class="msg" id="f-svm"></div></div>'+
+ '<div class="card"><h3>6 · Generar y enviar</h3><p class="hint" style="margin-top:0">Número: <b id="f-num"></b> <span id="f-numst"></span></p>'+
+  '<div class="row"><button class="btn" id="f-pdf" type="button">PDF</button><button class="btn" id="f-doc" type="button">Word</button><button class="btn sec" id="f-wa" type="button">Mensaje WhatsApp</button><button class="btn sec" id="f-mail2" type="button">Correo</button></div>'+
+  '<div class="msg" id="f-msg"></div><div id="f-prev"></div><div class="row" style="margin-top:10px"><button class="btn sec" id="f-new" type="button">Nueva proforma</button></div></div>'+
+ '<div class="card"><h3>Proformas emitidas en este dispositivo</h3><div id="f-hist"></div></div>';
+ $('#f-cta').value=Q.cuentas||'';
+ var st=store('prf')||{};PF.num=st.num||null;PF.items=st.items||[];PF.pago=st.pago||'total';PF.cuotas=st.cuotas||3;PF.etapas=st.etapas||[['Firma del contrato / inicio',50],['Audiencia',30],['Sentencia o cierre',20]];
+ ['cli','ced','tel','mail','det','dur','exc'].forEach(function(k){if(st[k])$('#f-'+k).value=st[k]});if(st.age)$('#f-age').checked=true;
+ $('#f-add').onchange=function(){var s=srvByCod(this.value);if(s){PF.items.push({cod:s.cod,n:s.n,fact:s.fact,cant:1,valor:s.valor,iva:s.iva,reem:s.unidad==='reembolso'});this.value='';calcPrf()}};
+ $('#f-libre').onclick=function(){PF.items.push({cod:'',n:'Servicio',fact:'',cant:1,valor:0,iva:true,reem:false});calcPrf()};
+ $$('#f-pago button').forEach(function(b){b.onclick=function(){PF.pago=b.dataset.p;calcPrf()}});
+ $$('#v-prf input:not([type=file]),#v-prf textarea').forEach(function(i){i.addEventListener('input',function(){if(!i.closest('#f-items')&&!i.closest('#f-pdet'))calcPrf(true)})});
+ $('#f-sv').onclick=function(){Q.cuentas=$('#f-cta').value.trim();P.firmaNombre=$('#f-fn').value.trim();P.firmaCargo=$('#f-fc').value.trim();P.vigencia=num($('#f-vig').value)||15;var f=$('#f-fimg').files[0];var go=function(){guardar($('#f-svm'),'Cuentas y firma guardadas.')};if(f){if(f.size>400000){$('#f-svm').className='msg e';$('#f-svm').textContent='La imagen de la firma pesa más de 400 KB.';return}var r=new FileReader();r.onload=function(){DATA.firma=r.result;go()};r.readAsDataURL(f)}else go()};
+ $('#f-pdf').onclick=function(){exportPrf('pdf')};$('#f-doc').onclick=function(){exportPrf('docx')};
+ $('#f-wa').onclick=function(){var t=textoPrf(),l=document.createElement('a');l.href='https://wa.me/'+telWa($('#f-tel').value)+'?text='+encodeURIComponent(t);l.target='_blank';l.rel='noopener';document.body.appendChild(l);l.click();l.remove()};
+ $('#f-mail2').onclick=function(){var m=prfModel(true);var l=document.createElement('a');l.href='mailto:'+encodeURIComponent($('#f-mail').value.trim())+'?subject='+encodeURIComponent('Proforma de servicios legales – Macías Sánchez Consultores')+'&body='+encodeURIComponent(textoPrf());document.body.appendChild(l);l.click();l.remove();$('#f-msg').className='msg';$('#f-msg').textContent='Si su correo no se abrió, copie el texto desde "Mensaje WhatsApp". Adjunte el PDF generado.'};
+ $('#f-new').onclick=function(){if(!$('#f-new').dataset.c&&(PF.items.length||$('#f-cli').value)){$('#f-new').dataset.c=1;$('#f-new').textContent='Confirmar: borrar datos y empezar otra';return}store('prf',{pago:'total'});renderPrf()};
+ refreshSave();calcPrf();histPrf();
+}
+function telWa(t){t=String(t||'').replace(/\D/g,'');if(t.length===10&&t[0]==='0')t='593'+t.slice(1);else if(t.length===9)t='593'+t;return t}
+function prfModel(peek){
+ var age=$('#f-age').checked,ivaP=15;
+ var hon=0,reem=0,ivaB=0;
+ PF.items.forEach(function(it){var t=r2(it.cant*it.valor);if(it.reem)reem+=t;else{hon+=t;if(it.iva)ivaB+=t}});
+ var dPct=PF.pago==='total'?10:0,desc=r2(hon*dPct/100),ivaBase=r2(ivaB*(1-dPct/100)),base=r2(hon-desc),iva=r2(ivaBase*ivaP/100),total=r2(base+iva+reem);
+ var rir=age?r2(base*0.10):0,riva=age?r2(iva):0;
+ var plan=[];
+ if(PF.pago==='total')plan=[['Pago único al firmar el contrato',total]];
+ else if(PF.pago==='cuotas'){var n=PF.cuotas,c=r2(total/n);for(var i=0;i<n;i++)plan.push([['Primera cuota (anticipo) – al firmar','Segunda cuota – a los 30 días','Tercera cuota – a los 60 días'][i],i===n-1?r2(total-c*(n-1)):c])}
+ else{var acc=0,sum=PF.etapas.reduce(function(s,e){return s+num(e[1])},0)||100;PF.etapas.forEach(function(e,i){var v=i===PF.etapas.length-1?r2(total-acc):r2(total*num(e[1])/sum);acc+=v;plan.push([e[0]+' ('+pct(num(e[1]))+')',v])})}
+ return {num:PF.num||prfNum(true),fecha:new Date(),cli:$('#f-cli').value.trim(),ced:$('#f-ced').value.trim(),tel:$('#f-tel').value.trim(),mail:$('#f-mail').value.trim(),age:age,
+  items:PF.items.map(function(it){return {cod:it.cod,n:it.fact||it.n,cant:it.cant,valor:it.valor,tot:r2(it.cant*it.valor),iva:it.iva&&!it.reem,reem:it.reem}}),
+  hon:r2(hon),reem:r2(reem),dPct:dPct,desc:desc,base:base,iva:iva,total:total,rir:rir,riva:riva,neto:r2(total-rir-riva),plan:plan,pago:PF.pago,
+  det:$('#f-det').value.trim(),dur:$('#f-dur').value.trim(),exc:$('#f-exc').value.trim(),vig:num($('#f-vig').value)||15,cuentas:$('#f-cta').value.trim(),
+  fn:$('#f-fn').value.trim(),fc:$('#f-fc').value.trim()};
+}
+function calcPrf(soft){
+ $$('#f-pago button').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.p===PF.pago)});
+ if(!soft){
+  $('#f-items').innerHTML=PF.items.length?PF.items.map(function(it,i){return '<div style="border:1px solid var(--linea);border-radius:8px;padding:8px;margin-bottom:8px"><div class="row" style="justify-content:space-between;flex-wrap:nowrap"><b style="font-size:13.5px">'+(it.cod?'<span class="tag v">'+esc(it.cod)+'</span> ':'')+(it.reem?'<span class="tag">reembolso</span>':'')+'</b><button type="button" data-rm="'+i+'" class="btn sec" style="min-height:30px;padding:2px 10px;font-size:12px">Quitar</button></div>'+
+   '<input data-k="n" data-i="'+i+'" value="'+esc(it.fact||it.n)+'" style="margin-top:6px;font-size:14px">'+
+   '<div class="grid3" style="margin-top:6px"><div><label>Cantidad</label><input data-k="cant" data-i="'+i+'" type="number" inputmode="decimal" value="'+it.cant+'"></div><div><label>Valor unit.</label><input data-k="valor" data-i="'+i+'" type="number" inputmode="decimal" value="'+it.valor+'"></div><div><label>Subtotal</label><input disabled value="'+usd(r2(it.cant*it.valor))+'"></div></div></div>'}).join(''):'<p class="hint">Agregue al menos un servicio.</p>';
+  $$('#f-items [data-rm]').forEach(function(b){b.onclick=function(){PF.items.splice(+b.dataset.rm,1);calcPrf()}});
+  $$('#f-items input[data-k]').forEach(function(inp){inp.oninput=function(){var it=PF.items[+inp.dataset.i];if(inp.dataset.k==='n'){it.fact=inp.value}else{it[inp.dataset.k]=num(inp.value);var sub=inp.closest('.grid3').querySelector('input[disabled]');sub.value=usd(r2(it.cant*it.valor))}calcPrf(true)}});
+  var d=$('#f-pdet');
+  if(PF.pago==='cuotas')d.innerHTML='<label for="f-ncu">Número de cuotas (máximo 3)</label><select id="f-ncu"><option value="2"'+(PF.cuotas===2?' selected':'')+'>2</option><option value="3"'+(PF.cuotas===3?' selected':'')+'>3</option></select>';
+  else if(PF.pago==='etapas')d.innerHTML=PF.etapas.map(function(e,i){return '<div class="grid" style="grid-template-columns:1fr 90px;margin-bottom:6px"><input data-e="0" data-i="'+i+'" value="'+esc(e[0])+'"><input data-e="1" data-i="'+i+'" type="number" inputmode="decimal" value="'+e[1]+'"></div>'}).join('')+'<p class="hint">Etapa y % del total. Máximo 3 etapas.</p>';
+  else d.innerHTML='';
+  if($('#f-ncu'))$('#f-ncu').onchange=function(){PF.cuotas=+this.value;calcPrf(true)};
+  $$('#f-pdet [data-e]').forEach(function(inp){inp.oninput=function(){PF.etapas[+inp.dataset.i][+inp.dataset.e]=inp.dataset.e==='1'?num(inp.value):inp.value;calcPrf(true)}});
+ }
+ var m=prfModel(true);
+ $('#f-num').textContent=m.num;
+ var sumE=PF.pago==='etapas'?PF.etapas.reduce(function(s,e){return s+num(e[1])},0):100;
+ $('#f-res').className='res ok';
+ $('#f-res').innerHTML='<div class="estado" style="color:var(--olivo)">Total de la proforma</div><div class="big">'+usd(m.total)+'</div>'+
+  '<table style="margin-top:8px"><tbody><tr><td>Honorarios</td><td>'+usd(m.hon)+'</td></tr>'+(m.desc?'<tr><td>(−) Descuento pago total 10%</td><td>'+usd(-m.desc)+'</td></tr>':'')+
+  '<tr class="hi"><td>Subtotal honorarios</td><td>'+usd(m.base)+'</td></tr><tr><td>IVA 15%</td><td>'+usd(m.iva)+'</td></tr>'+(m.reem?'<tr><td>Gastos reembolsables (sin IVA)</td><td>'+usd(m.reem)+'</td></tr>':'')+
+  '<tr class="tot"><td>Total</td><td>'+usd(m.total)+'</td></tr>'+(m.age?'<tr><td>(−) Retención IR 10% (estimada)</td><td>'+usd(-m.rir)+'</td></tr><tr><td>(−) Retención IVA 100% (estimada)</td><td>'+usd(-m.riva)+'</td></tr><tr class="tot"><td>Valor neto a recibir</td><td>'+usd(m.neto)+'</td></tr>':'')+'</tbody></table>'+
+  '<table style="margin-top:8px"><thead><tr><th>Plan de pago</th><th>Valor</th></tr></thead><tbody>'+m.plan.map(function(p){return '<tr><td>'+esc(p[0])+'</td><td>'+usd(p[1])+'</td></tr>'}).join('')+'</tbody></table>'+
+  (PF.pago==='etapas'&&Math.abs(sumE-100)>0.01?'<p class="hint" style="color:var(--mal)">Los % de las etapas suman '+pct(sumE)+'; se reparten en proporción.</p>':'');
+ $('#f-numst').textContent=PF.num?'(asignado: PDF y Word usan el mismo número)':'(se asigna al generar)';
+ store('prf',{num:PF.num,items:PF.items,pago:PF.pago,cuotas:PF.cuotas,etapas:PF.etapas,cli:$('#f-cli').value,ced:$('#f-ced').value,tel:$('#f-tel').value,mail:$('#f-mail').value,det:$('#f-det').value,dur:$('#f-dur').value,exc:$('#f-exc').value,age:$('#f-age').checked});
+}
+function textoPrf(){
+ var m=prfModel(true);
+ return '*MACÍAS SÁNCHEZ CONSULTORES*\nProforma '+m.num+'\n\nEstimado/a '+(m.cli||'cliente')+':\nLe envío la proforma de servicios legales:\n\n'+
+  m.items.map(function(it){return '• '+it.n+(it.cant!==1?' (x'+it.cant+')':'')+': '+usd(it.tot)}).join('\n')+
+  '\n\n'+(m.desc?'Descuento por pago total (10%): '+usd(-m.desc)+'\n':'')+'Subtotal honorarios: '+usd(m.base)+'\nIVA 15%: '+usd(m.iva)+'\n'+(m.reem?'Gastos reembolsables: '+usd(m.reem)+'\n':'')+'*Total: '+usd(m.total)+'*\n\n'+
+  '*Forma de pago*\n'+m.plan.map(function(p){return '• '+p[0]+': '+usd(p[1])}).join('\n')+
+  (m.cuentas?'\n\n*Cuentas*\n'+m.cuentas:'')+'\n\nVigencia: '+m.vig+' días. '+(m.dur?'Duración estimada: '+m.dur+'. ':'')+'Adjunto el documento en PDF.\n\n'+m.fn+'\n'+m.fc;
+}
+function exportPrf(fmt){
+ var msg=$('#f-msg');
+ if(!PF.items.length){msg.className='msg e';msg.textContent='Agregue al menos un servicio.';return}
+ if(!$('#f-cli').value.trim()){msg.className='msg e';msg.textContent='Indique el nombre del cliente.';return}
+ var m=prfModel(false);if(!PF.num){PF.num=prfNum(false)}m.num=PF.num;
+ var h=(store('prfhist')||[]).filter(function(x){return x.num!==m.num});h.unshift({num:m.num,f:iso(m.fecha),cli:m.cli,tot:m.total});store('prfhist',h.slice(0,50));histPrf();$('#f-num').textContent=m.num;calcPrf(true);
+ msg.className='msg';msg.textContent='Generando '+(fmt==='pdf'?'PDF':'Word')+'…';
+ var fn='Proforma-'+m.num+'-'+(m.cli||'cliente').replace(/[^\wÁÉÍÓÚÑáéíóúñ ]/g,'').trim().replace(/\s+/g,'_').slice(0,40)+'.'+fmt;
+ $('#f-prev').innerHTML='';
+ (fmt==='pdf'?pdfPrf(m):docxPrf(m)).then(function(blob){
+  if(fmt==='pdf'){var u=URL.createObjectURL(blob);$('#f-prev').innerHTML='<p class="hint">Vista previa de la primera página:</p><img id="f-pimg" style="width:100%;border:1px solid var(--linea);border-radius:6px" alt="">';if(m._prev)$('#f-pimg').src=m._prev}
+  var row=document.createElement('div');row.className='row';row.style.marginTop='8px';
+  row.innerHTML='<button class="btn" type="button">Compartir '+fmt.toUpperCase()+'</button><button class="btn sec" type="button">Descargar</button>';
+  $('#f-prev').appendChild(row);
+  row.children[0].onclick=function(){bajar(blob,fn,msg,true)};row.children[1].onclick=function(){bajar(blob,fn,msg,false)};
+  msg.className='msg o';msg.textContent=fn+' listo. Use "Compartir" para enviarlo por WhatsApp o correo.';
+ }).catch(function(e){msg.className='msg e';msg.textContent='No se pudo generar el archivo: '+(e&&e.message||e)});
+}
+function histPrf(){var h=store('prfhist')||[];$('#f-hist').innerHTML=h.length?'<table><thead><tr><th>Número</th><th>Fecha</th><th>Total</th></tr></thead><tbody>'+h.map(function(x){return '<tr><td>'+esc(x.num)+'<div class="hint" style="margin:0">'+esc(x.cli)+'</div></td><td>'+esc(x.f)+'</td><td>'+usd(x.tot)+'</td></tr>'}).join('')+'</tbody></table>':'<p class="hint">Aún no ha emitido proformas en este dispositivo.</p>'}
+
+/* ---------- imágenes de marca para documentos ---------- */
+function imgFrom(src){return new Promise(function(res){if(!src)return res(null);var i=new Image();i.onload=function(){res(i)};i.onerror=function(){res(null)};i.src=src})}
+function logoSrc(){return DATA.logo||('data:image/svg+xml;charset=utf-8,'+encodeURIComponent(ISO.replace('class="iso"','xmlns="http://www.w3.org/2000/svg" width="240" height="240"')))}
+function pngBytes(img,w,h){var c=document.createElement('canvas');c.width=w;c.height=h;c.getContext('2d').drawImage(img,0,0,w,h);return b64bytes(c.toDataURL('image/png').split(',')[1])}
+function b64bytes(b){var s=atob(b),u=new Uint8Array(s.length);for(var i=0;i<s.length;i++)u[i]=s.charCodeAt(i);return u}
+
+/* ---------- PDF (páginas A4 dibujadas en canvas, JPEG embebido) ---------- */
+function pdfPrf(m){
+ var FF="'Archivo',system-ui,sans-serif",W=1654,H=2339,M=130,pages=[],x,c,y;
+ function nueva(){c=document.createElement('canvas');c.width=W;c.height=H;x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,W,H);pages.push(c);y=M;pie()}
+ function pie(){x.fillStyle='#A09046';x.fillRect(0,H-70,W,70);x.fillStyle='#14181E';x.font='600 24px '+FF;var t='Macías Sánchez Consultores · 0979151014 · msconsultores.ec@gmail.com · Guayaquil, Ecuador';x.fillText(t,(W-x.measureText(t).width)/2,H-27)}
+ function need(h){if(y+h>H-140){nueva();y=M}}
+ function wrap(t,max,font){x.font=font;var out=[];String(t).split('\n').forEach(function(p){var w=p.split(' '),l='';w.forEach(function(s){var tt=l?l+' '+s:s;if(x.measureText(tt).width>max&&l){out.push(l);l=s}else l=tt});out.push(l)});return out}
+ function txt(t,font,col,max,lh){var L=wrap(t,max||W-2*M,font);L.forEach(function(l){need(lh);x.font=font;x.fillStyle=col||'#14181E';y+=lh;x.fillText(l,M,y)});}
+ function titulo(t){need(100);y+=56;x.fillStyle='#6E6230';x.font='700 30px '+FF;x.fillText(t.toUpperCase(),M,y);y+=14;x.fillStyle='#E3DFD0';x.fillRect(M,y,W-2*M,3);y+=10}
+ function filaR(a,b,bold,bg){need(46);if(bg){x.fillStyle=bg;x.fillRect(M,y+4,W-2*M,44)}x.fillStyle='#14181E';x.font=(bold?'700 ':'500 ')+'29px '+FF;y+=38;x.fillText(a,M+14,y);x.fillText(b,W-M-14-x.measureText(b).width,y);y+=12}
+ return Promise.all([imgFrom(logoSrc()),imgFrom(DATA.firma),(document.fonts&&document.fonts.ready)||0]).then(function(r){
+  var lg=r[0],fi=r[1];nueva();
+  x.fillStyle='#14181E';x.fillRect(0,0,W,250);x.fillStyle='#A09046';x.fillRect(0,250,W,10);
+  var lw=0;if(lg){var lh=150;lw=Math.min(lh*lg.width/lg.height,700);x.drawImage(lg,M,50,lw,lh)}
+  if(!DATA.logo){x.fillStyle='#A09046';x.font='800 50px '+FF;x.fillText('MACÍAS SÁNCHEZ CONSULTORES',M+lw+36,125);x.fillStyle='#C9BC82';x.font='500 30px '+FF;x.fillText('Asesoría legal · Protección de datos',M+lw+36,175)}
+  y=360;x.fillStyle='#14181E';x.font='800 64px '+FF;x.fillText('PROFORMA',M,y);
+  x.font='700 34px '+FF;var nn=m.num;x.fillText(nn,W-M-x.measureText(nn).width,y);
+  y+=50;x.font='500 28px '+FF;x.fillStyle='#5B6068';var fe='Guayaquil, '+largo(m.fecha)+' · Vigencia: '+m.vig+' días';x.fillText(fe,M,y);y+=20;
+  titulo('Cliente');txt(m.cli,'700 34px '+FF,'#14181E',null,46);var dd=[m.ced&&('Cédula/RUC: '+m.ced),m.tel&&('Teléfono: '+m.tel),m.mail&&('Correo: '+m.mail)].filter(Boolean).join('   ·   ');if(dd)txt(dd,'500 28px '+FF,'#3A3F47',null,42);
+  titulo('Servicios');
+  need(60);x.fillStyle='#14181E';x.fillRect(M,y+6,W-2*M,54);x.fillStyle='#fff';x.font='700 26px '+FF;y+=44;x.fillText('CÓD.',M+14,y);x.fillText('DESCRIPCIÓN',M+190,y);var hdr=['CANT.','V. UNIT.','TOTAL'],cx=[W-M-560,W-M-370,W-M-14];hdr.forEach(function(h,i){x.fillText(h,cx[i]-x.measureText(h).width,y)});y+=16;
+  m.items.forEach(function(it,i){var L=wrap(it.n+(it.reem?' (reembolso, sin IVA)':''),W-2*M-190-600,'500 28px '+FF);need(L.length*38+26);if(i%2){x.fillStyle='#F7F5EE';x.fillRect(M,y,W-2*M,L.length*38+24)}x.fillStyle='#6E6230';x.font='700 24px '+FF;x.fillText(it.cod||'—',M+14,y+40);x.fillStyle='#14181E';x.font='500 28px '+FF;L.forEach(function(l,j){x.fillText(l,M+190,y+40+j*38)});
+   [String(it.cant).replace('.',','),usd(it.valor),usd(it.tot)].forEach(function(v,k){x.fillText(v,cx[k]-x.measureText(v).width,y+40)});y+=L.length*38+24});
+  y+=10;filaR('Honorarios',usd(m.hon));if(m.desc)filaR('(−) Descuento por pago total (10%)',usd(-m.desc));filaR('Subtotal honorarios',usd(m.base),true,'#FBF9F1');filaR('IVA 15%',usd(m.iva));if(m.reem)filaR('Gastos reembolsables (sin IVA)',usd(m.reem));
+  need(70);x.fillStyle='#14181E';x.fillRect(M,y+8,W-2*M,64);x.fillStyle='#fff';x.font='800 36px '+FF;y+=54;x.fillText('TOTAL',M+14,y);var tv=usd(m.total);x.fillText(tv,W-M-14-x.measureText(tv).width,y);y+=24;
+  if(m.age){filaR('(−) Retención IR 10% estimada',usd(-m.rir));filaR('(−) Retención IVA estimada',usd(-m.riva));filaR('Valor neto a recibir',usd(m.neto),true)}
+  if(m.det){titulo('Detalle del trabajo');txt(m.det,'500 28px '+FF,'#14181E',null,40)}
+  if(m.dur||m.exc){titulo('Condiciones');if(m.dur)txt('Duración estimada: '+m.dur,'500 28px '+FF,'#14181E',null,40);if(m.exc)txt('No incluye: '+m.exc,'500 28px '+FF,'#14181E',null,40);txt('Los gastos judiciales, notariales y de terceros se reembolsan contra comprobante.','500 26px '+FF,'#5B6068',null,38)}
+  titulo('Forma de pago');m.plan.forEach(function(p){filaR(p[0],usd(p[1]))});
+  need((m.cuentas?100+wrap(m.cuentas,W-2*M,'500 28px '+FF).length*40:0)+215);
+  if(m.cuentas){titulo('Cuentas para transferencia o depósito');txt(m.cuentas,'500 28px '+FF,'#14181E',null,40)}
+  need(215);y+=80;if(fi){var fh=120,fw=Math.min(fh*fi.width/fi.height,480);x.drawImage(fi,M,y-fh+10,fw,fh)}
+  x.fillStyle='#14181E';x.fillRect(M,y+20,560,3);x.font='700 30px '+FF;x.fillText(m.fn,M,y+66);x.font='500 26px '+FF;x.fillStyle='#5B6068';x.fillText(m.fc,M,y+100);x.fillText('Firma de responsabilidad',M,y+134);
+  m._prev=pages[0].toDataURL('image/jpeg',0.6);
+  return buildPdf(pages.map(function(p){return b64bytes(p.toDataURL('image/jpeg',0.9).split(',')[1])}),W,H);
+ });
+}
+function buildPdf(jpgs,W,H){
+ var enc=new TextEncoder(),parts=[],off=0,xref=[];
+ function add(b){if(typeof b==='string')b=enc.encode(b);parts.push(b);off+=b.length}
+ function obj(n,body){xref[n]=off;add(n+' 0 obj\n');body.forEach(add);add('\nendobj\n')}
+ add('%PDF-1.4\n%\xE2\xE3\xCF\xD3\n');
+ var n=jpgs.length,kids=[];for(var i=0;i<n;i++)kids.push((3+i*3)+' 0 R');
+ obj(1,['<< /Type /Catalog /Pages 2 0 R >>']);
+ obj(2,['<< /Type /Pages /Count '+n+' /Kids ['+kids.join(' ')+'] >>']);
+ jpgs.forEach(function(j,i){var p=3+i*3,im=p+1,ct=p+2,cs='q 595.28 0 0 841.89 0 0 cm /Im0 Do Q';
+  obj(p,['<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595.28 841.89] /Resources << /XObject << /Im0 '+im+' 0 R >> >> /Contents '+ct+' 0 R >>']);
+  obj(im,['<< /Type /XObject /Subtype /Image /Width '+W+' /Height '+H+' /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length '+j.length+' >>\nstream\n',j,'\nendstream']);
+  obj(ct,['<< /Length '+cs.length+' >>\nstream\n'+cs+'\nendstream'])});
+ var tot=3+n*3,xo=off;add('xref\n0 '+tot+'\n0000000000 65535 f \n');for(var k=1;k<tot;k++)add(String(xref[k]).padStart(10,'0')+' 00000 n \n');
+ add('trailer\n<< /Size '+tot+' /Root 1 0 R >>\nstartxref\n'+xo+'\n%%EOF');
+ return new Blob(parts,{type:'application/pdf'});
+}
+
+/* ---------- Word (.docx escrito a mano, sin librerías) ---------- */
+function xe(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function docxPrf(m){
+ return Promise.all([imgFrom(logoSrc()),imgFrom(DATA.firma)]).then(function(r){
+  var lg=r[0],fi=r[1],media=[],rels=[];
+  function addImg(img,name,maxW,maxH){var ratio=img.width/img.height,w=maxW,h=w/ratio;if(h>maxH){h=maxH;w=h*ratio}var pw=Math.round(w*2),ph=Math.round(h*2);media.push(['word/media/'+name,pngBytes(img,pw,ph)]);var id='rId'+(10+rels.length);rels.push('<Relationship Id="'+id+'" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/image" Target="media/'+name+'"/>');
+   var cx=Math.round(w*9525),cy=Math.round(h*9525),pid=rels.length;
+   return '<w:r><w:drawing><wp:inline distT="0" distB="0" distL="0" distR="0"><wp:extent cx="'+cx+'" cy="'+cy+'"/><wp:docPr id="'+pid+'" name="'+name+'"/><a:graphic xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main"><a:graphicData uri="http://schemas.openxmlformats.org/drawingml/2006/picture"><pic:pic xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture"><pic:nvPicPr><pic:cNvPr id="'+pid+'" name="'+name+'"/><pic:cNvPicPr/></pic:nvPicPr><pic:blipFill><a:blip r:embed="'+id+'"/><a:stretch><a:fillRect/></a:stretch></pic:blipFill><pic:spPr><a:xfrm><a:off x="0" y="0"/><a:ext cx="'+cx+'" cy="'+cy+'"/></a:xfrm><a:prstGeom prst="rect"><a:avLst/></a:prstGeom></pic:spPr></pic:pic></a:graphicData></a:graphic></wp:inline></w:drawing></w:r>'}
+  function run(t,o){o=o||{};return '<w:r><w:rPr><w:rFonts w:ascii="Archivo" w:hAnsi="Archivo" w:cs="Arial"/>'+(o.b?'<w:b/>':'')+(o.i?'<w:i/>':'')+'<w:color w:val="'+(o.c||'14181E')+'"/><w:sz w:val="'+(o.sz||21)+'"/></w:rPr><w:t xml:space="preserve">'+xe(t)+'</w:t></w:r>'}
+  function p(t,o){o=o||{};var rs=String(t).split('\n').map(function(l,i){return (i?'<w:r><w:br/></w:r>':'')+run(l,o)}).join('');return '<w:p><w:pPr><w:spacing w:before="'+(o.before||0)+'" w:after="'+(o.after==null?80:o.after)+'"/>'+(o.jc?'<w:jc w:val="'+o.jc+'"/>':'')+(o.shd?'<w:shd w:val="clear" w:color="auto" w:fill="'+o.shd+'"/>':'')+'</w:pPr>'+rs+'</w:p>'}
+  function h(t){return '<w:p><w:pPr><w:keepNext/><w:spacing w:before="180" w:after="60"/><w:pBdr><w:bottom w:val="single" w:sz="6" w:space="2" w:color="E3DFD0"/></w:pBdr></w:pPr>'+run(t.toUpperCase(),{b:1,c:'6E6230',sz:20})+'</w:p>'}
+  function cell(t,o){o=o||{};return '<w:tc><w:tcPr><w:tcW w:w="'+o.w+'" w:type="dxa"/>'+(o.fill?'<w:shd w:val="clear" w:color="auto" w:fill="'+o.fill+'"/>':'')+'</w:tcPr><w:p><w:pPr><w:spacing w:before="40" w:after="40"/>'+(o.jc?'<w:jc w:val="'+o.jc+'"/>':'')+'</w:pPr>'+run(t,{b:o.b,c:o.c,sz:o.sz||19})+'</w:p></w:tc>'}
+  function tbl(rows,widths){return '<w:tbl><w:tblPr><w:tblW w:w="'+widths.reduce(function(a,b){return a+b},0)+'" w:type="dxa"/><w:tblBorders><w:bottom w:val="single" w:sz="4" w:color="E3DFD0"/><w:insideH w:val="single" w:sz="4" w:color="E3DFD0"/></w:tblBorders><w:tblCellMar><w:left w:w="80" w:type="dxa"/><w:right w:w="80" w:type="dxa"/></w:tblCellMar></w:tblPr><w:tblGrid>'+widths.map(function(w){return '<w:gridCol w:w="'+w+'"/>'}).join('')+'</w:tblGrid>'+rows.map(function(r){return '<w:tr>'+r.map(function(cc,i){return cell(cc.t,{w:widths[i],b:cc.b,c:cc.c,fill:cc.fill,jc:cc.jc})}).join('')+'</w:tr>'}).join('')+'</w:tbl>'}
+  var b='';
+  b+='<w:p><w:pPr><w:spacing w:after="120"/></w:pPr>'+(lg?addImg(lg,'logo.png',DATA.logo?260:70,70):'')+(DATA.logo?'':run('   MACÍAS SÁNCHEZ CONSULTORES',{b:1,c:'A09046',sz:30}))+'</w:p>';
+  b+='<w:p><w:pPr><w:spacing w:after="0"/><w:pBdr><w:bottom w:val="single" w:sz="18" w:space="4" w:color="A09046"/></w:pBdr></w:pPr></w:p>';
+  b+='<w:p><w:pPr><w:spacing w:before="240" w:after="0"/><w:tabs><w:tab w:val="right" w:pos="9638"/></w:tabs></w:pPr>'+run('PROFORMA',{b:1,sz:40})+'<w:r><w:tab/></w:r>'+run(m.num,{b:1,sz:24})+'</w:p>';
+  b+=p('Guayaquil, '+largo(m.fecha)+' · Vigencia: '+m.vig+' días',{c:'5B6068',sz:19});
+  b+=h('Cliente')+p(m.cli,{b:1,sz:24,after:20});var dd=[m.ced&&('Cédula/RUC: '+m.ced),m.tel&&('Teléfono: '+m.tel),m.mail&&('Correo: '+m.mail)].filter(Boolean).join('   ·   ');if(dd)b+=p(dd,{c:'3A3F47',sz:19});
+  b+=h('Servicios');
+  var W1=[1200,4838,900,1350,1350],H1={fill:'14181E',c:'FFFFFF',b:1};
+  var rows=[[ {t:'Cód.',fill:H1.fill,c:H1.c,b:1},{t:'Descripción',fill:H1.fill,c:H1.c,b:1},{t:'Cant.',fill:H1.fill,c:H1.c,b:1,jc:'right'},{t:'V. unit.',fill:H1.fill,c:H1.c,b:1,jc:'right'},{t:'Total',fill:H1.fill,c:H1.c,b:1,jc:'right'} ]];
+  m.items.forEach(function(it,i){var f=i%2?'F7F5EE':null;rows.push([{t:it.cod||'—',c:'6E6230',b:1,fill:f},{t:it.n+(it.reem?' (reembolso, sin IVA)':''),fill:f},{t:String(it.cant).replace('.',','),jc:'right',fill:f},{t:usd(it.valor),jc:'right',fill:f},{t:usd(it.tot),jc:'right',fill:f}])});
+  b+=tbl(rows,W1);
+  var tr=[['Honorarios',usd(m.hon)]];if(m.desc)tr.push(['(−) Descuento por pago total (10%)',usd(-m.desc)]);tr.push(['Subtotal honorarios',usd(m.base),1]);tr.push(['IVA 15%',usd(m.iva)]);if(m.reem)tr.push(['Gastos reembolsables (sin IVA)',usd(m.reem)]);tr.push(['TOTAL',usd(m.total),2]);
+  if(m.age){tr.push(['(−) Retención IR 10% estimada',usd(-m.rir)]);tr.push(['(−) Retención IVA estimada',usd(-m.riva)]);tr.push(['Valor neto a recibir',usd(m.neto),1])}
+  b+=p('',{after:60})+tbl(tr.map(function(t){var f=t[2]===2?'14181E':t[2]===1?'FBF9F1':null,c=t[2]===2?'FFFFFF':null;return [{t:t[0],b:!!t[2],fill:f,c:c},{t:t[1],b:!!t[2],jc:'right',fill:f,c:c}]}),[7238,2400]);
+  if(m.det)b+=h('Detalle del trabajo')+p(m.det);
+  if(m.dur||m.exc){b+=h('Condiciones');if(m.dur)b+=p('Duración estimada: '+m.dur);if(m.exc)b+=p('No incluye: '+m.exc);b+=p('Los gastos judiciales, notariales y de terceros se reembolsan contra comprobante.',{c:'5B6068',sz:19})}
+  b+=h('Forma de pago')+tbl(m.plan.map(function(pp){return [{t:pp[0]},{t:usd(pp[1]),jc:'right'}]}),[7238,2400]);
+  if(m.cuentas)b+=h('Cuentas para transferencia o depósito')+p(m.cuentas).replace('<w:pPr>','<w:pPr><w:keepNext/><w:keepLines/>');
+  b+='<w:p><w:pPr><w:keepNext/><w:spacing w:before="200" w:after="0"/></w:pPr>'+(fi?addImg(fi,'firma.png',200,70):'')+'</w:p>';
+  b+='<w:p><w:pPr><w:keepNext/><w:spacing w:after="0"/><w:pBdr><w:top w:val="single" w:sz="8" w:space="4" w:color="14181E"/></w:pBdr><w:ind w:right="5400"/></w:pPr>'+run(m.fn,{b:1,sz:22})+'</w:p>'+p(m.fc+'\nFirma de responsabilidad',{c:'5B6068',sz:19,after:0}).replace('<w:pPr>','<w:pPr><w:keepLines/>');
+  var foot='<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:ftr xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:p><w:pPr><w:jc w:val="center"/><w:pBdr><w:top w:val="single" w:sz="12" w:space="4" w:color="A09046"/></w:pBdr></w:pPr><w:r><w:rPr><w:color w:val="5B6068"/><w:sz w:val="16"/></w:rPr><w:t xml:space="preserve">Macías Sánchez Consultores · 0979151014 · msconsultores.ec@gmail.com · Guayaquil, Ecuador</w:t></w:r></w:p></w:ftr>';
+  rels.push('<Relationship Id="rId2" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/footer" Target="footer1.xml"/>');
+  var doc='<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture"><w:body>'+b+
+   '<w:sectPr><w:footerReference w:type="default" r:id="rId2"/><w:pgSz w:w="11906" w:h="16838"/><w:pgMar w:top="1134" w:right="1134" w:bottom="1134" w:left="1134" w:header="567" w:footer="567" w:gutter="0"/></w:sectPr></w:body></w:document>';
+  var files=[
+   ['[Content_Types].xml','<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Default Extension="png" ContentType="image/png"/><Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/><Override PartName="/word/footer1.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.footer+xml"/></Types>'],
+   ['_rels/.rels','<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/></Relationships>'],
+   ['word/document.xml',doc],
+   ['word/footer1.xml',foot],
+   ['word/_rels/document.xml.rels','<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">'+rels.join('')+'</Relationships>']
+  ].concat(media);
+  return zipStore(files,'application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+ });
+}
+var CRCT=(function(){var t=[],c;for(var n=0;n<256;n++){c=n;for(var k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;t[n]=c>>>0}return t})();
+function crc32(u){var c=0xFFFFFFFF;for(var i=0;i<u.length;i++)c=CRCT[(c^u[i])&255]^(c>>>8);return (c^0xFFFFFFFF)>>>0}
+function zipStore(files,type){
+ var enc=new TextEncoder(),out=[],cen=[],off=0;
+ function u16(v){return [v&255,(v>>>8)&255]}function u32(v){return [v&255,(v>>>8)&255,(v>>>16)&255,(v>>>24)&255]}
+ files.forEach(function(f){var name=enc.encode(f[0]),data=typeof f[1]==='string'?enc.encode(f[1]):f[1],crc=crc32(data);
+  var lh=new Uint8Array([0x50,0x4b,3,4].concat(u16(20),u16(0x0800),u16(0),u16(0),u16(0x21),u32(crc),u32(data.length),u32(data.length),u16(name.length),u16(0)));
+  out.push(lh,name,data);
+  cen.push(new Uint8Array([0x50,0x4b,1,2].concat(u16(20),u16(20),u16(0x0800),u16(0),u16(0),u16(0x21),u32(crc),u32(data.length),u32(data.length),u16(name.length),u16(0),u16(0),u16(0),u16(0),u32(0),u32(off))),name);
+  off+=lh.length+name.length+data.length});
+ var cs=cen.reduce(function(s,a){return s+a.length},0);
+ var end=new Uint8Array([0x50,0x4b,5,6].concat(u16(0),u16(0),u16(files.length),u16(files.length),u32(cs),u32(off),u16(0)));
+ return new Blob(out.concat(cen,[end]),{type:type});
+}
+
+/* =========================================================
    2. PENSIONES ALIMENTICIAS
    ========================================================= */
 var COLS=['1 hijo · 0–2 años','1 hijo · 3+ años','2 hijos · 0–2 años','2 hijos · 3+ años','3+ hijos · 0–2 años','3+ hijos · 3+ años'];
@@ -805,7 +1119,7 @@ function calcTra(){
 }
 
 /* ---------- arranque ---------- */
-renderHon();renderPen();renderPla();renderTra();
+renderHon();renderCat();renderPrf();renderPen();renderPla();renderTra();
 show(location.hash.slice(1)||store('tab')||'hon');
 refreshSave();
 })();

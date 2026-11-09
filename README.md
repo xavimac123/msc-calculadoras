@@ -7,6 +7,8 @@ Herramienta de uso interno de **Macías Sánchez Consultores** (Guayaquil, Ecuad
 ## Qué incluye
 - **Honorarios – procesos y trámites:** honorario operativo + prima de éxito (sin éxito, parcial 50 %, total 100 %), IVA 15 %, retenciones, descuentos, plan de pago y ganancia neta.
 - **Honorarios – consultas:** tarifa por complejidad (baja fija, media, alta con techo), tiempo, materia y modalidad; documentos a pedir al cliente; mensaje e imagen de confirmación para WhatsApp.
+- **Proforma:** servicios del catálogo, forma de pago (pago total −10 %, hasta 3 cuotas o por etapas), retenciones estimadas, cuentas bancarias y firma; exporta PDF y Word y se comparte por WhatsApp o correo. Numeración PRF-AAAA-NNN por dispositivo.
+- **Catálogo de servicios:** códigos por materia (FAM-01, IESS-03, FIS-01…), descripción para factura, IVA y exportación CSV para Excel o el sistema de facturación.
 - **Pensiones alimenticias:** Tabla de Pensiones Alimenticias Mínimas 2026 (Acuerdo MDH-DM-2026-0005-A, SBU $482); se puede cargar la tabla de otro año.
 - **Plazos y términos:** COGEP, COA y COIP, con feriados nacionales 2026 y 2027.
 - **Tránsito:** notificación de la boleta en 72 horas (art. 179 LOTTTSV) e impugnación en 3 días (art. 644 COIP).

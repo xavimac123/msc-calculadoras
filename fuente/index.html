@@ -1293,29 +1293,37 @@ function regDisponible(){return !!(R.key&&R.data)}
 function cliPF(){return PF.cid&&R.data?cliById(PF.cid):null}
 function renderPrf(){
  var v=$('#v-prf'),P=DATA.prf||(DATA.prf={}),Q=DATA.cobro||{};
- var st=store('prf')||{};PF.num=st.num||null;PF.cid=st.cid||null;PF.items=st.items||[];PF.pago=st.pago||'total';PF.cuotas=st.cuotas||3;PF.proc=st.proc||null;PF.etapas=st.etapas||null;
+ var st=store('prf')||{};PF.num=st.num||null;PF.cid=st.cid||null;PF.items=st.items||[];PF.pago=st.pago||'total';PF.cuotas=Math.max(3,st.cuotas||3);PF.proc=st.proc||null;PF.etapas=st.etapas||null;
+ PF.sep=!!st.sep;PF.gOn=!!(st.gastos&&st.gastos.length);PF.dPct=st.dPct!=null?st.dPct:10;PF.gastos=st.gastos||[];PF.contrato=st.contrato!==false;PF.verLista=false;PF.durA=st.durA||'';PF.durB=st.durB||'';PF.durU=st.durU||'meses';
+ PF.items=PF.items.filter(function(it){if(it.reem){PF.gastos.push({n:it.fact||it.n,valor:r2(it.cant*it.valor)});return false}return true});
  v.innerHTML='<h2>Proforma</h2><p class="sub">Cliente del registro, servicios del catálogo y forma de pago. Exporta PDF y Word, y se comparte por WhatsApp o correo.</p>'+
  '<div class="card"><h3>1 · Cliente</h3><div id="f-cbox"></div></div>'+
- '<div class="card"><h3>2 · Servicios</h3><div class="grid"><div class="full"><label for="f-add">Agregar del catálogo</label><select id="f-add"><option value="">Elegir servicio…</option>'+Object.keys(MATS).map(function(k){var l=cat().filter(function(s){return s.mat===k});return l.length?'<optgroup label="'+esc(MATS[k])+'">'+l.map(function(s){return '<option value="'+esc(s.cod)+'">'+esc(s.cod+' · '+s.n)+'</option>'}).join('')+'</optgroup>':''}).join('')+'</select></div></div>'+
+ '<div class="card"><h3>2 · Servicios</h3><div class="seg" id="f-sep" style="margin-bottom:10px"><button type="button" data-s="0">Valor único</button><button type="button" data-s="1">Operativos + prima de éxito</button></div>'+
+  '<div class="grid"><div class="full"><label for="f-add">Agregar del catálogo</label><select id="f-add"><option value="">Elegir servicio…</option>'+Object.keys(MATS).filter(function(k){return k!=='GAS'}).map(function(k){var l=cat().filter(function(s){return s.mat===k});return l.length?'<optgroup label="'+esc(MATS[k])+'">'+l.map(function(s){return '<option value="'+esc(s.cod)+'">'+esc(s.cod+' · '+s.n)+'</option>'}).join('')+'</optgroup>':''}).join('')+'</select></div></div>'+
   '<div id="f-items" style="margin-top:8px"></div><button class="btn sec" id="f-libre" type="button" style="margin-top:8px">Agregar ítem libre</button></div>'+
  '<div class="card"><h3>3 · Detalle del trabajo</h3><div class="grid">'+
   '<div class="full"><label for="f-det">Alcance y actividades incluidas</label><textarea id="f-det" rows="4" style="width:100%;font:inherit;font-size:14px;padding:10px;border:1px solid #CFCABA;border-radius:8px" placeholder="Ej.: redacción y presentación de la demanda, comparecencia a audiencia única, seguimiento hasta sentencia de primera instancia."></textarea></div>'+
-  '<div><label for="f-dur">Duración estimada</label><input id="f-dur" placeholder="Ej.: 3 a 6 meses"></div><div><label for="f-vig">Vigencia (días)</label><input id="f-vig" type="number" inputmode="numeric" value="'+(P.vigencia||15)+'"></div>'+
+  '<div class="full"><label>Duración estimada (tentativa)</label><div class="grid3" style="grid-template-columns:1fr 1fr 1.3fr"><input id="f-durA" type="number" inputmode="numeric" min="0" placeholder="Desde" value="'+esc(PF.durA)+'"><input id="f-durB" type="number" inputmode="numeric" min="0" placeholder="Hasta (opcional)" value="'+esc(PF.durB)+'"><select id="f-durU">'+['días','meses','años'].map(function(u){return '<option'+(u===PF.durU?' selected':'')+'>'+u+'</option>'}).join('')+'</select></div></div>'+
   '<div class="full"><label for="f-exc">No incluye</label><input id="f-exc" placeholder="Ej.: recursos de casación, peritajes, tasas y copias"></div>'+
- '</div></div>'+
- '<div class="card"><h3>4 · Forma de pago</h3><div class="seg" id="f-pago"><button type="button" data-p="total">Pago total (−10%)</button><button type="button" data-p="cuotas">Cuotas</button><button type="button" data-p="etapas">Por etapas</button></div>'+
-  '<div id="f-pdet" style="margin-top:10px"></div><p class="hint">El 10% por pago total se aplica solo a honorarios, no a gastos reembolsables.</p></div>'+
+  '<div class="full" id="f-ctr"></div>'+
+ '</div><p class="hint">La vigencia ('+(P.vigencia||15)+' días) se toma de Configuración.</p></div>'+
+ '<div class="card"><h3>4 · Forma de pago</h3><div class="seg" id="f-pago"><button type="button" data-p="total">Pago total</button><button type="button" data-p="cuotas">Cuotas</button><button type="button" data-p="etapas">Por etapas</button></div>'+
+  '<div id="f-pdet" style="margin-top:10px"></div></div>'+
+ '<div class="card"><h3>5 · Gastos operativos (opcional)</h3><label class="chk"><input type="checkbox" id="f-gon"'+(PF.gastos.length?' checked':'')+'> Mostrar gastos operativos estimados en la proforma</label><div id="f-gas"></div><p class="hint">Se muestran como referencia y no se suman al total. Previa aprobación del cliente, los paga él directamente o se facturan aparte.</p></div>'+
  '<div class="res" id="f-res"></div>'+
- '<div class="card"><h3>5 · Generar y enviar</h3><p class="hint" style="margin-top:0">Número: <b id="f-num"></b> <span id="f-numst"></span><br>Cuentas, firma y vigencia se toman de <a href="#conf" id="f-goconf">Configuración</a>.'+(Q.cuentas?'':' <b style="color:var(--avi)">Aún no hay cuentas bancarias registradas.</b>')+'</p>'+
+ '<div class="card"><h3>6 · Generar y enviar</h3><p class="hint" style="margin-top:0">Número: <b id="f-num"></b> <span id="f-numst"></span><br>Cuentas, firma y vigencia se toman de <a href="#conf" id="f-goconf">Configuración</a>.'+(Q.cuentas?'':' <b style="color:var(--avi)">Aún no hay cuentas bancarias registradas.</b>')+'</p>'+
   '<div class="row"><button class="btn" id="f-pdf" type="button">PDF</button><button class="btn" id="f-doc" type="button">Word</button><button class="btn sec" id="f-wa" type="button">Mensaje WhatsApp</button><button class="btn sec" id="f-mail2" type="button">Correo</button></div>'+
   '<div class="msg" id="f-msg"></div><div id="f-prev"></div><div class="row" style="margin-top:10px"><button class="btn sec" id="f-new" type="button">Nueva proforma</button></div></div>'+
  '<div class="card"><h3>Proformas emitidas</h3><div id="f-hist"></div></div>';
- ['det','dur','exc'].forEach(function(k){if(st[k])$('#f-'+k).value=st[k]});
+ ['det','exc'].forEach(function(k){if(st[k])$('#f-'+k).value=st[k]});
  $('#f-goconf').onclick=function(e){e.preventDefault();show('conf')};
- $('#f-add').onchange=function(){var s=srvByCod(this.value);if(s){PF.items.push({cod:s.cod,n:s.n,fact:s.fact,cant:1,valor:s.valor,iva:s.iva,reem:s.unidad==='reembolso',proc:procDe(s)});this.value='';if(!PF.proc||!PF.etapasEdit){PF.proc=procPrincipal();PF.etapas=etapasDe(PF.proc)}calcPrf()}};
- $('#f-libre').onclick=function(){PF.items.push({cod:'',n:'Servicio',fact:'',cant:1,valor:0,iva:true,reem:false,proc:''});calcPrf()};
+ $('#f-add').onchange=function(){var s=srvByCod(this.value);if(s){var it={cod:s.cod,n:s.n,fact:s.fact,cant:1,valor:s.valor,iva:s.iva,proc:procDe(s),exito:0};if(s.notarial){it.not={id:s.notarial==='elegir'?'':s.notarial,cant:1,man:0}}PF.items.push(it);this.value='';if(!PF.proc||!PF.etapasEdit){PF.proc=procPrincipal();PF.etapas=etapasDe(PF.proc)}calcPrf()}};
+ $('#f-libre').onclick=function(){PF.items.push({cod:'',n:'Servicio',fact:'',cant:1,valor:0,iva:true,proc:'',exito:0});calcPrf()};
+ $$('#f-sep button').forEach(function(b){b.onclick=function(){PF.sep=b.dataset.s==='1';calcPrf()}});
  $$('#f-pago button').forEach(function(b){b.onclick=function(){PF.pago=b.dataset.p;if(PF.pago==='etapas'&&!PF.etapas){PF.proc=PF.proc||procPrincipal();PF.etapas=etapasDe(PF.proc)}calcPrf()}});
- $$('#v-prf textarea,#f-dur,#f-exc,#f-vig').forEach(function(i){i.addEventListener('input',function(){calcPrf(true)})});
+ $$('#v-prf textarea,#f-exc').forEach(function(i){i.addEventListener('input',function(){calcPrf(true)})});
+ ['durA','durB','durU'].forEach(function(k){$('#f-'+k).addEventListener('input',function(){PF[k]=this.value;calcPrf(true)})});
+ $('#f-gon').onchange=function(){PF.gOn=this.checked;if(this.checked&&!PF.gastos.length)PF.gastos.push({n:'',valor:0});if(!this.checked)PF.gastos=[];calcPrf()};
  $('#f-pdf').onclick=function(){exportPrf('pdf')};$('#f-doc').onclick=function(){exportPrf('docx')};
  $('#f-wa').onclick=function(){var c=cliPF();if(!c){msgF('Elija el cliente.');return}var l=document.createElement('a');l.href='https://wa.me/'+telWa(c.tel)+'?text='+encodeURIComponent(textoPrf());l.target='_blank';l.rel='noopener';document.body.appendChild(l);l.click();l.remove()};
  $('#f-mail2').onclick=function(){var m=prfModel(true);if(!cliPF()){msgF('Elija el cliente.');return}var l=document.createElement('a');l.href='mailto:'+encodeURIComponent(m.mail)+'?subject='+encodeURIComponent('Proforma de servicios legales – Macías Sánchez Consultores')+'&body='+encodeURIComponent(textoPrf());document.body.appendChild(l);l.click();l.remove();$('#f-msg').className='msg';$('#f-msg').textContent='Si su correo no se abrió, copie el texto desde "Mensaje WhatsApp". Adjunte el PDF generado.'};
@@ -1323,6 +1331,7 @@ function renderPrf(){
  cajaCliente();refreshSave();calcPrf();histPrf();
 }
 function msgF(t){var m=$('#f-msg');m.className='msg e';m.textContent=t;m.scrollIntoView({behavior:'smooth',block:'nearest'})}
+function cliLinea(x){return [x.cod,(x.nom||'').toUpperCase(),x.ced||'s/c',x.tel||'s/t',x.mailN||x.mail||'s/correo'].map(esc).join(' – ')}
 function cajaCliente(){
  var b=$('#f-cbox');if(!b)return;
  if(!regDisponible()){b.innerHTML='<p class="hint" style="margin:0">Desbloquee el registro en la pestaña <a href="#cli" id="f-gocli">Clientes</a> para elegir al cliente.</p>';$('#f-gocli').onclick=function(e){e.preventDefault();show('cli')};return}
@@ -1330,73 +1339,110 @@ function cajaCliente(){
  if(c){var fac=c.fNom||c.fId;b.innerHTML='<div style="border:1px solid var(--linea);border-radius:8px;padding:10px"><div class="row" style="justify-content:space-between;flex-wrap:nowrap"><div style="min-width:0"><b>'+esc(c.nom)+'</b> <span class="hint">'+esc(c.cod)+'</span><div class="hint" style="margin:2px 0 0">'+[c.ced&&('C.I./RUC '+c.ced),c.tel,c.mailN||c.mail,c.dir].filter(Boolean).map(esc).join(' · ')+'</div>'+(fac?'<div class="hint" style="margin:2px 0 0">Factura a: '+esc(c.fNom||c.nom)+' · '+esc(c.fId||c.ced||'')+'</div>':'')+'</div><button class="btn sec" id="f-chg" type="button" style="min-height:32px;padding:4px 10px;font-size:12.5px;flex:none">Cambiar</button></div></div>'+
   '<label class="chk" style="margin-top:6px"><input type="checkbox" id="f-age"'+((PF.age!=null?PF.age:c.fAge)?' checked':'')+'> Es agente de retención (para el cálculo de retenciones)</label>';
   $('#f-chg').onclick=function(){PF.cid=null;PF.age=null;cajaCliente();calcPrf(true)};$('#f-age').onchange=function(){PF.age=this.checked;calcPrf(true)};return}
- b.innerHTML='<div class="row" style="flex-wrap:nowrap"><input id="f-bus" placeholder="Buscar cliente por nombre, cédula o código" style="flex:1" autocomplete="off"><button class="btn sec" id="f-ncli" type="button" style="flex:none">Nuevo</button></div><div id="f-res-cli" style="margin-top:6px"></div>';
- var pinta=function(){var q=($('#f-bus').value||'').toLowerCase(),L=clientes().filter(function(x){return !q||(x.nom+' '+(x.ced||'')+' '+x.cod).toLowerCase().indexOf(q)>-1}).sort(function(a,b){return (a.nom||'').localeCompare(b.nom||'')}).slice(0,8);
-  $('#f-res-cli').innerHTML=L.length?L.map(function(x){return '<div data-id="'+x.id+'" style="padding:9px 8px;border-bottom:1px solid var(--linea);cursor:pointer"><b>'+esc(x.nom)+'</b> <span class="hint">'+esc(x.cod)+(x.ced?' · '+esc(x.ced):'')+'</span></div>'}).join(''):'<p class="hint">'+(clientes().length?'Sin coincidencias.':'Aún no hay clientes registrados.')+'</p>';
+ b.innerHTML='<div class="row" style="flex-wrap:nowrap"><input id="f-bus" placeholder="Buscar por nombre, cédula o código" style="flex:1;min-width:0" autocomplete="off"><button class="btn sec" id="f-ver" type="button" style="flex:none">'+(PF.verLista?'Ocultar':'Visualizar')+'</button><button class="btn sec" id="f-ncli" type="button" style="flex:none">Nuevo</button></div><div id="f-res-cli" style="margin-top:6px"></div><p class="hint">Formato: Código – NOMBRES APELLIDOS – CÉDULA – CONTACTO – CORREO</p>';
+ var pinta=function(){var q=($('#f-bus').value||'').toLowerCase();
+  if(!q&&!PF.verLista){$('#f-res-cli').innerHTML='';return}
+  var L=clientes().filter(function(x){return !q||(x.nom+' '+(x.ced||'')+' '+x.cod).toLowerCase().indexOf(q)>-1}).sort(function(a,b){return (a.cod||'').localeCompare(b.cod||'')});
+  $('#f-res-cli').innerHTML=L.length?L.map(function(x){return '<div data-id="'+x.id+'" style="padding:9px 8px;border-bottom:1px solid var(--linea);cursor:pointer;font-size:13.5px">'+cliLinea(x)+'</div>'}).join(''):'<p class="hint">'+(clientes().length?'Sin coincidencias.':'Aún no hay clientes registrados.')+'</p>';
   $$('#f-res-cli [data-id]').forEach(function(d){d.onclick=function(){PF.cid=d.dataset.id;PF.age=null;cajaCliente();calcPrf(true)}})};
  $('#f-bus').oninput=pinta;pinta();
+ $('#f-ver').onclick=function(){PF.verLista=!PF.verLista;this.textContent=PF.verLista?'Ocultar':'Visualizar';pinta()};
  $('#f-ncli').onclick=function(){R.view='cli';R.sel='nuevo';show('cli');vista()};
 }
 function telWa(t){t=String(t||'').replace(/\D/g,'');if(t.length===10&&t[0]==='0')t='593'+t.slice(1);else if(t.length===9)t='593'+t;return t}
+function durTxt(){var a=num(PF.durA),b=num(PF.durB),u=PF.durU||'meses';if(!a&&!b)return '';var sg=function(n){return n===1?{días:'día',meses:'mes',años:'año'}[u]:u};if(a&&b&&b>a)return a+' a '+b+' '+u+' (tentativo)';var n=a||b;return n+' '+sg(n)+' (tentativo)'}
+function gastosPF(){
+ var L=PF.gastos.filter(function(g){return g.n||g.valor}).map(function(g){return {n:g.n||'Gasto operativo',valor:r2(num(g.valor)),nota:g.nota||''}});
+ PF.items.forEach(function(it){if(!it.not||!it.not.id)return;var t=notById(it.not.id);if(!t)return;var v=tasaNot(t,num(it.not.cant)||1,num(it.not.man));L.push({n:'Tasa notarial – '+t.n+((num(it.not.cant)||1)>1?' (x'+num(it.not.cant)+' '+t.por+')':''),valor:r2(v*1.15),nota:'incluye IVA; la factura la notaría al cliente'})});
+ return L;
+}
 function prfModel(peek){
  var c=cliPF()||{},age=$('#f-age')?$('#f-age').checked:!!c.fAge,ivaP=15,P=DATA.prf||{},Q=DATA.cobro||{};
- var hon=0,reem=0,ivaB=0;
- PF.items.forEach(function(it){var t=r2(it.cant*it.valor);if(it.reem)reem+=t;else{hon+=t;if(it.iva)ivaB+=t}});
- var dPct=PF.pago==='total'?10:0,desc=r2(hon*dPct/100),ivaBase=r2(ivaB*(1-dPct/100)),base=r2(hon-desc),iva=r2(ivaBase*ivaP/100),total=r2(base+iva+reem);
+ var hon=0,ivaB=0,exi=0,exiB=0;
+ PF.items.forEach(function(it){var t=r2(it.cant*it.valor);hon+=t;if(it.iva)ivaB+=t;if(PF.sep&&num(it.exito)){exi+=num(it.exito);if(it.iva)exiB+=num(it.exito)}});
+ var dPct=PF.pago==='total'?num(PF.dPct):0,desc=r2(hon*dPct/100),ivaBase=r2(ivaB*(1-dPct/100)),base=r2(hon-desc),iva=r2(ivaBase*ivaP/100),total=r2(base+iva);
+ var exito=exi?{base:r2(exi),iva:r2(exiB*ivaP/100),total:r2(exi+exiB*ivaP/100)}:null;
  var rir=age?r2(base*0.10):0,riva=age?r2(iva):0;
  var plan=[];
  if(PF.pago==='total')plan=[['Pago único al firmar el contrato',total]];
- else if(PF.pago==='cuotas'){var n=PF.cuotas,cc=r2(total/n);for(var i=0;i<n;i++)plan.push([['Primera cuota (anticipo) – al firmar','Segunda cuota – a los 30 días','Tercera cuota – a los 60 días'][i],i===n-1?r2(total-cc*(n-1)):cc])}
+ else if(PF.pago==='cuotas'){var n=Math.max(3,PF.cuotas||3),cc=r2(total/n);for(var i=0;i<n;i++)plan.push([i===0?'Cuota 1 (anticipo) – al firmar el contrato':'Cuota '+(i+1)+' – a los '+(30*i)+' días',i===n-1?r2(total-cc*(n-1)):cc])}
  else{var E=PF.etapas||etapasDe(PF.proc||procPrincipal()),acc=0,sum=E.reduce(function(s,e){return s+num(e[1])},0)||100;E.forEach(function(e,i){var v=i===E.length-1?r2(total-acc):r2(total*num(e[1])/sum);acc+=v;plan.push([e[0]+' ('+pct(num(e[1]))+')',v])})}
+ var G=gastosPF();
  return {num:PF.num||prfNum(true),fecha:new Date(),cli:c.fNom||c.nom||'',ced:c.fId||c.ced||'',tel:c.tel||'',mail:c.fMail||c.mailN||c.mail||'',dir:c.dir||'',age:age,
-  items:PF.items.map(function(it){return {cod:it.cod,n:it.fact||it.n,cant:it.cant,valor:it.valor,tot:r2(it.cant*it.valor),iva:it.iva&&!it.reem,reem:it.reem}}),
-  hon:r2(hon),reem:r2(reem),dPct:dPct,desc:desc,base:base,iva:iva,total:total,rir:rir,riva:riva,neto:r2(total-rir-riva),plan:plan,pago:PF.pago,proc:PF.pago==='etapas'?(PROCS[PF.proc]||{}).n:'',
-  det:$('#f-det').value.trim(),dur:$('#f-dur').value.trim(),exc:$('#f-exc').value.trim(),vig:num($('#f-vig').value)||P.vigencia||15,cuentas:(Q.cuentas||'').trim(),
+  items:PF.items.map(function(it){return {cod:it.cod,n:it.fact||it.n,cant:it.cant,valor:it.valor,tot:r2(it.cant*it.valor),exito:PF.sep?num(it.exito):0,iva:it.iva}}),sep:PF.sep,
+  hon:r2(hon),dPct:dPct,desc:desc,base:base,iva:iva,total:total,exito:exito,rir:rir,riva:riva,neto:r2(total-rir-riva),plan:plan,pago:PF.pago,proc:PF.pago==='etapas'?(PROCS[PF.proc]||{}).n:'',
+  gastos:G,gtot:r2(G.reduce(function(s,g){return s+g.valor},0)),contrato:base>500&&PF.contrato,
+  det:$('#f-det').value.trim(),dur:durTxt(),exc:$('#f-exc').value.trim(),vig:P.vigencia||15,cuentas:(Q.cuentas||'').trim(),
   fn:P.firmaNombre||'',fc:P.firmaCargo||''};
 }
+function btnMini(id,t,extra){return '<button class="btn sec" '+id+' type="button" style="min-height:34px;padding:4px 10px;font-size:12.5px'+(extra||'')+'">'+t+'</button>'}
 function calcPrf(soft){
  $$('#f-pago button').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.p===PF.pago)});
+ $$('#f-sep button').forEach(function(b){b.setAttribute('aria-pressed',(b.dataset.s==='1')===!!PF.sep)});
  if(!soft){
-  $('#f-items').innerHTML=PF.items.length?PF.items.map(function(it,i){return '<div style="border:1px solid var(--linea);border-radius:8px;padding:8px;margin-bottom:8px"><div class="row" style="justify-content:space-between;flex-wrap:nowrap"><b style="font-size:13.5px">'+(it.cod?'<span class="tag v">'+esc(it.cod)+'</span> ':'')+(it.reem?'<span class="tag">reembolso</span>':'')+'</b><button type="button" data-rm="'+i+'" class="btn sec" style="min-height:30px;padding:2px 10px;font-size:12px">Quitar</button></div>'+
+  $('#f-items').innerHTML=PF.items.length?PF.items.map(function(it,i){var nt=it.not?notById(it.not.id):null;return '<div style="border:1px solid var(--linea);border-radius:8px;padding:8px;margin-bottom:8px"><div class="row" style="justify-content:space-between;flex-wrap:nowrap"><b style="font-size:13.5px">'+(it.cod?'<span class="tag v">'+esc(it.cod)+'</span> ':'')+'</b><button type="button" data-rm="'+i+'" class="btn sec" style="min-height:30px;padding:2px 10px;font-size:12px">Quitar</button></div>'+
    '<input data-k="n" data-i="'+i+'" value="'+esc(it.fact||it.n)+'" style="margin-top:6px;font-size:14px">'+
-   '<div class="grid3" style="margin-top:6px"><div><label>Cantidad</label><input data-k="cant" data-i="'+i+'" type="number" inputmode="decimal" value="'+it.cant+'"></div><div><label>Valor unit.</label><input data-k="valor" data-i="'+i+'" type="number" inputmode="decimal" value="'+it.valor+'"></div><div><label>Subtotal</label><input disabled value="'+usd(r2(it.cant*it.valor))+'"></div></div></div>'}).join(''):'<p class="hint">Agregue al menos un servicio.</p>';
+   '<div class="grid3" style="margin-top:6px"><div><label>Cantidad</label><input data-k="cant" data-i="'+i+'" type="number" inputmode="decimal" value="'+it.cant+'"></div><div><label>'+(PF.sep?'Hon. operativos (USD)':'Valor unit. (USD)')+'</label><input data-k="valor" data-i="'+i+'" type="number" inputmode="decimal" step="0.01" value="'+it.valor+'"></div>'+(PF.sep?'<div><label>Prima de éxito (USD)</label><input data-k="exito" data-i="'+i+'" type="number" inputmode="decimal" step="0.01" value="'+(it.exito||0)+'"></div>':'')+'<div><label>Subtotal</label><input disabled value="'+usd(r2(it.cant*it.valor))+'"></div></div>'+
+   (it.not?'<div class="grid3" style="margin-top:6px;grid-template-columns:2fr 1fr 1fr"><div><label>Trámite notarial (tasa)</label><select data-nk="id" data-i="'+i+'"><option value="">Elegir trámite…</option>'+(DATA.notarias||[]).map(function(t){return '<option value="'+t.id+'"'+(t.id===it.not.id?' selected':'')+'>'+esc(t.n)+'</option>'}).join('')+'</select></div><div><label>Cantidad ('+esc(nt?nt.por:'acto')+')</label><input data-nk="cant" data-i="'+i+'" type="number" inputmode="numeric" value="'+(it.not.cant||1)+'"></div>'+(nt&&nt.modo==='manual'?'<div><label>Tasa (USD, sin IVA)</label><input data-nk="man" data-i="'+i+'" type="number" inputmode="decimal" step="0.01" value="'+(it.not.man||0)+'"></div>':'<div><label>Tasa + IVA</label><input disabled data-tn="'+i+'" value="'+(nt?usd(r2(tasaNot(nt,num(it.not.cant)||1)*1.15)):'—')+'"></div>')+'</div><p class="hint" style="margin:4px 0 0">La tasa notarial va en gastos operativos: la paga el cliente a la notaría.</p>':'')+'</div>'}).join(''):'<p class="hint">Agregue al menos un servicio.</p>';
   $$('#f-items [data-rm]').forEach(function(b){b.onclick=function(){PF.items.splice(+b.dataset.rm,1);if(!PF.etapasEdit){PF.proc=procPrincipal();PF.etapas=etapasDe(PF.proc)}calcPrf()}});
   $$('#f-items input[data-k]').forEach(function(inp){inp.oninput=function(){var it=PF.items[+inp.dataset.i];if(inp.dataset.k==='n'){it.fact=inp.value}else{it[inp.dataset.k]=num(inp.value);var sub=inp.closest('.grid3').querySelector('input[disabled]');sub.value=usd(r2(it.cant*it.valor))}calcPrf(true)}});
+  $$('#f-items [data-nk]').forEach(function(inp){var h=function(){var it=PF.items[+inp.dataset.i];it.not[inp.dataset.nk]=inp.dataset.nk==='id'?inp.value:num(inp.value);if(inp.dataset.nk==='id')calcPrf();else{var nt=notById(it.not.id),o=$('[data-tn="'+inp.dataset.i+'"]');if(o&&nt)o.value=usd(r2(tasaNot(nt,num(it.not.cant)||1)*1.15));calcPrf(true)}};inp.oninput=h;inp.onchange=h});
   var d=$('#f-pdet');
-  if(PF.pago==='cuotas')d.innerHTML='<label for="f-ncu">Número de cuotas (máximo 3)</label><select id="f-ncu"><option value="2"'+(PF.cuotas===2?' selected':'')+'>2</option><option value="3"'+(PF.cuotas===3?' selected':'')+'>3</option></select>';
+  if(PF.pago==='total')d.innerHTML='<div class="grid"><div><label for="f-dpct">Descuento por pago total (%)</label><input id="f-dpct" type="number" inputmode="decimal" step="0.5" min="0" max="100" value="'+PF.dPct+'"></div></div><p class="hint">10 % por defecto. Edítelo si acordó otro porcentaje con el cliente. Se aplica solo a honorarios.</p>';
+  else if(PF.pago==='cuotas')d.innerHTML='<p class="hint" style="margin-top:0">Mínimo 3 cuotas mensuales; la primera es el anticipo.</p><div id="f-cul"></div><div class="row" style="margin-top:6px">'+btnMini('id="f-cua"','Agregar cuota')+(PF.cuotas>3?btnMini('id="f-cuq"','Quitar última cuota'):'')+'</div>';
   else if(PF.pago==='etapas'){
    PF.proc=PF.proc||procPrincipal();PF.etapas=PF.etapas||etapasDe(PF.proc);
    d.innerHTML='<label for="f-proc">Tipo de procedimiento</label><select id="f-proc">'+Object.keys(PROCS).map(function(k){return '<option value="'+k+'"'+(k===PF.proc?' selected':'')+'>'+esc(PROCS[k].n)+'</option>'}).join('')+'</select>'+
-    '<p class="hint">Sugerido según el servicio principal de la proforma. Cada procedimiento tiene sus propias etapas.</p>'+
-    PF.etapas.map(function(e,i){return '<div class="grid" style="grid-template-columns:1fr 80px 36px;margin-bottom:6px;align-items:center"><input data-e="0" data-i="'+i+'" value="'+esc(e[0])+'"><input data-e="1" data-i="'+i+'" type="number" inputmode="decimal" value="'+e[1]+'"><button type="button" class="btn sec" data-rme="'+i+'" style="min-height:36px;padding:0">×</button></div>'}).join('')+
-    '<div class="row"><button class="btn sec" id="f-addE" type="button" style="min-height:34px;padding:4px 10px;font-size:12.5px">Agregar etapa</button><button class="btn sec" id="f-rstE" type="button" style="min-height:34px;padding:4px 10px;font-size:12.5px">Restablecer etapas</button></div><p class="hint">Porcentajes de cada etapa: criterio propio, editables.</p>';
+    '<p class="hint">Sugerido según el servicio principal. Cada procedimiento tiene sus propias etapas.</p>'+
+    '<div class="grid" style="grid-template-columns:1fr 64px 92px;gap:6px;margin-bottom:2px"><span class="hint" style="margin:0">Etapa</span><span class="hint" style="margin:0">%</span><span class="hint" style="margin:0;text-align:right">Valor</span></div>'+
+    PF.etapas.map(function(e,i){return '<div style="border-bottom:1px solid var(--linea);padding:6px 0"><div class="grid" style="grid-template-columns:1fr 64px 92px;gap:6px;align-items:center"><input data-e="0" data-i="'+i+'" value="'+esc(e[0])+'"><input data-e="1" data-i="'+i+'" type="number" inputmode="decimal" value="'+e[1]+'"><b data-ev="'+i+'" style="text-align:right;font-size:13.5px"></b></div><div class="row" style="margin-top:4px;gap:4px">'+btnMini('data-up="'+i+'"'+(i?'':' disabled'),'↑ Subir')+btnMini('data-dn="'+i+'"'+(i<PF.etapas.length-1?'':' disabled'),'↓ Bajar')+btnMini('data-rme="'+i+'"','Quitar',';color:var(--mal)')+'</div></div>'}).join('')+
+    '<div class="row" style="margin-top:8px">'+btnMini('id="f-addE"','Agregar etapa')+btnMini('id="f-rstE"','Restablecer etapas')+'</div><p class="hint">Porcentajes de cada etapa: criterio propio, editables.</p>';
    $('#f-proc').onchange=function(){PF.proc=this.value;PF.etapas=etapasDe(PF.proc);PF.etapasEdit=true;calcPrf()};
-   $('#f-addE').onclick=function(){PF.etapas.push(['Etapa',0]);PF.etapasEdit=true;calcPrf()};
+   $('#f-addE').onclick=function(){PF.etapas.push(['Nueva etapa',0]);PF.etapasEdit=true;calcPrf()};
    $('#f-rstE').onclick=function(){PF.etapas=etapasDe(PF.proc);calcPrf()};
+   var mv=function(i,j){var t=PF.etapas[i];PF.etapas[i]=PF.etapas[j];PF.etapas[j]=t;PF.etapasEdit=true;calcPrf()};
+   $$('#f-pdet [data-up]').forEach(function(b){b.onclick=function(){var i=+b.dataset.up;if(i)mv(i,i-1)}});
+   $$('#f-pdet [data-dn]').forEach(function(b){b.onclick=function(){var i=+b.dataset.dn;if(i<PF.etapas.length-1)mv(i,i+1)}});
    $$('#f-pdet [data-rme]').forEach(function(b){b.onclick=function(){PF.etapas.splice(+b.dataset.rme,1);PF.etapasEdit=true;calcPrf()}});
   }
-  else d.innerHTML='';
-  if($('#f-ncu'))$('#f-ncu').onchange=function(){PF.cuotas=+this.value;calcPrf(true)};
+  if($('#f-dpct'))$('#f-dpct').oninput=function(){PF.dPct=Math.min(100,Math.max(0,num(this.value)));calcPrf(true)};
+  if($('#f-cua'))$('#f-cua').onclick=function(){PF.cuotas=Math.max(3,PF.cuotas)+1;calcPrf()};
+  if($('#f-cuq'))$('#f-cuq').onclick=function(){PF.cuotas=Math.max(3,PF.cuotas-1);calcPrf()};
   $$('#f-pdet [data-e]').forEach(function(inp){inp.oninput=function(){PF.etapas[+inp.dataset.i][+inp.dataset.e]=inp.dataset.e==='1'?num(inp.value):inp.value;PF.etapasEdit=true;calcPrf(true)}});
+  // gastos operativos
+  var g=$('#f-gas');PF.gOn=PF.gOn||PF.gastos.length>0;$('#f-gon').checked=!!PF.gOn;
+  g.innerHTML=PF.gastos.length?PF.gastos.map(function(x,i){return '<div class="grid" style="grid-template-columns:1fr 100px 36px;gap:6px;margin-top:6px;align-items:end"><div><select data-gc="'+i+'" style="margin-bottom:4px"><option value="">Del catálogo…</option>'+cat().filter(function(s){return s.mat==='GAS'}).map(function(s){return '<option value="'+esc(s.n)+'">'+esc(s.n)+'</option>'}).join('')+'</select><input data-gk="n" data-i="'+i+'" value="'+esc(x.n)+'" placeholder="Concepto"></div><div><label>USD</label><input data-gk="valor" data-i="'+i+'" type="number" inputmode="decimal" step="0.01" value="'+(x.valor||0)+'"></div><button type="button" class="btn sec" data-grm="'+i+'" style="min-height:40px;padding:0">×</button></div>'}).join(''):'';if(PF.gOn)g.innerHTML+='<div class="row" style="margin-top:8px">'+btnMini('id="f-gadd"','Agregar gasto')+'</div>';
+  $$('#f-gas [data-gc]').forEach(function(s){s.onchange=function(){if(this.value){PF.gastos[+s.dataset.gc].n=this.value;calcPrf()}}});
+  $$('#f-gas [data-gk]').forEach(function(inp){inp.oninput=function(){var x=PF.gastos[+inp.dataset.i];x[inp.dataset.gk]=inp.dataset.gk==='n'?inp.value:num(inp.value);calcPrf(true)}});
+  $$('#f-gas [data-grm]').forEach(function(b){b.onclick=function(){PF.gastos.splice(+b.dataset.grm,1);calcPrf()}});
+  if($('#f-gadd'))$('#f-gadd').onclick=function(){PF.gastos.push({n:'',valor:0});calcPrf()};
  }
  var m=prfModel(true);
  $('#f-num').textContent=m.num;$('#f-numst').textContent=PF.num?'(asignado: PDF y Word usan el mismo número)':'(se asigna al generar)';
+ if(PF.pago==='cuotas'&&$('#f-cul'))$('#f-cul').innerHTML='<table><tbody>'+m.plan.map(function(p){return '<tr><td>'+esc(p[0])+'</td><td style="text-align:right">'+usd(p[1])+'</td></tr>'}).join('')+'</tbody></table>';
+ if(PF.pago==='etapas')m.plan.forEach(function(p,i){var e=$('[data-ev="'+i+'"]');if(e)e.textContent=usd(p[1])});
+ var ctr=$('#f-ctr');if(ctr){if(m.base>500){if(!ctr.dataset.on){ctr.innerHTML='<label class="chk"><input type="checkbox" id="f-ctrc"'+(PF.contrato?' checked':'')+'> Suscripción de contrato de prestación de servicios profesionales (honorarios superiores a $500,00)</label>';ctr.dataset.on=1;$('#f-ctrc').onchange=function(){PF.contrato=this.checked;calcPrf(true)}}}else{ctr.innerHTML='';delete ctr.dataset.on}}
  var sumE=PF.pago==='etapas'?(PF.etapas||[]).reduce(function(s,e){return s+num(e[1])},0):100;
  $('#f-res').className='res ok';
  $('#f-res').innerHTML='<div class="estado" style="color:var(--olivo)">Total de la proforma</div><div class="big">'+usd(m.total)+'</div>'+
-  '<table style="margin-top:8px"><tbody><tr><td>Honorarios</td><td>'+usd(m.hon)+'</td></tr>'+(m.desc?'<tr><td>(−) Descuento pago total 10%</td><td>'+usd(-m.desc)+'</td></tr>':'')+
-  '<tr class="hi"><td>Subtotal honorarios</td><td>'+usd(m.base)+'</td></tr><tr><td>IVA 15%</td><td>'+usd(m.iva)+'</td></tr>'+(m.reem?'<tr><td>Gastos reembolsables (sin IVA)</td><td>'+usd(m.reem)+'</td></tr>':'')+
+  '<table style="margin-top:8px"><tbody><tr><td>Honorarios profesionales'+(m.sep?' (operativos)':'')+'</td><td>'+usd(m.hon)+'</td></tr>'+(m.desc?'<tr><td>(−) Descuento por pago total ('+pct(m.dPct)+')</td><td>'+usd(-m.desc)+'</td></tr>':'')+
+  '<tr class="hi"><td>Subtotal de honorarios profesionales</td><td>'+usd(m.base)+'</td></tr><tr><td>IVA 15%</td><td>'+usd(m.iva)+'</td></tr>'+
   '<tr class="tot"><td>Total</td><td>'+usd(m.total)+'</td></tr>'+(m.age?'<tr><td>(−) Retención IR 10% (estimada)</td><td>'+usd(-m.rir)+'</td></tr><tr><td>(−) Retención IVA 100% (estimada)</td><td>'+usd(-m.riva)+'</td></tr><tr class="tot"><td>Valor neto a recibir</td><td>'+usd(m.neto)+'</td></tr>':'')+'</tbody></table>'+
-  '<table style="margin-top:8px"><thead><tr><th>Plan de pago</th><th>Valor</th></tr></thead><tbody>'+m.plan.map(function(p){return '<tr><td>'+esc(p[0])+'</td><td>'+usd(p[1])+'</td></tr>'}).join('')+'</tbody></table>'+
+  (m.exito?'<p style="font-size:13.5px;margin:8px 0 0"><b>Prima de éxito</b> (solo si se obtiene el resultado): '+usd(m.exito.base)+' + IVA '+usd(m.exito.iva)+' = <b>'+usd(m.exito.total)+'</b>. No se suma al total.</p>':'')+
+  '<div style="margin-top:12px;background:#F3EED9;border:1px solid var(--oroc);border-radius:8px;padding:10px;color:#14181E"><div class="estado" style="color:#6E6230">Forma de pago'+(PF.pago==='etapas'&&m.proc?' · '+esc(m.proc.split(' (')[0]):'')+'</div><table style="margin-top:4px"><tbody>'+m.plan.map(function(p){return '<tr><td style="color:#14181E">'+esc(p[0])+'</td><td style="color:#14181E">'+usd(p[1])+'</td></tr>'}).join('')+(m.exito?'<tr><td style="color:#14181E">Prima de éxito – al obtener el resultado favorable</td><td style="color:#14181E">'+usd(m.exito.total)+'</td></tr>':'')+'</tbody></table></div>'+
+  (m.gastos.length?'<div style="margin-top:12px;border:1px dashed var(--gris);border-radius:8px;padding:10px"><div class="estado" style="color:var(--gris)">Gastos operativos estimados (no incluidos en el total)</div><table style="margin-top:4px"><tbody>'+m.gastos.map(function(x){return '<tr><td>'+esc(x.n)+(x.nota?'<div class="hint" style="margin:0">'+esc(x.nota)+'</div>':'')+'</td><td>'+usd(x.valor)+'</td></tr>'}).join('')+'<tr class="tot"><td>Total estimado de gastos</td><td>'+usd(m.gtot)+'</td></tr></tbody></table></div>':'')+
   (PF.pago==='etapas'&&Math.abs(sumE-100)>0.01?'<p class="hint" style="color:var(--mal)">Los % de las etapas suman '+pct(sumE)+'; se reparten en proporción.</p>':'');
- store('prf',{num:PF.num,cid:PF.cid,items:PF.items,pago:PF.pago,cuotas:PF.cuotas,proc:PF.proc,etapas:PF.etapas,det:$('#f-det').value,dur:$('#f-dur').value,exc:$('#f-exc').value});
+ store('prf',{num:PF.num,cid:PF.cid,items:PF.items,pago:PF.pago,cuotas:PF.cuotas,proc:PF.proc,etapas:PF.etapas,sep:PF.sep,dPct:PF.dPct,gastos:PF.gastos,contrato:PF.contrato,durA:PF.durA,durB:PF.durB,durU:PF.durU,det:$('#f-det').value,exc:$('#f-exc').value});
 }
 function textoPrf(){
  var m=prfModel(true);
  return '*MACÍAS SÁNCHEZ CONSULTORES*\nProforma '+m.num+'\n\nEstimado/a '+(m.cli||'cliente')+':\nLe envío la proforma de servicios legales:\n\n'+
   m.items.map(function(it){return '• '+it.n+(it.cant!==1?' (x'+it.cant+')':'')+': '+usd(it.tot)}).join('\n')+
-  '\n\n'+(m.desc?'Descuento por pago total (10%): '+usd(-m.desc)+'\n':'')+'Subtotal honorarios: '+usd(m.base)+'\nIVA 15%: '+usd(m.iva)+'\n'+(m.reem?'Gastos reembolsables: '+usd(m.reem)+'\n':'')+'*Total: '+usd(m.total)+'*\n\n'+
-  '*Forma de pago*\n'+m.plan.map(function(p){return '• '+p[0]+': '+usd(p[1])}).join('\n')+
+  '\n\nHonorarios profesionales: '+usd(m.hon)+'\n'+(m.desc?'Descuento por pago total ('+pct(m.dPct)+'): '+usd(-m.desc)+'\n':'')+'Subtotal de honorarios profesionales: '+usd(m.base)+'\nIVA 15%: '+usd(m.iva)+'\n*Total: '+usd(m.total)+'*\n'+
+  (m.exito?'\nPrima de éxito (solo con resultado favorable): '+usd(m.exito.base)+' + IVA = '+usd(m.exito.total)+'\n':'')+
+  '\n*FORMA DE PAGO*\n'+m.plan.map(function(p){return '• '+p[0]+': '+usd(p[1])}).join('\n')+
+  (m.gastos.length?'\n\n*Gastos operativos estimados* (no incluidos en el total; los paga el cliente previa aprobación)\n'+m.gastos.map(function(g){return '• '+g.n+': '+usd(g.valor)}).join('\n'):'')+
+  (m.contrato?'\n\nEl servicio se formaliza con la suscripción de un contrato de prestación de servicios profesionales.':'')+
   (m.cuentas?'\n\n*Cuentas*\n'+m.cuentas:'')+'\n\nVigencia: '+m.vig+' días. '+(m.dur?'Duración estimada: '+m.dur+'. ':'')+'Adjunto el documento en PDF.\n\n'+m.fn+'\n'+m.fc;
 }
 function exportPrf(fmt){
@@ -1446,14 +1492,16 @@ function pdfPrf(m){
   titulo('Cliente');txt(m.cli,'700 34px '+FF,'#14181E',null,46);var dd=[m.ced&&('Cédula/RUC: '+m.ced),m.tel&&('Teléfono: '+m.tel),m.mail&&('Correo: '+m.mail)].filter(Boolean).join('   ·   ');if(dd)txt(dd,'500 28px '+FF,'#3A3F47',null,42);
   titulo('Servicios');
   need(60);x.fillStyle='#14181E';x.fillRect(M,y+6,W-2*M,54);x.fillStyle='#fff';x.font='700 26px '+FF;y+=44;x.fillText('CÓD.',M+14,y);x.fillText('DESCRIPCIÓN',M+190,y);var hdr=['CANT.','V. UNIT.','TOTAL'],cx=[W-M-560,W-M-370,W-M-14];hdr.forEach(function(h,i){x.fillText(h,cx[i]-x.measureText(h).width,y)});y+=16;
-  m.items.forEach(function(it,i){var L=wrap(it.n+(it.reem?' (reembolso, sin IVA)':''),W-2*M-190-600,'500 28px '+FF);need(L.length*38+26);if(i%2){x.fillStyle='#F7F5EE';x.fillRect(M,y,W-2*M,L.length*38+24)}x.fillStyle='#6E6230';x.font='700 24px '+FF;x.fillText(it.cod||'—',M+14,y+40);x.fillStyle='#14181E';x.font='500 28px '+FF;L.forEach(function(l,j){x.fillText(l,M+190,y+40+j*38)});
+  m.items.forEach(function(it,i){var L=wrap(it.n+(it.exito?' · prima de éxito '+usd(it.exito):''),W-2*M-190-600,'500 28px '+FF);need(L.length*38+26);if(i%2){x.fillStyle='#F7F5EE';x.fillRect(M,y,W-2*M,L.length*38+24)}x.fillStyle='#6E6230';x.font='700 24px '+FF;x.fillText(it.cod||'—',M+14,y+40);x.fillStyle='#14181E';x.font='500 28px '+FF;L.forEach(function(l,j){x.fillText(l,M+190,y+40+j*38)});
    [String(it.cant).replace('.',','),usd(it.valor),usd(it.tot)].forEach(function(v,k){x.fillText(v,cx[k]-x.measureText(v).width,y+40)});y+=L.length*38+24});
-  y+=10;filaR('Honorarios',usd(m.hon));if(m.desc)filaR('(−) Descuento por pago total (10%)',usd(-m.desc));filaR('Subtotal honorarios',usd(m.base),true,'#FBF9F1');filaR('IVA 15%',usd(m.iva));if(m.reem)filaR('Gastos reembolsables (sin IVA)',usd(m.reem));
+  y+=10;titulo('Total de la proforma');filaR('Honorarios profesionales'+(m.sep?' (operativos)':''),usd(m.hon));if(m.desc)filaR('(−) Descuento por pago total ('+pct(m.dPct)+')',usd(-m.desc));filaR('Subtotal de honorarios profesionales',usd(m.base),true,'#FBF9F1');filaR('IVA 15%',usd(m.iva));
   need(70);x.fillStyle='#14181E';x.fillRect(M,y+8,W-2*M,64);x.fillStyle='#fff';x.font='800 36px '+FF;y+=54;x.fillText('TOTAL',M+14,y);var tv=usd(m.total);x.fillText(tv,W-M-14-x.measureText(tv).width,y);y+=24;
   if(m.age){filaR('(−) Retención IR 10% estimada',usd(-m.rir));filaR('(−) Retención IVA estimada',usd(-m.riva));filaR('Valor neto a recibir',usd(m.neto),true)}
+  if(m.exito){y+=6;txt('Prima de éxito (solo si se obtiene el resultado favorable; no se suma al total): '+usd(m.exito.base)+' + IVA '+usd(m.exito.iva)+' = '+usd(m.exito.total),'600 27px '+FF,'#6E6230',null,38)}
+  need(120+m.plan.length*58);y+=26;var fy=y;x.fillStyle='#F3EED9';x.fillRect(M,fy,W-2*M,70+m.plan.length*58+(m.exito?58:0));x.fillStyle='#6E6230';x.font='800 28px '+FF;y+=46;x.fillText('FORMA DE PAGO'+(m.proc?' · '+m.proc.split(' (')[0]:''),M+14,y);y+=8;m.plan.forEach(function(p){filaR(p[0],usd(p[1]))});if(m.exito)filaR('Prima de éxito – al obtener el resultado favorable',usd(m.exito.total));y+=10;
+  if(m.gastos.length){titulo('Gastos operativos estimados (no incluidos en el total)');m.gastos.forEach(function(g){filaR(g.n.length>70?g.n.slice(0,68)+'…':g.n,usd(g.valor))});filaR('Total estimado de gastos',usd(m.gtot),true,'#F7F5EE');txt('Previa aprobación del cliente, se tramitan y pagan exclusivamente por el cliente; no forman parte de los honorarios profesionales.','500 25px '+FF,'#5B6068',null,36)}
   if(m.det){titulo('Detalle del trabajo');txt(m.det,'500 28px '+FF,'#14181E',null,40)}
-  if(m.dur||m.exc){titulo('Condiciones');if(m.dur)txt('Duración estimada: '+m.dur,'500 28px '+FF,'#14181E',null,40);if(m.exc)txt('No incluye: '+m.exc,'500 28px '+FF,'#14181E',null,40);txt('Los gastos judiciales, notariales y de terceros se reembolsan contra comprobante.','500 26px '+FF,'#5B6068',null,38)}
-  titulo('Forma de pago');if(m.proc)txt('Etapas según: '+m.proc,'500 26px '+FF,'#5B6068',null,38);m.plan.forEach(function(p){filaR(p[0],usd(p[1]))});
+  titulo('Condiciones');if(m.dur)txt('Duración estimada: '+m.dur,'500 28px '+FF,'#14181E',null,40);if(m.exc)txt('No incluye: '+m.exc,'500 28px '+FF,'#14181E',null,40);if(m.contrato)txt('Por tratarse de honorarios superiores a $500,00, el servicio se formaliza con la suscripción de un contrato de prestación de servicios profesionales.','500 28px '+FF,'#14181E',null,40);txt('Los gastos operativos (tasas, copias, peritos, notaría, movilización) no forman parte de los honorarios: previa aprobación, los paga directamente el cliente.','500 26px '+FF,'#5B6068',null,38);
   need((m.cuentas?100+wrap(m.cuentas,W-2*M,'500 28px '+FF).length*40:0)+215);
   if(m.cuentas){titulo('Cuentas para transferencia o depósito');txt(m.cuentas,'500 28px '+FF,'#14181E',null,40)}
   need(215);y+=80;if(fi){var fh=120,fw=Math.min(fh*fi.width/fi.height,480);x.drawImage(fi,M,y-fh+10,fw,fh)}
@@ -1501,14 +1549,16 @@ function docxPrf(m){
   b+=h('Servicios');
   var W1=[1200,4838,900,1350,1350],H1={fill:'14181E',c:'FFFFFF',b:1};
   var rows=[[ {t:'Cód.',fill:H1.fill,c:H1.c,b:1},{t:'Descripción',fill:H1.fill,c:H1.c,b:1},{t:'Cant.',fill:H1.fill,c:H1.c,b:1,jc:'right'},{t:'V. unit.',fill:H1.fill,c:H1.c,b:1,jc:'right'},{t:'Total',fill:H1.fill,c:H1.c,b:1,jc:'right'} ]];
-  m.items.forEach(function(it,i){var f=i%2?'F7F5EE':null;rows.push([{t:it.cod||'—',c:'6E6230',b:1,fill:f},{t:it.n+(it.reem?' (reembolso, sin IVA)':''),fill:f},{t:String(it.cant).replace('.',','),jc:'right',fill:f},{t:usd(it.valor),jc:'right',fill:f},{t:usd(it.tot),jc:'right',fill:f}])});
+  m.items.forEach(function(it,i){var f=i%2?'F7F5EE':null;rows.push([{t:it.cod||'—',c:'6E6230',b:1,fill:f},{t:it.n+(it.exito?' · prima de éxito '+usd(it.exito):''),fill:f},{t:String(it.cant).replace('.',','),jc:'right',fill:f},{t:usd(it.valor),jc:'right',fill:f},{t:usd(it.tot),jc:'right',fill:f}])});
   b+=tbl(rows,W1);
-  var tr=[['Honorarios',usd(m.hon)]];if(m.desc)tr.push(['(−) Descuento por pago total (10%)',usd(-m.desc)]);tr.push(['Subtotal honorarios',usd(m.base),1]);tr.push(['IVA 15%',usd(m.iva)]);if(m.reem)tr.push(['Gastos reembolsables (sin IVA)',usd(m.reem)]);tr.push(['TOTAL',usd(m.total),2]);
+  var tr=[['Honorarios profesionales'+(m.sep?' (operativos)':''),usd(m.hon)]];if(m.desc)tr.push(['(−) Descuento por pago total ('+pct(m.dPct)+')',usd(-m.desc)]);tr.push(['Subtotal de honorarios profesionales',usd(m.base),1]);tr.push(['IVA 15%',usd(m.iva)]);tr.push(['TOTAL',usd(m.total),2]);
   if(m.age){tr.push(['(−) Retención IR 10% estimada',usd(-m.rir)]);tr.push(['(−) Retención IVA estimada',usd(-m.riva)]);tr.push(['Valor neto a recibir',usd(m.neto),1])}
-  b+=p('',{after:60})+tbl(tr.map(function(t){var f=t[2]===2?'14181E':t[2]===1?'FBF9F1':null,c=t[2]===2?'FFFFFF':null;return [{t:t[0],b:!!t[2],fill:f,c:c},{t:t[1],b:!!t[2],jc:'right',fill:f,c:c}]}),[7238,2400]);
+  b+=h('Total de la proforma')+tbl(tr.map(function(t){var f=t[2]===2?'14181E':t[2]===1?'FBF9F1':null,c=t[2]===2?'FFFFFF':null;return [{t:t[0],b:!!t[2],fill:f,c:c},{t:t[1],b:!!t[2],jc:'right',fill:f,c:c}]}),[7238,2400]);
+  if(m.exito)b+=p('Prima de éxito (solo si se obtiene el resultado favorable; no se suma al total): '+usd(m.exito.base)+' + IVA '+usd(m.exito.iva)+' = '+usd(m.exito.total),{b:1,c:'6E6230',sz:20,before:80});
+  b+=p('FORMA DE PAGO'+(m.proc?' · '+m.proc.split(' (')[0]:''),{b:1,c:'6E6230',sz:22,before:160,after:40,shd:'F3EED9'}).replace('<w:pPr>','<w:pPr><w:keepNext/>')+tbl(m.plan.concat(m.exito?[['Prima de éxito – al obtener el resultado favorable',m.exito.total]]:[]).map(function(pp){return [{t:pp[0],fill:'F3EED9'},{t:usd(pp[1]),jc:'right',fill:'F3EED9'}]}),[7238,2400]);
+  if(m.gastos.length)b+=h('Gastos operativos estimados (no incluidos en el total)')+tbl(m.gastos.map(function(g){return [{t:g.n+(g.nota?' ('+g.nota+')':'')},{t:usd(g.valor),jc:'right'}]}).concat([[{t:'Total estimado de gastos',b:1,fill:'F7F5EE'},{t:usd(m.gtot),b:1,jc:'right',fill:'F7F5EE'}]]),[7238,2400])+p('Previa aprobación del cliente, se tramitan y pagan exclusivamente por el cliente; no forman parte de los honorarios profesionales.',{c:'5B6068',sz:18,before:40});
   if(m.det)b+=h('Detalle del trabajo')+p(m.det);
-  if(m.dur||m.exc){b+=h('Condiciones');if(m.dur)b+=p('Duración estimada: '+m.dur);if(m.exc)b+=p('No incluye: '+m.exc);b+=p('Los gastos judiciales, notariales y de terceros se reembolsan contra comprobante.',{c:'5B6068',sz:19})}
-  b+=h('Forma de pago')+(m.proc?p('Etapas según: '+m.proc,{c:'5B6068',sz:19}):'')+tbl(m.plan.map(function(pp){return [{t:pp[0]},{t:usd(pp[1]),jc:'right'}]}),[7238,2400]);
+  b+=h('Condiciones');if(m.dur)b+=p('Duración estimada: '+m.dur);if(m.exc)b+=p('No incluye: '+m.exc);if(m.contrato)b+=p('Por tratarse de honorarios superiores a $500,00, el servicio se formaliza con la suscripción de un contrato de prestación de servicios profesionales.');b+=p('Los gastos operativos (tasas, copias, peritos, notaría, movilización) no forman parte de los honorarios: previa aprobación, los paga directamente el cliente.',{c:'5B6068',sz:19});
   if(m.cuentas)b+=h('Cuentas para transferencia o depósito')+p(m.cuentas).replace('<w:pPr>','<w:pPr><w:keepNext/><w:keepLines/>');
   b+='<w:p><w:pPr><w:keepNext/><w:spacing w:before="200" w:after="0"/></w:pPr>'+(fi?addImg(fi,'firma.png',200,70):'')+'</w:p>';
   b+='<w:p><w:pPr><w:keepNext/><w:spacing w:after="0"/><w:pBdr><w:top w:val="single" w:sz="8" w:space="4" w:color="14181E"/></w:pBdr><w:ind w:right="5400"/></w:pPr>'+run(m.fn,{b:1,sz:22})+'</w:p>'+p(m.fc+'\nFirma de responsabilidad',{c:'5B6068',sz:19,after:0}).replace('<w:pPr>','<w:pPr><w:keepLines/>');

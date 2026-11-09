@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="es"><head><meta charset="utf-8"><script>window.MSC_PWA=true</script><link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#14181E"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="MSC Legal"><link rel="apple-touch-icon" href="icons/icon-180.png"><link rel="icon" href="icons/icon-192.png"><meta name="viewport" content="width=device-width,initial-scale=1"><title>MSC · Calculadoras legales</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&display=swap"><style id="css">
-:root{--oro:#A09046;--oroc:#C9BC82;--olivo:#6E6230;--carbon:#14181E;--marfil:#F7F5EE;--linea:#E3DFD0;--gris:#5B6068;--ok:#2F6B3A;--okf:#E5F0E4;--mal:#9B2C22;--malf:#F7E4E1;--avi:#8A5A00;--avif:#FBF0D9}
+:root{--card:#fff;--oro:#A09046;--oroc:#C9BC82;--olivo:#6E6230;--carbon:#14181E;--marfil:#F7F5EE;--linea:#E3DFD0;--gris:#5B6068;--ok:#2F6B3A;--okf:#E5F0E4;--mal:#9B2C22;--malf:#F7E4E1;--avi:#8A5A00;--avif:#FBF0D9}
 *{box-sizing:border-box}
 html,body{margin:0;background:var(--marfil);color:var(--carbon);font-family:'Archivo',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;font-size:15px;line-height:1.45}
 header{background:var(--carbon);color:#fff;padding:14px 16px 0}
@@ -9,12 +9,12 @@ header{background:var(--carbon);color:#fff;padding:14px 16px 0}
 .wm{font-stretch:118%;font-weight:700;letter-spacing:.06em;font-size:12.5px;line-height:1.15;color:var(--oro)}
 .wm small{display:block;color:var(--oroc);font-weight:500;letter-spacing:.14em;font-size:9.5px;margin-top:2px}
 nav{display:flex;gap:2px;margin-top:12px;overflow-x:auto;scrollbar-width:none}nav::-webkit-scrollbar{display:none}
-nav button{flex:1 1 auto;min-width:0;background:none;border:0;color:#C9C6BA;font:inherit;font-weight:600;font-size:12.5px;letter-spacing:-.01em;padding:10px 3px 11px;border-bottom:3px solid transparent;cursor:pointer;white-space:nowrap}
+nav button{flex:0 0 auto;min-width:0;background:none;border:0;color:#C9C6BA;font:inherit;font-weight:600;font-size:13px;letter-spacing:-.01em;padding:10px 9px 11px;border-bottom:3px solid transparent;cursor:pointer;white-space:nowrap}
 nav button[aria-selected=true]{color:#fff;border-bottom-color:var(--oro)}
 main{max-width:760px;margin:0 auto;padding:14px 14px 40px}
 h2{font-stretch:115%;font-size:18px;margin:6px 0 4px;letter-spacing:.01em}
 .sub{color:var(--gris);font-size:13px;margin:0 0 12px}
-.card{background:#fff;border:1px solid var(--linea);border-radius:10px;padding:14px;margin:0 0 12px}
+.card{background:var(--card);border:1px solid var(--linea);border-radius:10px;padding:14px;margin:0 0 12px}
 .card h3{margin:0 0 10px;font-size:14px;font-stretch:112%;letter-spacing:.02em;color:var(--olivo);text-transform:uppercase}
 label{display:block;font-size:12.5px;font-weight:600;color:var(--gris);margin:0 0 4px}
 input,select{width:100%;font:inherit;font-size:15px;padding:10px 11px;border:1px solid #CFCABA;border-radius:8px;background:#fff;color:var(--carbon);min-height:44px}
@@ -63,6 +63,18 @@ details{margin-top:8px}summary{cursor:pointer;font-weight:600;font-size:13.5px;c
 .msg.e{color:var(--mal)}.msg.o{color:var(--ok)}
 footer{max-width:760px;margin:0 auto;padding:0 14px 28px;font-size:11.5px;color:var(--gris)}
 [hidden]{display:none!important}
+body.dark{--marfil:#0F1216;--linea:#2A3038;--gris:#9AA1AA;--card:#171B21;--okf:#14261A;--malf:#2B1714;--avif:#2A2212;--olivo:#C9BC82;background:#0F1216;color:#E7E4DA}
+body.dark .res,body.dark .kpi,body.dark input,body.dark select,body.dark textarea,body.dark .seg button,body.dark .btn.sec{background:#171B21;color:#E7E4DA;border-color:#323A45}
+body.dark input:disabled{background:#12161B;color:#9AA1AA}
+body.dark .seg{border-color:#323A45}body.dark .seg button+button{border-left-color:#323A45}
+body.dark .seg button[aria-pressed=true],body.dark .btn:not(.sec){background:var(--oro);border-color:var(--oro);color:#14181E}
+body.dark .res.ok{background:#14261A;border-color:#2C4A33}body.dark .res.mal{background:#2B1714;border-color:#5A2B26}
+body.dark .res.ok .estado{color:#8FCB98}body.dark .res.mal .estado{color:#F08A7E}
+body.dark .nota{background:#1A1E24}body.dark tr.hi td{background:#1C2128}body.dark tr.tot td{border-top-color:#E7E4DA}
+body.dark label{color:#A9AFB7}body.dark .card h3{color:#C9BC82}body.dark footer{color:#7E858E}
+body.dark a{color:#C9BC82}body.dark .tag.v{background:#1E3324;color:#9AD3A4}body.dark .tag{background:#2E2715;color:#E2C26B}
+body.dark [style*="background:#FBF9F1"],body.dark [style*="background:#F7F5EE"]{background:#1C2128!important}
+
 body.locked nav,body.locked #hdr-lock{display:none!important}body.locked main>section:not(#v-cli){display:none!important}
 #hdr-lock{position:absolute;right:12px;top:14px;background:none;border:1px solid #3A3F47;color:#C9C6BA;border-radius:8px;font:inherit;font-size:12px;font-weight:600;padding:6px 10px;cursor:pointer}
 header{position:relative}
@@ -112,17 +124,17 @@ function refreshSave(){$$('[data-needs=art]').forEach(function(b){b.disabled=!AR
 /* ---------- estructura ---------- */
 var ISOURL='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAPAAAAD0CAMAAACSGlu2AAAAkFBMVEWgkEb+/v4AAACejkOaiTqgj0afj0bDuIrq5ta0p23g28Ta1LjSyqi7sHzLwpvw7eKfkEW+s4Hf2cCci0OcjEW/fz9/fz+gj0Wjkketn2CZZjOejkWfjkW/vz+Ug0GdjUSZmTOekESekEaekEagj0agj0agkUeqqlUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB3FOfdAAAAMHRSTlP+/wD6/9qg/////////////f//MFEEBP7a/wWe0wQfYQUlRWxpiWQDAAAAAAAAAACke3BqAAAFuUlEQVR42u3da5ubNhAFYIGmNTdf28TeJG167///hxW2n/VWRiDJEozQ4fsmvOaIAWksizKzQwAM8MrA3y6XH7I5vl3+FgeR1fFjXtyz+CpkTmCprjDAAAMMMMAAAwwwwAADDDDAAAMMMMAAAwwwwAADDDDAAAMMMMAAAwwwwAADDDDAAAMMMMAAAwwwwAADDDDAAAMM8PrB5H3IJMG0bU6Nz3FqtpQgWIrC96gmMRzB1HiDBSUYadp4e2tK8Kb1QqA3lOJd2j/QLaVYlvwDXckU6/ALgRZJgqmKeMNiCPYP9IZSfLT0D/SRknyWlp6B7gQl+fJAO63ObKyOWpBM8m2J3rQ6E+wViSlYD3RN634f1gO9o3VPAFDt8+CUMHiWQDMCzxNoPuCZAu0JlhQ90G9O/0XkOizrmgKTqfMPtCRZ2xt8wOoJv60lSRaBVmnbVEV0sDqnjQhH1gNtfUoqaZ3TH/iD+9yJQMnWA237qkdUt46f0Etg9XQfZDA/BZoss3ysnCPxIrgomm2AZHsE+jZ0i/nBAQazR6BVlju/QR8A3L9/v72QbD3QDVmUoVNRLAkuXihTUuydzl3L8lJg/2S7BVolaec/RRsUXBR7nzLlFOhHGWIB9ilTDoFWWd42r03Chwf3ZerskmxqLQM9PHQZgN0Gsx7oE5my/NYFWGaJA75NE5PXvPvgqfRlqA2yrhQNbFumbAI9kWUuYKtk03ZyfbcvQ/tgK4dRwdNlajrQ5jK0IHjbjiZ7hKwHWus4UmNiO9YMsNstAxb3V3BTmTIO5vFATwzdfsBsFgJLi3OTjoGm6U9xQfCtcDSOZcoc6PNEGepu42RJ8PT9pS9T//83jqZAj+flcSdcGDxZQarjx2SbA03Hvd3wWBw8eaP5WKboZFhIImEbEwbg6afA+/B7quSPQJubHvQbAQvw0HTTwA1WD/T+Eeid9a2eC9iqhDamQNf2xZwPeOJdvU+wFtbxQBse1ziBnR6DxwNtfiBnBjbPt5l7Bp8DPfbKxQ5s+yprDvT4SzVD8PCc+dO3FA7DE7ZT0yYswdNlyhBom+kDpuCJZA8G2mqFji/4VqaqiS72R6AtJ7c5g81l6inQ9ssXzMHDL/WPQN/WiJ3mtLmD+2TXo4F2W4JMAGzuLuw/ic5xXSoBsLG7UIpm57zYyh9sDrQUHmvL/MEj7bLSmZvCXTpwuyx3cPB2We7g4P3f3J+0utD937zBEfq/eYPPvu2yiYJ922VTBfu1y6YLPojwgWYNjhFozmDndtnEwa7tssmD4wSa8TRtnECzBccKNFtwrEBzBUcLNNe1Jat22RWBrfu/VwK2aJddFThmoFmC9UAfSaQP3r+vZ88b6MXAZkXcQC8GNk8+TvR/vw4+LgE2X2Bzu6yIsBXVXGDzvpmxA61FaCZwa/5TY7tsyEtczQreq14MafvFlzbKxknnXTULWL73MIjlAn3vrp5pp5br4bAZZ6SNhN5PRS68F88sgWa0+ZC5/3ul4PkCzQOsB7qjde8RzzrQMcCsAx0BzDvQ4cF6oCvz+/I6wFSxDvQLYDm8ayrzQPuCVcd3XW+fj3oz096FM4NV57PNTgQMA+0FltLu+0gcA+0DlrINui0/ezC1gbepZw6237Z+R2v4vSX7besrnr9b5QqmU9KBdgbryyepBdoVnHygXcHUJR5oR7DhK/ov/JAIc7BsK7ujlSv5GUBpebC9vvihR4ABBhhggAEGGGCAAQYYYIABBhhggAEGGGCAAQYYYIABBhhggAEGGGCAAeYA/oorvG6v+CcnsKL+VWYEVtI/y0/5gBX0e/kpnyusnD8rbzbgQ+/9rcwGfPV+KbMBH+55zgV8Hb+/lNmAFfGP+/XNAvzx+uYAvno/l9mAle+n9zxnAL56v5TZgK/ez2U2YD3Pawc/X991g4e8awYPelcMPojL7+W/ZT5gcfn1+fqW5X8CuFb/IdpCOwAAAABJRU5ErkJggg==';
 var ISO='<img class="iso" src="'+ISOURL+'" alt="">';
-var TABS=[['cat','Catálogo'],['cli','Clientes'],['prf','Proforma'],['hon','Honorarios'],['calc','Calculadoras']];
+var TABS=[['cat','Catálogo'],['cli','Clientes'],['aud','Audiencias'],['prf','Proforma'],['hon','Honorarios'],['calc','Calculadoras'],['conf','Configuración']];
 var SUBS=[['pen','Pensiones'],['pla','Plazos y términos'],['tra','Tránsito']];
 document.getElementById('root').innerHTML=
  '<header><div class="marca">'+(DATA.logo?'<img src="'+DATA.logo+'" alt="Macías Sánchez Consultores" style="height:42px;width:auto;max-width:62%;display:block"><div class="wm" style="border-left:1px solid #3A3F47;padding-left:10px"><small style="margin:0;line-height:1.5">HERRAMIENTAS<br>DEL DESPACHO</small></div>':ISO+'<div class="wm">MACÍAS SÁNCHEZ CONSULTORES<small>HERRAMIENTAS DEL DESPACHO · USO INTERNO</small></div>')+'</div>'+
  (PWA?'<button id="hdr-lock" type="button">Bloquear</button>':'')+'<nav role="tablist">'+TABS.map(function(t){return '<button role="tab" data-t="'+t[0]+'" aria-selected="false">'+t[1]+'</button>'}).join('')+'</nav></header>'+
- '<main><section id="v-cat"></section><section id="v-cli" hidden></section><section id="v-prf" hidden></section><section id="v-hon" hidden></section><section id="v-calc" hidden><div class="seg" id="calc-nav" style="margin:4px 0 12px">'+SUBS.map(function(s){return '<button type="button" data-s="'+s[0]+'">'+s[1]+'</button>'}).join('')+'</div><section id="v-pen"></section><section id="v-pla" hidden></section><section id="v-tra" hidden></section></section></main>'+
+ '<main><section id="v-cat"></section><section id="v-cli" hidden></section><section id="v-aud" hidden></section><section id="v-prf" hidden></section><section id="v-hon" hidden></section><section id="v-calc" hidden><div class="seg" id="calc-nav" style="margin:4px 0 12px">'+SUBS.map(function(s){return '<button type="button" data-s="'+s[0]+'">'+s[1]+'</button>'}).join('')+'</div><section id="v-pen"></section><section id="v-pla" hidden></section><section id="v-tra" hidden></section></section><section id="v-conf" hidden></section></main>'+
  '<footer>Herramienta de uso interno de Macías Sánchez Consultores. Resultados referenciales: verifique la norma vigente y el caso concreto antes de actuar. Abg. Mariano X. Macías Sánchez · Mat. 09-2022-736.</footer>';
 function show(t){var sub=null;if(SUBS.some(function(s){return s[0]===t})){sub=t;t='calc'}else if(t&&t.indexOf('calc-')===0){sub=t.slice(5);t='calc'}
  if(!TABS.some(function(x){return x[0]===t}))t='cat';
  if(t==='calc'){if(!SUBS.some(function(s){return s[0]===sub}))sub=store('sub')||'pen';SUBS.forEach(function(s){$('#v-'+s[0]).hidden=s[0]!==sub});$$('#calc-nav button').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.s===sub)});store('sub',sub)}
- if(t==='prf'&&document.getElementById('f-cli'))renderPrf();
+ if(t==='prf'&&document.getElementById('f-cbox'))renderPrf();if(t==='aud')renderAud();if(t==='conf')renderConf();
  $$('nav button').forEach(function(b){b.setAttribute('aria-selected',b.dataset.t===t);if(b.dataset.t===t&&b.scrollIntoView)try{b.scrollIntoView({block:'nearest',inline:'nearest'})}catch(e){}});TABS.forEach(function(x){$('#v-'+x[0]).hidden=x[0]!==t});
  var h=t==='calc'?'calc-'+sub:t;try{if(location.hash!=='#'+h)history.replaceState(null,'','#'+h)}catch(e){}if(!document.body.classList.contains('locked'))store('tab',h)}
 $$('#calc-nav button').forEach(function(b){b.onclick=function(){show('calc-'+b.dataset.s)}});
@@ -455,12 +467,9 @@ function renderCons(){
   '<div><label for="c-fec">Fecha</label><input id="c-fec" type="date"></div><div><label for="c-hor">Hora</label><input id="c-hor" type="time" value="10:00"></div>'+
   '<div class="full" id="c-wlink"><label for="c-link">Enlace de la reunión virtual</label><input id="c-link" placeholder="Pegue el enlace de Meet, Zoom o WhatsApp"></div>'+
   '<div class="full" id="c-wlug"><label for="c-lug">Lugar de la consulta presencial</label><input id="c-lug" placeholder="Dirección o referencia"></div>'+
-  '<div class="full"><label for="c-met">Método de pago</label><input id="c-met"></div>'+
-  '<div class="full"><label for="c-cta">Cuentas bancarias</label><textarea id="c-cta" rows="4" style="width:100%;font:inherit;font-size:14px;padding:10px;border:1px solid #CFCABA;border-radius:8px" placeholder="Banco · tipo de cuenta · número · titular · cédula"></textarea></div>'+
-  '<div class="full"><label for="c-gra">Mensaje de agradecimiento</label><input id="c-gra"></div>'+
- '</div><div class="row" style="margin-top:10px"><button class="btn" id="c-copy" type="button">Copiar mensaje</button><button class="btn sec" id="c-wa" type="button">Abrir en WhatsApp</button><button class="btn sec" id="c-img" type="button">Generar imagen con logo</button><button class="btn sec" id="c-savec" type="button" data-needs="art">Guardar cuentas y textos</button></div>'+
+ '</div><div class="row" style="margin-top:10px"><button class="btn" id="c-copy" type="button">Copiar mensaje</button><button class="btn sec" id="c-wa" type="button">Abrir en WhatsApp</button><button class="btn sec" id="c-img" type="button">Generar imagen con logo</button></div>'+
  '<div class="msg" id="c-cmsg"></div><div id="c-out"></div>'+
- '<details><summary>Logo de la imagen y del encabezado</summary><p class="hint">'+(DATA.logo?'Se está usando su logo cargado.':'Ahora se usa un isotipo provisional. Suba su logo (PNG o SVG, mejor con fondo transparente) y guárdelo.')+'</p><input id="c-logo" type="file" accept="image/png,image/svg+xml,image/jpeg"><div class="row" style="margin-top:8px"><button class="btn sec" id="c-logos" type="button" data-needs="art">Guardar logo</button></div><div class="msg" id="c-lmsg"></div></details></div>'+
+ '<p class="hint">Método de pago, cuentas y mensaje de agradecimiento se toman de Configuración.</p></div>'+
  '<div class="card"><h3>Cómo cobrar mejor las consultas</h3><ul style="margin:0;padding-left:18px;font-size:14px">'+
   '<li><b>Cobre antes de la consulta</b>, al agendar: evita inasistencias y regateo.</li>'+
   '<li><b>Tiempo definido.</b> Anuncie 30 minutos; lo que exceda se cobra con el factor de tiempo.</li>'+
@@ -484,9 +493,6 @@ function renderCons(){
  var man=new Date();man.setDate(man.getDate()+1);$('#c-fec').value=st.fec||iso(man);if(st.hor)$('#c-hor').value=st.hor;
  if(st.asu)$('#c-asu').value=st.asu;if(st.link)$('#c-link').value=st.link;
  $('#c-lug').value=st.lug!=null?st.lug:(Q.lugar||'');
- $('#c-met').value=Q.metodo||'Transferencia o depósito bancario, antes de la consulta';
- $('#c-cta').value=Q.cuentas||'';
- $('#c-gra').value=Q.gracias||'Gracias por confiar en Macías Sánchez Consultores. Quedo atento a sus documentos.';
  $('#c-are').onchange=function(){fillTemas();calcCons()};
  ['c-tem','c-tie'].forEach(function(id){$('#'+id).onchange=calcCons});
  ['c-des','c-asu','c-fec','c-hor','c-link','c-lug'].forEach(function(id){$('#'+id).oninput=calcCons});
@@ -498,9 +504,7 @@ function renderCons(){
  $$('#c-com button').forEach(function(b){b.onclick=function(){CN.com=b.dataset.c;calcCons()}});
  $$('#c-mod button').forEach(function(b){b.onclick=function(){CN.mod=b.dataset.m;calcCons()}});
  $('#c-copy').onclick=copiarMsg;$('#c-wa').onclick=function(){var l=document.createElement('a');l.href='https://wa.me/?text='+encodeURIComponent(textoMsg());l.target='_blank';l.rel='noopener';document.body.appendChild(l);l.click();l.remove()};$('#c-img').onclick=generarImg;
- $('#c-savec').onclick=function(){Q.metodo=$('#c-met').value.trim();Q.cuentas=$('#c-cta').value.trim();Q.gracias=$('#c-gra').value.trim();Q.lugar=$('#c-lug').value.trim();guardar($('#c-cmsg'),'Cuentas y textos guardados.')};
  $('#c-save').onclick=function(){guardar($('#c-msg'),'Parámetros de consulta guardados.')};
- $('#c-logos').onclick=function(){var f=$('#c-logo').files[0],m=$('#c-lmsg');if(!f){m.className='msg e';m.textContent='Elija el archivo del logo.';return}if(f.size>600000){m.className='msg e';m.textContent='El archivo pesa más de 600 KB; use una versión más liviana.';return}var r=new FileReader();r.onload=function(){DATA.logo=r.result;guardar(m,'Logo guardado. La app se recarga con él.')};r.readAsDataURL(f)};
  refreshSave();calcCons();
 }
 function sugerir(){var q=function(id){return $('#'+id).checked};if(q('c-q2')||q('c-q3')||q('c-q4'))return 'alta';if(q('c-q1'))return 'media';return 'baja'}
@@ -545,7 +549,7 @@ function calcCons(){
 function cita(){
  var k=cotiz(),f=$('#c-fec').value,h=$('#c-hor').value;
  return {k:k,fecha:f?largo(parseD(f)):'(por definir)',hora:h||'(por definir)',lugar:CN.mod==='virtual'?($('#c-link').value.trim()||'(enlace por enviar)'):($('#c-lug').value.trim()||'(lugar por confirmar)'),
-  asunto:$('#c-asu').value.trim()||k.tema[0],metodo:$('#c-met').value.trim(),cuentas:$('#c-cta').value.trim(),gracias:$('#c-gra').value.trim()};
+  asunto:$('#c-asu').value.trim()||k.tema[0],metodo:(DATA.cobro||{}).metodo||'Transferencia o depósito bancario',cuentas:((DATA.cobro||{}).cuentas||'').trim(),gracias:(DATA.cobro||{}).gracias||'Gracias por confiar en Macías Sánchez Consultores.'};
 }
 function textoMsg(){
  var c=cita(),k=c.k;
@@ -632,7 +636,7 @@ function crearBoveda(pw){var dek=rnd(32),rc=codRec(),v={format:'msc-vault',v:1,d
  return envolver(v,dek,pw,rc).then(function(){return importDek(dek)}).then(function(key){return {v:v,key:key,rc:rc,dek:dek}})}
 function abrirBoveda(v,secreto,esRec){return kdf(esRec?normRec(secreto):secreto,b64bytes(esRec?v.rsalt:v.salt),v.iter).then(function(k){return descifra(k,esRec?v.wrec:v.wpw)})}
 function leerDatos(v,key){if(!v.data)return Promise.resolve(vacio());return descifra(key,v.data).then(function(b){return JSON.parse(TD.decode(b))})}
-function vacio(){return {clientes:[],casos:[],seq:{}}}
+function vacio(){return {clientes:[],casos:[],aud:[],seq:{}}}
 function sellar(){return cifra(R.key,TE.encode(JSON.stringify(R.data))).then(function(d){R.vault.data=d;R.vault.upd=Date.now();R.vault.dev=devId();guardaLocal()})}
 function guardaLocal(){try{localStorage.setItem('msc:vault',JSON.stringify(R.vault))}catch(e){alertaR('No se pudo guardar en este dispositivo: '+e.message)}}
 function bovedaLocal(){try{return JSON.parse(localStorage.getItem('msc:vault'))}catch(e){return null}}
@@ -702,19 +706,20 @@ function mostrarRec(rc,nuevo){
  '<label class="chk" style="margin-top:10px"><input type="checkbox" id="r-ok"> Ya la guardé en un lugar seguro</label><div class="row" style="margin-top:8px"><button class="btn" id="r-cont" type="button" disabled>Continuar</button></div></div>';
  $('#r-ok').onchange=function(){$('#r-cont').disabled=!this.checked};$('#r-cont').onclick=function(){appDesbloqueada();if(nuevo)setTimeout(function(){alertaR('Registro creado. Active la sincronización con Google Drive en "Respaldo y sincronización".',1)},50)};
 }
-function bloquear(){if(PWA){try{localStorage.removeItem('msc:prf')}catch(e){}olvidar().then(function(){location.reload()});return}R.key=null;R.data=null;R.sel=null;R.cas=null;R.view='cli';R.q='';olvidar();renderCli();badgeCli()}
+function bloquear(){if(PWA){try{localStorage.removeItem('msc:prf')}catch(e){}olvidar().then(function(){location.reload()});return}R.key=null;R.data=null;R.sel=null;R.cas=null;R.view='cli';R.q='';olvidar();renderCli();badgeCli();renderAud();renderConf();cajaCliente()}
 
 /* ---------- registro principal ---------- */
 function pintaRegistro(){
  var v=$('#v-cli');
- v.innerHTML='<div class="row" style="justify-content:space-between;align-items:center;margin-bottom:8px"><h2 style="margin:0">Clientes y casos</h2><div class="row"><button class="btn sec" id="r-sync" type="button" style="min-height:36px;padding:6px 10px">Sincronizar</button><button class="btn sec" id="r-lock" type="button" style="min-height:36px;padding:6px 10px">Bloquear</button></div></div>'+
- '<p class="hint" id="r-sst" style="margin:0 0 10px"></p>'+
+ v.innerHTML='<div class="row" style="justify-content:space-between;align-items:center;margin-bottom:6px"><h2 style="margin:0">Clientes y casos</h2>'+(PWA?'':'<button class="btn sec" id="r-lock" type="button" style="min-height:36px;padding:6px 10px">Bloquear</button>')+'</div>'+
+ '<p class="hint sst" style="margin:0 0 10px;cursor:pointer"></p>'+
  '<div class="seg" id="r-vw" style="margin-bottom:12px"><button type="button" data-v="cli">Clientes</button><button type="button" data-v="mes">Por mes</button><button type="button" data-v="llam">Llamadas</button></div>'+
- '<div class="msg" id="r-msg"></div><div id="r-body"></div>'+
- '<details class="card" style="margin-top:14px"><summary>Respaldo y sincronización</summary><div id="r-cfg"></div></details>';
- $('#r-lock').onclick=bloquear;$('#r-sync').onclick=function(){sincronizar(true)};
+ '<div class="msg" id="r-msg"></div><div id="r-body"></div>';
+ if($('#r-lock'))$('#r-lock').onclick=bloquear;
+ $$('#v-cli .sst').forEach(function(e){e.onclick=function(){show('conf')}});
  $$('#r-vw button').forEach(function(b){b.onclick=function(){R.view=b.dataset.v;R.sel=null;R.cas=null;vista()}});
- pintaCfg();estadoSync();vista();badgeCli();
+ estadoSync();vista();badgeCli();
+ if(typeof renderConf==='function')renderConf();if(typeof renderAud==='function')renderAud();
 }
 function vista(){
  $$('#r-vw button').forEach(function(b){var n=b.dataset.v==='llam'?clientes().filter(llamPend).length:0;b.setAttribute('aria-pressed',b.dataset.v===R.view);if(b.dataset.v==='llam')b.innerHTML='Llamadas'+(n?' <span style="background:var(--mal);color:#fff;border-radius:10px;padding:0 6px;font-size:11px">'+n+'</span>':'')});
@@ -731,41 +736,60 @@ function vista(){
  $$('#r-body [data-c]').forEach(function(d){d.onclick=function(){R.sel=d.dataset.c;vista();window.scrollTo(0,0)}});
 }
 function fichaCliente(id){
- var nuevo=id==='nuevo',c=nuevo?{id:uid(),cod:'(se asigna al guardar)',est:'concretar',vin:'consulta',f0:hoyISO(),mat:'Familia'}:cliById(id),b=$('#r-body');
+ var nuevo=id==='nuevo',c=nuevo?{id:uid(),cod:'(se asigna al guardar)',tp:'natural',est:'concretar',vin:'consulta',f0:hoyISO(),mat:'Familia',ciu:'Guayaquil',pref:'WhatsApp'}:cliById(id),b=$('#r-body');
  if(!c){R.sel=null;return vista()}
+ if(!nuevo&&c.mailN==null&&c.mail)c.mailN=c.mail;
+ var tit=function(t){return '<div class="full" style="margin-top:6px"><h3 style="margin:0">'+t+'</h3></div>'};
  b.innerHTML='<button class="btn sec" id="r-back" type="button" style="min-height:34px;padding:4px 12px;margin-bottom:10px">← Clientes</button>'+
- '<div class="card"><h3>'+(nuevo?'Nuevo cliente':esc(c.cod))+'</h3><div class="grid">'+
-  inp('c_nom','Nombre o razón social *',c.nom,null,{full:1})+inp('c_ced','Cédula o RUC',c.ced,null,{attr:'inputmode="numeric"'})+inp('c_tel','Teléfono',c.tel,'tel')+inp('c_mail','Correo',c.mail,'email',{full:1})+
+ '<div class="card"><div class="row" style="justify-content:space-between"><b>'+(nuevo?'Nuevo cliente':esc(c.cod))+'</b>'+(nuevo?'':chip(EST_CLI[estCli(c)][0],EST_CLI[estCli(c)][1],EST_CLI[estCli(c)][2]))+'</div><div class="grid" style="margin-top:6px">'+
+  tit('Datos personales')+
+  sel('c_tp','Tipo de cliente',c.tp||'natural',[['natural','Persona natural'],['juridica','Persona jurídica']])+inp('c_ced','Cédula, RUC o pasaporte',c.ced,null,{attr:'inputmode="numeric"'})+
+  inp('c_nom','Nombres y apellidos o razón social *',c.nom,null,{full:1})+
+  inp('c_rep','Representante legal (persona jurídica)',c.rep,null,{full:1})+
+  tit('Contacto')+
+  inp('c_tel','Celular / WhatsApp',c.tel,'tel')+inp('c_tel2','Teléfono alterno',c.tel2,'tel')+
+  inp('c_mailN','Correo de notificación',c.mailN,'email',{full:1})+
+  inp('c_dir','Dirección domiciliaria',c.dir,null,{full:1})+
+  inp('c_ciu','Ciudad',c.ciu)+sel('c_pref','Medio de contacto preferido',c.pref||'WhatsApp',['WhatsApp','Llamada','Correo'])+
+  tit('Facturación y proforma')+
+  inp('c_fNom','Factura a nombre de (si es distinto)',c.fNom,null,{full:1})+
+  inp('c_fId','Cédula o RUC para la factura',c.fId,null,{attr:'inputmode="numeric"'})+inp('c_fMail','Correo para factura electrónica',c.fMail,'email')+
+  '<label class="chk full"><input type="checkbox" id="c_fAge"'+(c.fAge?' checked':'')+'> Es agente de retención (empresa o contribuyente especial)</label>'+
+  tit('Atención')+
   sel('c_mat','Materia',c.mat,MATERIAS)+sel('c_vin','Tipo de vínculo',c.vin,Object.keys(VIN).map(function(k){return [k,VIN[k]]}))+
   area_('c_sol','Solicitud o problema legal',c.sol)+
   sel('c_est','Estado del cliente',c.est,Object.keys(EST_CLI).map(function(k){return [k,EST_CLI[k][0]]}))+inp('c_f0','Fecha de primer contacto',c.f0,'date')+
+  sel('c_ori','¿Cómo llegó?',c.ori||'',[['','—'],'Referido','Redes sociales','WhatsApp','LinkedIn','Cliente anterior','Otro'],true)+
  '</div><p class="hint">Si el cliente tiene un caso activo, se muestra como Activo aunque aquí diga otro estado.</p></div>'+
  '<div class="card"><h3>Seguimiento</h3><div class="grid">'+inp('c_llam','Próxima llamada (fecha y hora)',c.llam,'datetime-local',{full:1})+inp('c_llamN','Motivo de la llamada',c.llamN,null,{full:1})+'</div>'+
   (c.llam&&!nuevo?'<div class="row" style="margin-top:8px"><button class="btn sec" id="c_hecha" type="button">Llamada hecha</button><a class="btn sec" id="c_cal" target="_blank" rel="noopener">Agendar en Google Calendar</a></div>':'')+'</div>'+
  '<div class="card"><h3>Protección de datos</h3><label class="chk"><input type="checkbox" id="c_priv"'+(c.priv?' checked':'')+'> Se entregó el aviso de privacidad</label><div class="grid">'+inp('c_privF','Fecha de entrega',c.privF,'date')+'</div>'+
-  '<div class="row" style="margin-top:8px"><button class="btn sec" id="c_aviso" type="button">Copiar aviso de privacidad</button></div><p class="hint">Datos mínimos: registre solo lo necesario para el servicio.</p></div>'+
+  '<div class="row" style="margin-top:8px"><button class="btn sec" id="c_aviso" type="button">Copiar aviso de privacidad</button></div><p class="hint">Registre solo los datos necesarios para el servicio.</p></div>'+
  '<div class="card">'+area_('c_notas','Notas internas',c.notas)+'</div>'+
  '<div class="row"><button class="btn" id="c_save" type="button">Guardar cliente</button>'+(nuevo?'':'<button class="btn sec" id="c_prf" type="button">Crear proforma</button><button class="btn sec" id="c_del" type="button" style="color:var(--mal);border-color:var(--mal)">Eliminar</button>')+'</div>'+
  '<div class="msg" id="c_msg"></div>'+
  (nuevo?'':'<div class="card" style="margin-top:14px"><div class="row" style="justify-content:space-between"><h3 style="margin:0">Casos</h3><button class="btn" id="c_ncas" type="button" style="min-height:36px;padding:6px 12px">Nuevo caso</button></div><div id="c_cas" style="margin-top:8px"></div></div>')+
  (nuevo||!(c.tel)?'':'<div class="row" style="margin-top:10px"><a class="btn sec" href="tel:'+esc(c.tel)+'">Llamar '+esc(c.tel)+'</a><a class="btn sec" target="_blank" rel="noopener" href="https://wa.me/'+telWa(c.tel)+'">WhatsApp</a></div>');
  $('#r-back').onclick=function(){R.sel=null;vista()};
+ var tpSync=function(){$('#c_rep').closest('div').hidden=$('#c_tp').value!=='juridica'};$('#c_tp').onchange=tpSync;tpSync();
  $('#c_priv').onchange=function(){if(this.checked&&!$('#c_privF').value)$('#c_privF').value=hoyISO()};
  $('#c_aviso').onclick=function(){copiar(avisoPriv(),$('#c_msg'))};
  if($('#c_cal'))$('#c_cal').href=calLink('Llamar a '+c.nom+(c.llamN?' – '+c.llamN:''),c.llam,15,(c.tel?'Tel. '+c.tel:''));
- if($('#c_hecha'))$('#c_hecha').onclick=function(){c.llam='';c.llamN='';c.upd=Date.now();guardarCambio('Llamada marcada como hecha.').then(function(){vista()})};
+ if($('#c_hecha'))$('#c_hecha').onclick=function(){c.llam='';c.llamN='';c.upd=Date.now();guardarCambio().then(function(){vista()})};
  $('#c_save').onclick=function(){
   if(!val('c_nom'))return msgC('El nombre es obligatorio.');
   var o=nuevo?{id:c.id,cod:sigCod('CLI')}:c;
-  ['nom','ced','tel','mail','mat','vin','sol','est','f0','llam','llamN','privF','notas'].forEach(function(k){o[k]=val('c_'+k)});o.priv=$('#c_priv').checked;o.upd=Date.now();
+  ['tp','ced','nom','rep','tel','tel2','mailN','dir','ciu','pref','fNom','fId','fMail','mat','vin','sol','est','f0','ori','llam','llamN','privF','notas'].forEach(function(k){o[k]=val('c_'+k)});
+  o.fAge=$('#c_fAge').checked;o.priv=$('#c_priv').checked;delete o.mail;o.upd=Date.now();
   if(nuevo)R.data.clientes.push(o);
-  guardarCambio('Cliente guardado.').then(function(){R.sel=o.id;vista();msgC('Cliente guardado.',1)});
+  guardarCambio().then(function(){R.sel=o.id;vista();msgC('Cliente guardado.',1)});
  };
  if(!nuevo){
-  $('#c_prf').onclick=function(){var s=store('prf')||{};s.num=null;s.cli=c.nom;s.ced=c.ced||'';s.tel=c.tel||'';s.mail=c.mail||'';s.items=[];s.det='';store('prf',s);show('prf')};
-  $('#c_del').onclick=function(){var bt=$('#c_del');if(!bt.dataset.c){bt.dataset.c=1;bt.textContent='Confirmar: eliminar cliente y sus casos';return}
-   c.del=true;c.upd=Date.now();['nom','ced','tel','mail','sol','notas','llam','llamN'].forEach(function(k){delete c[k]});casos(c.id).forEach(function(k){k.del=true;k.upd=Date.now()});
-   guardarCambio('Cliente eliminado.').then(function(){R.sel=null;vista();alertaR('Cliente eliminado.',1)})};
+  $('#c_prf').onclick=function(){var s=store('prf')||{};s={cid:c.id,pago:'total',items:[]};store('prf',s);show('prf')};
+  $('#c_del').onclick=function(){var bt=$('#c_del');if(!bt.dataset.c){bt.dataset.c=1;bt.textContent='Confirmar: eliminar cliente, casos y audiencias';return}
+   c.del=true;c.upd=Date.now();['nom','ced','rep','tel','tel2','mail','mailN','dir','fNom','fId','fMail','sol','notas','llam','llamN'].forEach(function(k){delete c[k]});
+   casos(c.id).forEach(function(k){k.del=true;k.upd=Date.now()});auds().filter(function(a){return a.cli===c.id}).forEach(function(a){a.del=true;a.upd=Date.now()});
+   guardarCambio().then(function(){R.sel=null;vista();alertaR('Cliente eliminado.',1)})};
   $('#c_ncas').onclick=function(){R.cas='nuevo';listaCasos(c)};
   listaCasos(c);
  }
@@ -773,38 +797,40 @@ function fichaCliente(id){
 function msgC(t,ok){var m=$('#c_msg');if(m){m.className='msg '+(ok?'o':'e');m.textContent=t}}
 function listaCasos(c){
  var box=$('#c_cas');if(!box)return;var L=casos(c.id).sort(function(a,b){return (b.fi||'').localeCompare(a.fi||'')});
- box.innerHTML=(R.cas?'<div id="c_form"></div>':'')+(L.length?L.map(function(k){return '<div data-k="'+k.id+'" style="padding:10px 0;border-bottom:1px solid var(--linea);cursor:pointer"><div class="row" style="justify-content:space-between;flex-wrap:nowrap"><div style="min-width:0"><b>'+esc(k.cod)+'</b>'+(k.causa?' · '+esc(k.causa):'')+'<div class="hint" style="margin:2px 0 0">'+esc(k.mat||'')+(k.proc?' · '+esc(k.proc):'')+' · '+esc(k.rol||'')+' · inicio '+esc(k.fi||'—')+(k.fc?' · cierre '+esc(k.fc):'')+'</div>'+(k.prox?'<div style="font-size:13px;font-weight:700;color:var(--olivo)">Próxima diligencia: '+fmtFH(k.prox)+(k.proxN?' · '+esc(k.proxN):'')+'</div>':'')+'</div><div style="flex:none">'+chip(EST_CAS[k.est]||k.est,k.est==='activo'?'#2F6B3A':'#5B6068',k.est==='activo'?'#E5F0E4':'#ECEAE2')+'</div></div></div>'}).join(''):(R.cas?'':'<p class="hint">Sin casos registrados.</p>'));
+ box.innerHTML=(R.cas?'<div id="c_form"></div>':'')+(L.length?L.map(function(k){var pa=proxAud(k.id);return '<div data-k="'+k.id+'" style="padding:10px 0;border-bottom:1px solid var(--linea);cursor:pointer"><div class="row" style="justify-content:space-between;flex-wrap:nowrap"><div style="min-width:0"><b>'+esc(k.cod)+'</b>'+(k.causa?' · '+esc(k.causa):'')+'<div class="hint" style="margin:2px 0 0">'+esc(k.mat||'')+(k.proc?' · '+esc(k.proc):'')+' · '+esc(k.rol||'')+(depTxt(k)?' · '+esc(depTxt(k)):'')+' · inicio '+esc(k.fi||'—')+(k.fc?' · cierre '+esc(k.fc):'')+'</div>'+(pa?'<div style="font-size:13px;font-weight:700;color:var(--olivo)">Próxima audiencia: '+fmtFH(pa.f+'T'+(pa.h||'00:00'))+' · '+esc(pa.tipo||'')+'</div>':'')+'</div><div style="flex:none">'+chip(EST_CAS[k.est]||k.est,k.est==='activo'?'#2F6B3A':'#5B6068',k.est==='activo'?'#E5F0E4':'#ECEAE2')+'</div></div></div>'}).join(''):(R.cas?'':'<p class="hint">Sin casos registrados.</p>'));
  $$('#c_cas [data-k]').forEach(function(d){d.onclick=function(){R.cas=d.dataset.k;listaCasos(c);$('#c_form').scrollIntoView({behavior:'smooth'})}});
  if(R.cas)formCaso(c,R.cas);
 }
 function formCaso(c,kid){
- var nuevo=kid==='nuevo',k=nuevo?{id:uid(),cli:c.id,mat:c.mat,est:'activo',pat:c.vin==='consulta'?'total':c.vin,fi:hoyISO(),rol:'Actor',unidad:'',fis:''}:R.data.casos.filter(function(x){return x.id===kid})[0];
+ var nuevo=kid==='nuevo',k=nuevo?{id:uid(),cli:c.id,mat:c.mat,est:'activo',pat:c.vin==='consulta'?'total':c.vin,fi:hoyISO(),rol:'Actor',dj:''}:R.data.casos.filter(function(x){return x.id===kid})[0];
+ migraDep(k);
  var f=$('#c_form');
  f.innerHTML='<div class="card" style="border-color:var(--oro);margin:6px 0 10px"><h3>'+(nuevo?'Nuevo caso':esc(k.cod))+'</h3><div class="grid">'+
   inp('k_causa','Número de causa / proceso',k.causa,null,{full:1,attr:'placeholder="Ej.: 09209-2026-01234"'})+sel('k_mat','Materia',k.mat,MATERIAS)+inp('k_proc','Tipo de proceso o trámite',k.proc,null,{attr:'placeholder="Ordinario, sumario, versión…"'})+
   sel('k_rol','Calidad del cliente',k.rol,ROL)+inp('k_contra','Contraparte',k.contra)+
-  sel('k_unidad','Unidad judicial',k.unidad,[['','—']].concat(UNIDADES))+inp('k_unidadO','Otra unidad / juzgado',k.unidadO)+
-  inp('k_dep','Dependencia administrativa',k.dep,null,{attr:'placeholder="IESS, ANT, Municipio…"'})+sel('k_fis','Fiscalía',k.fis,[['','—']].concat(FISCALIAS))+
+  sel('k_dj','Dependencia judicial o fiscal',k.dj||'',[['','—']].concat(DEPS))+inp('k_djO','Otra dependencia (especifique)',k.djO)+
+  inp('k_juez','Juez o fiscal',k.juez)+inp('k_sec','Secretario',k.sec)+
+  inp('k_dep','Dependencia administrativa',k.dep,null,{full:1,attr:'placeholder="IESS, ANT, Municipio…"'})+
   sel('k_pat','Patrocinio',k.pat,Object.keys(VIN).map(function(x){return [x,VIN[x]]}))+sel('k_est','Estado',k.est,Object.keys(EST_CAS).map(function(x){return [x,EST_CAS[x]]}))+
   inp('k_fi','Fecha de inicio *',k.fi,'date')+inp('k_fc','Fecha de cierre',k.fc,'date')+
-  inp('k_prox','Próxima audiencia o diligencia',k.prox,'datetime-local')+inp('k_proxN','Detalle',k.proxN)+
   inp('k_hon','Honorario pactado (USD)',k.hon,'number',{attr:'inputmode="decimal"'})+inp('k_prf','Proforma Nº',k.prf,null,{attr:'placeholder="PRF-2026-001"'})+
   area_('k_res','Resultado (al cerrar)',k.res)+area_('k_notas','Notas del caso',k.notas)+
- '</div><div class="row" style="margin-top:8px"><button class="btn" id="k_save" type="button">Guardar caso</button><button class="btn sec" id="k_x" type="button">Cancelar</button>'+(nuevo?'':'<a class="btn sec" id="k_cal" target="_blank" rel="noopener"'+(k.prox?'':' hidden')+'>Agendar diligencia</a><button class="btn sec" id="k_del" type="button" style="color:var(--mal);border-color:var(--mal)">Eliminar</button>')+'</div><div class="msg" id="k_msg"></div></div>';
+ '</div><div class="row" style="margin-top:8px"><button class="btn" id="k_save" type="button">Guardar caso</button><button class="btn sec" id="k_x" type="button">Cancelar</button>'+(nuevo?'':'<button class="btn sec" id="k_aud" type="button">Registrar audiencia</button><button class="btn sec" id="k_del" type="button" style="color:var(--mal);border-color:var(--mal)">Eliminar</button>')+'</div><div class="msg" id="k_msg"></div></div>';
  var m=function(t,ok){$('#k_msg').className='msg '+(ok?'o':'e');$('#k_msg').textContent=t};
+ var djs=function(){$('#k_djO').closest('div').hidden=$('#k_dj').value!=='Otro'};$('#k_dj').onchange=djs;djs();
  $('#k_x').onclick=function(){R.cas=null;listaCasos(c)};
- if($('#k_cal'))$('#k_cal').href=calLink((k.proxN||'Diligencia')+' – '+(k.causa||k.cod)+' ('+c.nom+')',k.prox,60,(k.unidad||k.unidadO||k.dep||'')+(k.fis?' · Fiscalía '+k.fis:''));
  $('#k_save').onclick=function(){
   if(!val('k_fi'))return m('La fecha de inicio es obligatoria.');
   if(val('k_est')==='cerrado'&&!val('k_fc'))$('#k_fc').value=hoyISO();
   if(val('k_fc')&&val('k_fc')<val('k_fi'))return m('La fecha de cierre no puede ser anterior a la de inicio.');
   var o=nuevo?{id:k.id,cli:c.id,cod:sigCod('CAS')}:k;
-  ['causa','mat','proc','rol','contra','unidad','unidadO','dep','fis','pat','est','fi','fc','prox','proxN','hon','prf','res','notas'].forEach(function(x){o[x]=val('k_'+x)});o.upd=Date.now();
+  ['causa','mat','proc','rol','contra','dj','djO','juez','sec','dep','pat','est','fi','fc','hon','prf','res','notas'].forEach(function(x){o[x]=val('k_'+x)});delete o.unidad;delete o.unidadO;delete o.fis;o.upd=Date.now();
   if(nuevo)R.data.casos.push(o);
   if(o.est==='activo'&&c.est!=='activo'){c.est='activo';c.upd=Date.now()}
-  guardarCambio('Caso guardado.').then(function(){R.cas=null;listaCasos(c);msgC('Caso '+o.cod+' guardado.',1)});
+  guardarCambio().then(function(){R.cas=null;vista();msgC('Caso '+o.cod+' guardado.',1)});
  };
- if($('#k_del'))$('#k_del').onclick=function(){var bt=$('#k_del');if(!bt.dataset.c){bt.dataset.c=1;bt.textContent='Confirmar eliminación';return}k.del=true;k.upd=Date.now();guardarCambio('Caso eliminado.').then(function(){R.cas=null;listaCasos(c)})};
+ if($('#k_aud'))$('#k_aud').onclick=function(){A.edit='nuevo';A.preCas=k.id;show('aud')};
+ if($('#k_del'))$('#k_del').onclick=function(){var bt=$('#k_del');if(!bt.dataset.c){bt.dataset.c=1;bt.textContent='Confirmar eliminación';return}k.del=true;k.upd=Date.now();auds().filter(function(a){return a.cas===k.id}).forEach(function(a){a.del=true;a.upd=Date.now()});guardarCambio().then(function(){R.cas=null;listaCasos(c)})};
 }
 function vistaMes(){
  var b=$('#r-body'),m=R.mes||hoyISO().slice(0,7),y=+m.slice(0,4),mo=+m.slice(5,7),ini=m+'-01',fin=iso(new Date(y,mo,0));
@@ -822,11 +848,13 @@ function vistaMes(){
  $$('#r-body [data-cl]').forEach(function(t){t.onclick=function(){R.view='cli';R.sel=t.dataset.cl;vista()}});
 }
 function vistaLlam(){
- var L=clientes().filter(function(c){return c.llam}).sort(function(a,b){return a.llam.localeCompare(b.llam)}),A=casos().filter(function(k){return k.prox&&k.prox.slice(0,10)>=hoyISO()}).sort(function(a,b){return a.prox.localeCompare(b.prox)});
+ var L=clientes().filter(function(c){return c.llam}).sort(function(a,b){return a.llam.localeCompare(b.llam)});
+ var A2=auds().filter(function(a){return a.f>=hoyISO()&&a.est!=='susp'}).sort(cmpAud).slice(0,8);
  $('#r-body').innerHTML='<div class="card"><h3>Llamadas</h3>'+(L.length?L.map(function(c){var lp=llamPend(c);return '<div data-cl="'+c.id+'" style="padding:10px;margin:0 -6px 6px;border-radius:8px;cursor:pointer;'+(lp?'background:var(--malf);border:1px solid #E7BDB6':'border:1px solid var(--linea)')+'"><b style="color:'+(lp?'var(--mal)':'inherit')+'">'+fmtFH(c.llam)+'</b> · '+esc(c.nom)+'<div class="hint" style="margin:2px 0 0">'+esc(c.llamN||'Sin motivo')+(c.tel?' · '+esc(c.tel):'')+'</div></div>'}).join(''):'<p class="hint">No hay llamadas programadas.</p>')+'</div>'+
- '<div class="card"><h3>Próximas audiencias y diligencias</h3>'+(A.length?A.map(function(k){var c=cliById(k.cli)||{};return '<div data-cl="'+esc(k.cli)+'" style="padding:8px 0;border-bottom:1px solid var(--linea);cursor:pointer"><b>'+fmtFH(k.prox)+'</b> · '+esc(k.proxN||'Diligencia')+'<div class="hint" style="margin:2px 0 0">'+esc(k.cod)+(k.causa?' · '+esc(k.causa):'')+' · '+esc(c.nom||'')+'</div></div>'}).join(''):'<p class="hint">Sin diligencias próximas.</p>')+'</div>'+
- '<p class="nota">La app no puede sonar una alarma estando cerrada. Use "Agendar en Google Calendar" en la ficha del cliente o del caso para recibir el recordatorio en su teléfono.</p>';
+ '<div class="card"><div class="row" style="justify-content:space-between"><h3 style="margin:0">Próximas audiencias</h3><button class="btn sec" id="r-goaud" type="button" style="min-height:32px;padding:4px 10px;font-size:12.5px">Ver Audiencias</button></div>'+(A2.length?A2.map(function(a){return audLinea(a)}).join(''):'<p class="hint">Sin audiencias próximas.</p>')+'</div>'+
+ '<p class="nota">La app no puede sonar una alarma estando cerrada. Use "Agendar en Google Calendar" para recibir el recordatorio en su teléfono.</p>';
  $$('#r-body [data-cl]').forEach(function(t){t.onclick=function(){R.view='cli';R.sel=t.dataset.cl;vista()}});
+ $('#r-goaud').onclick=function(){show('aud')};
 }
 function calLink(t,dt,min,det){if(!dt)return '#';var d=new Date(dt);if(isNaN(d))return '#';var e=new Date(d.getTime()+min*60000),f=function(x){return x.getFullYear()+String(x.getMonth()+1).padStart(2,'0')+String(x.getDate()).padStart(2,'0')+'T'+String(x.getHours()).padStart(2,'0')+String(x.getMinutes()).padStart(2,'0')+'00'};
  return 'https://calendar.google.com/calendar/render?action=TEMPLATE&text='+encodeURIComponent(t)+'&dates='+f(d)+'/'+f(e)+'&ctz=America/Guayaquil&details='+encodeURIComponent(det||'')}
@@ -845,7 +873,7 @@ function badgeCli(){var b=document.querySelector('nav button[data-t=cli]');if(!b
 var CFG_KEYS=['catalogo','consulta','cobro','prf','materias','tablas','anioPensiones','inhabilesExtra','firma'],CFG_APLICADA=null;
 function pickCfg(){var o={};CFG_KEYS.forEach(function(k){if(k in DATA)o[k]=JSON.parse(JSON.stringify(DATA[k]))});return o}
 function aplicaCfg(){if(R.data.cfg){CFG_KEYS.forEach(function(k){if(k in R.data.cfg)DATA[k]=R.data.cfg[k]})}CFG_APLICADA=R.data.cfgUpd||0}
-function rerender(){var t=store('tab');renderHon();renderCat();renderPrf();renderPen();renderPla();renderTra();if(t)show(t)}
+function rerender(){var t=store('tab');renderHon();renderCat();renderPrf();renderPen();renderPla();renderTra();renderAud();renderConf();if(t)show(t)}
 function toast(t,err){var d=$('#toast');if(!d){d=document.createElement('div');d.id='toast';document.body.appendChild(d)}d.className=err?'e':'';d.textContent=t;d.hidden=false;clearTimeout(d._t);d._t=setTimeout(function(){d.hidden=true},3500)}
 function appDesbloqueada(){
  if(!PWA){pintaRegistro();sincroAuto();return}
@@ -859,7 +887,7 @@ function appDesbloqueada(){
 /* ---------- guardar + sincronizar ---------- */
 function guardarCambio(){return sellar().then(function(){R.dirty=true;estadoSync();badgeCli();clearTimeout(R.timer);R.timer=setTimeout(function(){sincroAuto()},4000)})}
 function syncDisponible(){return PWA&&location.protocol==='https:'||location.hostname==='localhost'}
-function estadoSync(){var e=$('#r-sst');if(!e)return;var s=R.vault||{},t;
+function estadoSync(){var E=$$('.sst');if(!E.length)return;var e={set innerHTML(v){E.forEach(function(x){x.innerHTML=v})}};var s=R.vault||{},t;
  if(!syncDisponible())t='Sincronización con Google Drive disponible solo en la app instalada.';
  else if(R.sync.st==='run')t='Sincronizando con Google Drive…';
  else if(R.sync.st==='err')t='<span style="color:var(--mal)">'+esc(R.sync.msg)+'</span>';
@@ -888,7 +916,7 @@ function dActualizar(id,obj){return gapi(UAPI+'/'+id+'?uploadType=media&fields=i
 function dBorrar(id){return gapi(DAPI+'/'+id,{method:'DELETE'})}
 function fusionar(a,b){var out=fusionar0(a,b);var nb=(b.cfgUpd||0)>(a.cfgUpd||0);out.cfg=nb?b.cfg:a.cfg;out.cfgUpd=Math.max(a.cfgUpd||0,b.cfgUpd||0)||undefined;var ps={};[a.prfSeq||{},b.prfSeq||{}].forEach(function(o){Object.keys(o).forEach(function(k){ps[k]=Math.max(ps[k]||0,o[k])})});out.prfSeq=ps;var hm={};(a.prfHist||[]).concat(b.prfHist||[]).forEach(function(x){hm[x.num]=hm[x.num]||x});out.prfHist=Object.keys(hm).map(function(k){return hm[k]}).sort(function(x,y){return y.num.localeCompare(x.num)});return out}
 function fusionar0(a,b){function mm(x,y){var m={};(x||[]).concat(y||[]).forEach(function(r){var c=m[r.id];if(!c||(r.upd||0)>(c.upd||0))m[r.id]=r});return Object.keys(m).map(function(k){return m[k]})}
- var s={};[a.seq||{},b.seq||{}].forEach(function(o){Object.keys(o).forEach(function(k){s[k]=Math.max(s[k]||0,o[k])})});return {clientes:mm(a.clientes,b.clientes),casos:mm(a.casos,b.casos),seq:s}}
+ var s={};[a.seq||{},b.seq||{}].forEach(function(o){Object.keys(o).forEach(function(k){s[k]=Math.max(s[k]||0,o[k])})});return {clientes:mm(a.clientes,b.clientes),casos:mm(a.casos,b.casos),aud:mm(a.aud,b.aud),seq:s}}
 function paraSubir(){var v=JSON.parse(JSON.stringify(R.vault));delete v.ls;delete v.fid;return v}
 function sincroAuto(){if(!syncDisponible()||!navigator.onLine||!R.key)return;tokenG(false).then(function(){sincronizar(false)},function(){estadoSync()})}
 var SYNC_RUN=false;
@@ -931,30 +959,163 @@ function restaurarDrive(){
  .catch(function(e){alertaR(e.message)});
 }
 function importarArchivo(){var f=this.files[0];if(!f)return;var r=new FileReader();r.onload=function(){try{var v=JSON.parse(r.result);if(v.format!=='msc-vault')throw 0;delete v.ls;R.vault=v;guardaLocal();pantallaBloqueo(v);alertaR('Respaldo importado. Ingrese la contraseña con la que se creó.',1)}catch(e){alertaR('El archivo no es un respaldo válido del registro.')}};r.readAsText(f)}
-function pintaCfg(){
- var c=$('#r-cfg');
- c.innerHTML='<div style="font-size:14px;margin-top:8px"><p style="margin:0 0 8px"><b>Google Drive:</b> la app guarda una copia cifrada en una carpeta oculta de su Drive (solo esta app la ve), una versión por día (últimos 10 días) y una por mes (últimos 12 meses).</p>'+
- '<div class="row"><button class="btn" id="g-con" type="button">'+(R.vault&&R.vault.ls?'Sincronizar ahora':'Conectar Google Drive')+'</button></div>'+
- '<p class="hint">Use la cuenta msconsultores.ec@gmail.com (la registrada como usuario de prueba). Google puede pedir autorizar de nuevo de vez en cuando.</p>'+
- '<hr style="border:0;border-top:1px solid var(--linea);margin:12px 0"><p style="margin:0 0 6px"><b>Respaldo manual</b></p><div class="row"><button class="btn sec" id="g-exp" type="button">Descargar respaldo cifrado</button><button class="btn sec" id="g-csv" type="button">Exportar casos (CSV)</button></div>'+
- '<hr style="border:0;border-top:1px solid var(--linea);margin:12px 0"><p style="margin:0 0 6px"><b>Seguridad</b></p><div class="grid">'+inp('g-pa','Contraseña actual','','password')+inp('g-pn','Nueva contraseña','','password')+'</div><div class="row" style="margin-top:8px"><button class="btn sec" id="g-cpw" type="button">Cambiar contraseña</button></div>'+
- '<label class="chk" style="margin-top:8px"><input type="checkbox" id="g-rem"'+(R.remember?' checked':'')+'> Mantener desbloqueado en este teléfono (7 días)</label>'+
- '<details style="margin-top:6px"><summary>Opciones avanzadas</summary><div class="row" style="margin-top:8px"><button class="btn sec" id="g-rdr" type="button">Reemplazar con el de Drive</button><button class="btn sec" id="g-rdp" type="button">Reemplazar Drive con este teléfono</button><button class="btn sec" id="g-del" type="button" style="color:var(--mal);border-color:var(--mal)">Borrar registro de este teléfono</button></div><p class="hint">Úselas solo si la sincronización avisa que el registro de Drive usa otra llave.</p></details><div class="msg" id="g-msg"></div></div>';
- var gm=function(t,ok){$('#g-msg').className='msg '+(ok?'o':'e');$('#g-msg').textContent=t};
- $('#g-con').onclick=function(){sincronizar(true)};
- $('#g-exp').onclick=function(){bajar(new Blob([JSON.stringify(paraSubir())],{type:'application/json'}),'respaldo-registro-msc-'+hoyISO()+'.json',$('#g-msg'),true)};
- $('#g-csv').onclick=exportarCSV;
- $('#g-cpw').onclick=function(){var a=$('#g-pa').value,n=$('#g-pn').value;if(n.length<8)return gm('La nueva contraseña debe tener al menos 8 caracteres.');gm('Verificando…',1);
-  abrirBoveda(R.vault,a,false).then(function(dek){var rc=codRec();return envolver(R.vault,dek,n,rc).then(function(){return guardarCambio()}).then(function(){mostrarRec(rc,false)})}).catch(function(){gm('La contraseña actual no es correcta.')})};
- $('#g-rem').onchange=function(){R.remember=this.checked;if(this.checked)recordar(R.key,7);else olvidar()};
- $('#g-rdr').onclick=function(){if(!confirmarBtn(this))return;R.key=null;R.data=null;localStorage.removeItem('msc:vault');olvidar();restaurarDrive()};
- $('#g-rdp').onclick=function(){if(!confirmarBtn(this))return;gm('Subiendo…',1);dLista(true).then(function(f){var m=f.filter(function(x){return x.name===VFILE})[0];return m?dActualizar(m.id,paraSubir()):dCrear(VFILE,paraSubir())}).then(function(){R.vault.ls=Date.now();R.dirty=false;guardaLocal();estadoSync();gm('Drive reemplazado con el registro de este teléfono.',1)}).catch(function(e){gm(e.message)})};
- $('#g-del').onclick=function(){if(!confirmarBtn(this))return;localStorage.removeItem('msc:vault');olvidar();R.key=null;R.data=null;R.vault=null;renderCli();badgeCli()};
-}
+
 function confirmarBtn(b){if(b.dataset.c)return true;b.dataset.c=1;b.dataset.t=b.textContent;b.textContent='Toque otra vez para confirmar';setTimeout(function(){delete b.dataset.c;b.textContent=b.dataset.t},5000);return false}
 document.addEventListener('visibilitychange',function(){if(document.hidden){R.hidAt=Date.now();if(R.dirty)sincroAuto()}else if(R.key&&!R.remember&&R.hidAt&&Date.now()-R.hidAt>10*60000){bloquear()}});
 window.addEventListener('online',function(){if(R.dirty)sincroAuto();estadoSync()});
 window.addEventListener('offline',estadoSync);
+
+/* =========================================================
+   3. AUDIENCIAS
+   ========================================================= */
+var DEPS=['Florida','Sur Valdivia','Albán Borja','Fiscalía Montecristi','Fiscalía La Merced','Otro'];
+var TIPOS_AUD=['Preliminar','Única','Juicio','Evaluación y preparatoria de juicio','Formulación de cargos','Calificación de flagrancia','Juicio directo','Procedimiento abreviado','Conciliación o mediación','Versión en Fiscalía','Diligencia (reconocimiento, pericia)','Apelación o segunda instancia','Otra'];
+var EST_AUD={prog:'Programada',real:'Realizada',dif:'Diferida',susp:'Suspendida'};
+var A={vw:'agenda',mes:null,dia:null,fm:'',fd:'',edit:null,preCas:null,pasadas:false};
+function auds(){return R.data?(R.data.aud||(R.data.aud=[])).filter(function(a){return !a.del}):[]}
+function cmpAud(a,b){return (a.f+(a.h||'')).localeCompare(b.f+(b.h||''))}
+function proxAud(casId){return auds().filter(function(a){return a.cas===casId&&a.f>=hoyISO()&&a.est==='prog'}).sort(cmpAud)[0]}
+function depTxt(k){return k.dj==='Otro'?(k.djO||'Otro'):(k.dj||'')}
+function migraDep(k){if(k.dj!=null)return;var M={'Florida Norte':'Florida','Valdivia':'Sur Valdivia','Albán Borja':'Albán Borja'};if(k.unidad){if(M[k.unidad])k.dj=M[k.unidad];else{k.dj='Otro';k.djO=k.unidadO||''}}else if(k.fis){k.dj=k.fis==='Merced'?'Fiscalía La Merced':k.fis==='Montecristi'?'Fiscalía Montecristi':'Otro'}else k.dj=''}
+function chipMod(m){return m==='tele'?chip('Telemática','#1F4E79','#E3EEF8'):chip('Presencial','#6E6230','#F3EED9')}
+function audLinea(a){var c=cliById(a.cli)||{};return '<div data-a="'+a.id+'" style="padding:10px 0;border-bottom:1px solid var(--linea);cursor:pointer"><div class="row" style="justify-content:space-between;flex-wrap:nowrap;align-items:flex-start"><div style="min-width:0"><b>'+fmtFH(a.f+'T'+(a.h||'00:00'))+'</b> · '+esc(a.tipo||'Audiencia')+
+ '<div class="hint" style="margin:2px 0 0">'+esc(a.causa||'s/n')+' · '+esc(a.mat||'')+' · '+esc(c.nom||'')+'</div><div class="hint" style="margin:0">'+esc(depTxt(a))+(a.sala?' · '+esc(a.sala):'')+(a.juez?' · Juez: '+esc(a.juez):'')+'</div></div><div style="flex:none;text-align:right">'+chipMod(a.mod)+(a.est!=='prog'?'<div style="margin-top:4px">'+chip(EST_AUD[a.est],'#5B6068','#ECEAE2')+'</div>':'')+'</div></div></div>'}
+function renderAud(){
+ var v=$('#v-aud');if(!v)return;
+ if(!R.key||!R.data){v.innerHTML='<h2>Audiencias</h2><p class="sub">Desbloquee el registro en la pestaña Clientes para ver y registrar audiencias.</p>';badgeAud();return}
+ if(A.edit)return formAud(A.edit);
+ v.innerHTML='<div class="row" style="justify-content:space-between;align-items:center;margin-bottom:8px"><h2 style="margin:0">Audiencias</h2><button class="btn" id="a-new" type="button" style="min-height:38px;padding:6px 12px">Nueva audiencia</button></div>'+
+ '<div class="seg" id="a-vw" style="margin-bottom:10px"><button type="button" data-v="agenda">Próximas</button><button type="button" data-v="mes">Mes</button><button type="button" data-v="dia">Día</button></div>'+
+ '<div class="grid" style="margin-bottom:10px"><div><label for="a-fm">Modalidad</label><select id="a-fm"><option value="">Todas</option><option value="pres">Presencial</option><option value="tele">Telemática</option></select></div><div><label for="a-fd">Dependencia</label><select id="a-fd"><option value="">Todas</option>'+DEPS.map(function(d){return '<option>'+esc(d)+'</option>'}).join('')+'</select></div></div>'+
+ '<div id="a-body"></div>';
+ $('#a-fm').value=A.fm;$('#a-fd').value=A.fd;
+ $('#a-fm').onchange=function(){A.fm=this.value;cuerpoAud()};$('#a-fd').onchange=function(){A.fd=this.value;cuerpoAud()};
+ $('#a-new').onclick=function(){A.edit='nuevo';A.preCas=null;renderAud()};
+ $$('#a-vw button').forEach(function(b){b.onclick=function(){A.vw=b.dataset.v;cuerpoAud()}});
+ cuerpoAud();badgeAud();
+}
+function filtraAud(L){return L.filter(function(a){return (!A.fm||a.mod===A.fm)&&(!A.fd||a.dj===A.fd)})}
+function cuerpoAud(){
+ $$('#a-vw button').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.v===A.vw)});
+ var b=$('#a-body'),hoy=hoyISO(),L=filtraAud(auds()).sort(cmpAud);
+ if(A.vw==='agenda'){
+  var P=L.filter(function(a){return A.pasadas?a.f<hoy:a.f>=hoy});if(A.pasadas)P.reverse();
+  var g={};P.forEach(function(a){(g[a.f]=g[a.f]||[]).push(a)});
+  b.innerHTML=(P.length?Object.keys(g).map(function(f){var d=parseD(f);return '<div class="card"><h3>'+(f===hoy?'Hoy · ':'')+largo(d)+'</h3>'+g[f].map(audLinea).join('')+'</div>'}).join(''):'<p class="hint">'+(A.pasadas?'No hay audiencias anteriores.':'No hay audiencias próximas.')+'</p>')+
+  '<button class="btn sec" id="a-pas" type="button">'+(A.pasadas?'Ver próximas':'Ver anteriores')+'</button>';
+  $('#a-pas').onclick=function(){A.pasadas=!A.pasadas;cuerpoAud()};
+ }else if(A.vw==='mes'){
+  var m=A.mes||hoy.slice(0,7),y=+m.slice(0,4),mo=+m.slice(5,7),first=new Date(y,mo-1,1),dias=new Date(y,mo,0).getDate(),off=(first.getDay()+6)%7;
+  var M=L.filter(function(a){return a.f.slice(0,7)===m}),cnt={};M.forEach(function(a){(cnt[a.f]=cnt[a.f]||[]).push(a)});
+  var cells='';for(var i=0;i<off;i++)cells+='<div></div>';
+  for(var d=1;d<=dias;d++){var f=m+'-'+String(d).padStart(2,'0'),x=cnt[f]||[],wk=new Date(y,mo-1,d).getDay();
+   cells+='<button type="button" data-d="'+f+'" style="min-height:52px;border:1px solid var(--linea);border-radius:8px;background:'+(f===hoy?'var(--okf)':'var(--card)')+';color:inherit;font:inherit;padding:4px 2px;text-align:center;cursor:pointer;'+(wk===0||wk===6?'opacity:.7':'')+'"><div style="font-weight:'+(x.length?'800':'500')+';font-size:14px">'+d+'</div><div>'+x.slice(0,3).map(function(a){return '<span style="display:inline-block;width:7px;height:7px;border-radius:50%;margin:0 1px;background:'+(a.mod==='tele'?'#3B7DBF':'#A09046')+'"></span>'}).join('')+(x.length>3?'<span style="font-size:10px">+'+(x.length-3)+'</span>':'')+'</div></button>'}
+  b.innerHTML='<div class="card"><div class="row" style="justify-content:space-between;flex-wrap:nowrap"><button class="btn sec" id="a-prev" type="button" style="min-height:34px;padding:4px 12px">‹</button><b style="text-transform:capitalize">'+MESES[mo-1]+' '+y+'</b><button class="btn sec" id="a-next" type="button" style="min-height:34px;padding:4px 12px">›</button></div>'+
+   '<div style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-top:10px;font-size:11px;color:var(--gris);text-align:center;font-weight:700"><div>L</div><div>M</div><div>M</div><div>J</div><div>V</div><div>S</div><div>D</div></div>'+
+   '<div style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-top:4px">'+cells+'</div>'+
+   '<p class="hint"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#A09046"></span> Presencial &nbsp; <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#3B7DBF"></span> Telemática · '+M.length+' audiencia'+(M.length===1?'':'s')+' en el mes</p></div>'+
+   (M.length?'<div class="card"><h3>Audiencias del mes</h3>'+M.map(audLinea).join('')+'</div>':'');
+  var mv=function(n){var dt=new Date(y,mo-1+n,1);A.mes=dt.getFullYear()+'-'+String(dt.getMonth()+1).padStart(2,'0');cuerpoAud()};
+  $('#a-prev').onclick=function(){mv(-1)};$('#a-next').onclick=function(){mv(1)};
+  $$('#a-body [data-d]').forEach(function(x){x.onclick=function(){A.dia=x.dataset.d;A.vw='dia';cuerpoAud()}});
+ }else{
+  var dd=A.dia||hoy,D=L.filter(function(a){return a.f===dd});
+  b.innerHTML='<div class="card"><div class="grid"><div class="full"><label for="a-dia">Día</label><input id="a-dia" type="date" value="'+dd+'"></div></div></div>'+
+   '<div class="card"><h3>'+largo(parseD(dd))+'</h3>'+(D.length?D.map(audLinea).join(''):'<p class="hint">Sin audiencias este día.</p>')+'</div>';
+  $('#a-dia').onchange=function(){A.dia=this.value;cuerpoAud()};
+ }
+ $$('#a-body [data-a]').forEach(function(x){x.onclick=function(){A.edit=x.dataset.a;renderAud();window.scrollTo(0,0)}});
+}
+function formAud(id){
+ var nuevo=id==='nuevo',a=nuevo?{id:uid(),f:A.dia&&A.vw==='dia'?A.dia:hoyISO(),h:'09:00',mod:'pres',est:'prog',tipo:'Única'}:auds().filter(function(x){return x.id===id})[0],v=$('#v-aud');
+ if(!a){A.edit=null;return renderAud()}
+ var K=casos().filter(function(k){return k.est!=='cerrado'||k.id===a.cas}).sort(function(x,y){return (y.fi||'').localeCompare(x.fi||'')});
+ if(nuevo&&A.preCas)a.cas=A.preCas;
+ v.innerHTML='<button class="btn sec" id="a-back" type="button" style="min-height:34px;padding:4px 12px;margin-bottom:10px">← Audiencias</button>'+
+ '<div class="card" style="border-color:var(--oro)"><h3>'+(nuevo?'Nueva audiencia':'Editar audiencia')+'</h3>'+(K.length?'':'<p class="msg e">Primero registre un caso en la ficha del cliente.</p>')+'<div class="grid">'+
+  sel('a_cas','Caso *',a.cas||'',[['','Elegir caso…']].concat(K.map(function(k){var c=cliById(k.cli)||{};return [k.id,k.cod+(k.causa?' · '+k.causa:'')+' · '+(c.nom||'')]})),true)+
+  inp('a_f','Fecha *',a.f,'date')+inp('a_h','Hora *',a.h,'time')+
+  sel('a_tipo','Tipo de audiencia',a.tipo,TIPOS_AUD)+'<div><label>Modalidad</label><div class="seg" id="a_mod"><button type="button" data-m="pres">Presencial</button><button type="button" data-m="tele">Telemática</button></div></div>'+
+  sel('a_dj','Dependencia judicial o fiscal',a.dj||'',[['','—']].concat(DEPS))+inp('a_djO','Otra dependencia (especifique)',a.djO)+
+  inp('a_sala','Sala, piso o despacho',a.sala)+inp('a_link','Enlace de la audiencia telemática',a.link,'url',{full:1,attr:'placeholder="Zoom, Teams, Meet…"'})+
+  inp('a_juez','Juez o fiscal',a.juez)+inp('a_sec','Secretario',a.sec)+
+  inp('a_causa','Número de causa',a.causa)+sel('a_mat','Materia',a.mat||'',[['','—']].concat(MATERIAS))+
+  sel('a_est','Estado',a.est,Object.keys(EST_AUD).map(function(k){return [k,EST_AUD[k]]}))+
+  area_('a_notas','Notas o resultado',a.notas)+
+ '</div><div class="row" style="margin-top:8px"><button class="btn" id="a_save" type="button">Guardar audiencia</button><a class="btn sec" id="a_cal" target="_blank" rel="noopener">Agendar en Google Calendar</a>'+(a.link?'<a class="btn sec" href="'+esc(a.link)+'" target="_blank" rel="noopener">Abrir enlace</a>':'')+(nuevo?'':'<button class="btn sec" id="a_del" type="button" style="color:var(--mal);border-color:var(--mal)">Eliminar</button>')+'</div><div class="msg" id="a_msg"></div></div>';
+ var mod=a.mod||'pres';
+ var modSync=function(){$$('#a_mod button').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.m===mod)});$('#a_link').closest('div').hidden=mod!=='tele';$('#a_sala').closest('div').hidden=mod==='tele'};
+ $$('#a_mod button').forEach(function(b){b.onclick=function(){mod=b.dataset.m;modSync()}});modSync();
+ var djs=function(){$('#a_djO').closest('div').hidden=$('#a_dj').value!=='Otro'};$('#a_dj').onchange=djs;djs();
+ var fillCas=function(force){var k=R.data.casos.filter(function(x){return x.id===$('#a_cas').value})[0];if(!k)return;migraDep(k);
+  [['causa','causa'],['mat','mat'],['dj','dj'],['djO','djO'],['juez','juez'],['sec','sec']].forEach(function(p){var e=$('#a_'+p[0]);if(force||!e.value)e.value=k[p[1]]||''});djs()};
+ $('#a_cas').onchange=function(){fillCas(true)};if(nuevo&&a.cas)fillCas(true);
+ var calUpd=function(){var c=cliById((R.data.casos.filter(function(x){return x.id===$('#a_cas').value})[0]||{}).cli)||{};var dep=$('#a_dj').value==='Otro'?$('#a_djO').value:$('#a_dj').value;
+  $('#a_cal').href=calLink('Audiencia '+$('#a_tipo').value+' – '+($('#a_causa').value||'')+' ('+(c.nom||'')+')',$('#a_f').value+'T'+($('#a_h').value||'09:00'),60,(mod==='tele'?'Telemática: '+$('#a_link').value:'Presencial: '+dep+' '+$('#a_sala').value)+($('#a_juez').value?'\nJuez: '+$('#a_juez').value:''))};
+ $$('#v-aud input,#v-aud select').forEach(function(e){e.addEventListener('change',calUpd)});calUpd();
+ $('#a-back').onclick=function(){A.edit=null;renderAud()};
+ $('#a_save').onclick=function(){
+  var m=$('#a_msg');if(!val('a_cas')){m.className='msg e';m.textContent='Elija el caso.';return}if(!val('a_f')||!val('a_h')){m.className='msg e';m.textContent='Fecha y hora son obligatorias.';return}
+  var k=R.data.casos.filter(function(x){return x.id===val('a_cas')})[0];
+  var o=nuevo?{id:a.id}:a;['cas','f','h','tipo','dj','djO','sala','link','juez','sec','causa','mat','est','notas'].forEach(function(x){o[x]=val('a_'+x)});o.mod=mod;o.cli=k.cli;o.upd=Date.now();
+  if(nuevo){(R.data.aud=R.data.aud||[]).push(o)}
+  var ch=false;[['juez','juez'],['sec','sec'],['dj','dj'],['djO','djO'],['causa','causa']].forEach(function(p){if(!k[p[1]]&&o[p[0]]){k[p[1]]=o[p[0]];ch=true}});if(ch)k.upd=Date.now();
+  guardarCambio().then(function(){A.edit=null;A.preCas=null;A.mes=o.f.slice(0,7);renderAud();toast('Audiencia guardada.');badgeAud()});
+ };
+ if($('#a_del'))$('#a_del').onclick=function(){if(!confirmarBtn(this))return;a.del=true;a.upd=Date.now();guardarCambio().then(function(){A.edit=null;renderAud();badgeAud()})};
+}
+function badgeAud(){var b=document.querySelector('nav button[data-t=aud]');if(!b)return;var h=hoyISO(),t=new Date();t.setDate(t.getDate()+1);var m=iso(t);var n=R.data?auds().filter(function(a){return (a.f===h||a.f===m)&&a.est==='prog'}).length:0;b.innerHTML='Audiencias'+(n?' <span style="background:var(--oro);color:#14181E;border-radius:10px;padding:0 5px;font-size:10.5px">'+n+'</span>':'')}
+function exportarAudCSV(){var q=function(x){x=String(x==null?'':x);return /[;"\n]/.test(x)?'"'+x.replace(/"/g,'""')+'"':x};
+ var rows=[['Fecha','Hora','Tipo','Modalidad','Dependencia','Sala','Enlace','Juez','Secretario','Causa','Materia','Cliente','Estado']];
+ auds().sort(cmpAud).forEach(function(a){var c=cliById(a.cli)||{};rows.push([a.f,a.h,a.tipo,a.mod==='tele'?'Telemática':'Presencial',depTxt(a),a.sala,a.link,a.juez,a.sec,a.causa,a.mat,c.nom,EST_AUD[a.est]])});
+ bajar(new Blob(['﻿'+rows.map(function(r){return r.map(q).join(';')}).join('\r\n')],{type:'text/csv'}),'audiencias-msc-'+hoyISO()+'.csv',$('#g-msg'))}
+
+/* =========================================================
+   8. CONFIGURACIÓN
+   ========================================================= */
+function aplicaTema(){var t=store('tema')||'auto',dark=t==='dark'||(t==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches);document.body.classList.toggle('dark',dark);var mt=document.querySelector('meta[name=theme-color]');if(mt)mt.content='#14181E'}
+try{matchMedia('(prefers-color-scheme: dark)').addEventListener('change',aplicaTema)}catch(e){}
+function renderConf(){
+ var v=$('#v-conf');if(!v)return;var Q=DATA.cobro||(DATA.cobro={}),P=DATA.prf||(DATA.prf={}),un=!!(R.key&&R.data);
+ v.innerHTML='<h2>Configuración</h2>'+
+ '<div class="card"><h3>Apariencia</h3><div class="seg" id="g-tema"><button type="button" data-t="light">Claro</button><button type="button" data-t="dark">Oscuro</button><button type="button" data-t="auto">Automático</button></div><p class="hint">Automático sigue el tema de su teléfono o computadora.</p></div>'+
+ (un?'<div class="card"><h3>Google Drive</h3><p class="hint sst" style="margin-top:0"></p><p style="font-size:14px;margin:6px 0">La app guarda una copia cifrada en una carpeta oculta de su Drive (solo esta app la ve): una versión por día (10 días) y una por mes (12 meses).</p>'+
+  '<div class="row"><button class="btn" id="g-con" type="button">'+(R.vault&&R.vault.ls?'Sincronizar ahora':'Conectar Google Drive')+'</button></div><p class="hint">Cuenta: msconsultores.ec@gmail.com (usuario de prueba). Google puede pedir autorizar de nuevo de vez en cuando.</p></div>'+
+ '<div class="card"><h3>Seguridad</h3><div class="grid">'+inp('g-pa','Contraseña actual','','password')+inp('g-pn','Nueva contraseña','','password')+'</div><div class="row" style="margin-top:8px"><button class="btn sec" id="g-cpw" type="button">Cambiar contraseña</button></div>'+
+  '<label class="chk" style="margin-top:8px"><input type="checkbox" id="g-rem"'+(R.remember?' checked':'')+'> Mantener desbloqueado en este equipo (7 días)</label><div class="row" style="margin-top:6px"><button class="btn sec" id="g-lock" type="button">Bloquear ahora</button></div><p class="hint">Al cambiar la contraseña recibirá una clave de recuperación nueva.</p></div>'+
+ '<div class="card"><h3>Respaldo manual</h3><div class="row"><button class="btn sec" id="g-exp" type="button">Descargar respaldo cifrado</button><button class="btn sec" id="g-csv" type="button">Casos (CSV)</button><button class="btn sec" id="g-acsv" type="button">Audiencias (CSV)</button></div><p class="hint">El respaldo cifrado se restaura con su contraseña. Los CSV no van cifrados: guárdelos en un lugar seguro.</p>'+
+  '<details style="margin-top:6px"><summary>Opciones avanzadas</summary><div class="row" style="margin-top:8px"><button class="btn sec" id="g-rdr" type="button">Reemplazar con el de Drive</button><button class="btn sec" id="g-rdp" type="button">Reemplazar Drive con este equipo</button><button class="btn sec" id="g-del" type="button" style="color:var(--mal);border-color:var(--mal)">Borrar datos de este equipo</button></div><p class="hint">Úselas solo si la sincronización avisa que el registro de Drive usa otra llave.</p></details></div>'
+ :'<div class="card"><h3>Seguridad y Google Drive</h3><p class="hint" style="margin-top:0">Desbloquee el registro en la pestaña Clientes para ver estas opciones.</p></div>')+
+ '<div class="card"><h3>Datos del despacho</h3><p class="hint" style="margin-top:0">Se usan en proformas, consultas y mensajes de WhatsApp.</p><div class="grid">'+
+  area_('g-cta','Cuentas bancarias',Q.cuentas)+inp('g-met','Método de pago',Q.metodo||'Transferencia o depósito bancario',null,{full:1})+
+  inp('g-gra','Mensaje de agradecimiento',Q.gracias||'Gracias por confiar en Macías Sánchez Consultores. Quedo atento a sus documentos.',null,{full:1})+
+  inp('g-lug','Lugar de atención presencial',Q.lugar,null,{full:1})+
+  inp('g-fn','Firma de responsabilidad',P.firmaNombre,null,{full:1})+inp('g-fc','Cargo / matrícula',P.firmaCargo,null,{full:1})+
+  inp('g-vig','Vigencia de proformas (días)',P.vigencia||15,'number')+
+  '<div class="full"><label for="g-fimg">Imagen de su firma (PNG con fondo transparente)'+(DATA.firma?' · cargada':'')+'</label><input id="g-fimg" type="file" accept="image/png,image/jpeg"></div>'+
+  '<div class="full"><label for="g-logo">Logo (PNG con fondo transparente) · '+(DATA.logo?'cargado':'provisional')+'</label><input id="g-logo" type="file" accept="image/png,image/svg+xml,image/jpeg"></div>'+
+ '</div><div class="row" style="margin-top:8px"><button class="btn" id="g-sv" type="button" data-needs="art">Guardar datos del despacho</button></div></div>'+
+ '<div class="msg" id="g-msg"></div>'+
+ '<div class="card"><h3>Acerca de</h3><p style="font-size:14px;margin:0">MSC · Herramientas del despacho. Uso interno de Macías Sánchez Consultores. Código: github.com/xavimac123/msc-calculadoras</p></div>';
+ var gm=function(t,ok){var m=$('#g-msg');m.className='msg '+(ok?'o':'e');m.textContent=t;m.scrollIntoView({behavior:'smooth',block:'nearest'})};
+ var tm=store('tema')||'auto';$$('#g-tema button').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.t===tm);b.onclick=function(){store('tema',b.dataset.t);aplicaTema();renderConf()}});
+ $('#g-sv').onclick=function(){Q.cuentas=val('g-cta');Q.metodo=val('g-met');Q.gracias=val('g-gra');Q.lugar=val('g-lug');P.firmaNombre=val('g-fn');P.firmaCargo=val('g-fc');P.vigencia=num(val('g-vig'))||15;
+  var rd=function(f,max){return new Promise(function(res,rej){if(!f)return res(null);if(f.size>max)return rej(new Error('El archivo '+f.name+' pesa más de '+Math.round(max/1000)+' KB.'));var r=new FileReader();r.onload=function(){res(r.result)};r.readAsDataURL(f)})};
+  Promise.all([rd($('#g-fimg').files[0],400000),rd($('#g-logo').files[0],600000)]).then(function(x){if(x[0])DATA.firma=x[0];if(x[1])DATA.logo=x[1];guardar($('#g-msg'),'Datos del despacho guardados.')}).catch(function(e){gm(e.message)})};
+ refreshSave();
+ if(!un)return;
+ estadoSync();
+ $('#g-con').onclick=function(){sincronizar(true)};
+ $('#g-exp').onclick=function(){bajar(new Blob([JSON.stringify(paraSubir())],{type:'application/json'}),'respaldo-registro-msc-'+hoyISO()+'.json',$('#g-msg'),true)};
+ $('#g-csv').onclick=exportarCSV;$('#g-acsv').onclick=exportarAudCSV;
+ $('#g-cpw').onclick=function(){var a=$('#g-pa').value,n=$('#g-pn').value;if(n.length<8)return gm('La nueva contraseña debe tener al menos 8 caracteres.');gm('Verificando…',1);
+  abrirBoveda(R.vault,a,false).then(function(dek){var rc=codRec();return envolver(R.vault,dek,n,rc).then(function(){return guardarCambio()}).then(function(){show('cli');mostrarRec(rc,false)})}).catch(function(){gm('La contraseña actual no es correcta.')})};
+ $('#g-rem').onchange=function(){R.remember=this.checked;if(this.checked)recordar(R.key,7);else olvidar()};
+ $('#g-lock').onclick=bloquear;
+ $('#g-rdr').onclick=function(){if(!confirmarBtn(this))return;R.key=null;R.data=null;localStorage.removeItem('msc:vault');olvidar();if(PWA){location.reload();return}show('cli');restaurarDrive()};
+ $('#g-rdp').onclick=function(){if(!confirmarBtn(this))return;gm('Subiendo…',1);dLista(true).then(function(f){var m=f.filter(function(x){return x.name===VFILE})[0];return m?dActualizar(m.id,paraSubir()):dCrear(VFILE,paraSubir())}).then(function(){R.vault.ls=Date.now();R.dirty=false;guardaLocal();estadoSync();gm('Drive reemplazado con los datos de este equipo.',1)}).catch(function(e){gm(e.message)})};
+ $('#g-del').onclick=function(){if(!confirmarBtn(this))return;localStorage.removeItem('msc:vault');olvidar();if(PWA){location.reload();return}R.key=null;R.data=null;R.vault=null;renderCli();renderConf();badgeCli()};
+}
 
 /* =========================================================
    5. CATÁLOGO DE SERVICIOS
@@ -997,6 +1158,7 @@ function formCat(i){
   '<div><label for="k-u">Unidad</label><select id="k-u">'+Object.keys(UNID).map(function(k){return '<option value="'+k+'"'+(k===s.unidad?' selected':'')+'>'+UNID[k]+'</option>'}).join('')+'</select></div>'+
   '<div><label for="k-v">Valor sugerido (USD, sin IVA)</label><input id="k-v" type="number" inputmode="decimal" step="5" value="'+s.valor+'"></div>'+
   '<label class="chk full"><input type="checkbox" id="k-iva"'+(s.iva?' checked':'')+'> Grava IVA 15%</label>'+
+  '<div class="full"><label for="k-proc">Procedimiento (para el pago por etapas)</label><select id="k-proc"><option value="">— (pago único)</option>'+Object.keys(PROCS).map(function(k){return '<option value="'+k+'"'+(k===procDe(s)?' selected':'')+'>'+esc(PROCS[k].n)+'</option>'}).join('')+'</select></div>'+
   '<div class="full"><label for="k-f">Descripción para factura</label><input id="k-f" value="'+esc(s.fact)+'" placeholder="Se completa sola si la deja vacía"></div>'+
  '</div><div class="row" style="margin-top:10px"><button class="btn" id="k-ok" type="button">Aplicar</button><button class="btn sec" id="k-x" type="button">Cancelar</button>'+(i!=null?'<button class="btn sec" id="k-del" type="button" style="color:var(--mal);border-color:var(--mal)">Eliminar</button>':'')+'</div><div class="msg" id="k-fm"></div></div>';
  if(i==null){$('#k-cod').value=nextCod('FAM');$('#k-mat').onchange=function(){$('#k-cod').value=nextCod(this.value);if(this.value==='GAS'){$('#k-u').value='reembolso';$('#k-iva').checked=false}}}
@@ -1006,7 +1168,7 @@ function formCat(i){
   var cod=$('#k-cod').value.trim().toUpperCase(),n=$('#k-n').value.trim(),m=$('#k-fm');
   if(!cod||!n){m.className='msg e';m.textContent='Código y servicio son obligatorios.';return}
   if(cat().some(function(x,j){return x.cod===cod&&j!==i})){m.className='msg e';m.textContent='Ese código ya existe.';return}
-  var o={cod:cod,mat:$('#k-mat').value,n:n,desc:$('#k-d').value.trim(),unidad:$('#k-u').value,valor:num($('#k-v').value),iva:$('#k-iva').checked,fact:$('#k-f').value.trim()||((($('#k-u').value==='reembolso')?'Reembolso de gastos – ':'Honorarios profesionales – ')+n)};
+  var o={proc:$('#k-proc').value,cod:cod,mat:$('#k-mat').value,n:n,desc:$('#k-d').value.trim(),unidad:$('#k-u').value,valor:num($('#k-v').value),iva:$('#k-iva').checked,fact:$('#k-f').value.trim()||((($('#k-u').value==='reembolso')?'Reembolso de gastos – ':'Honorarios profesionales – ')+n)};
   if(i==null)DATA.catalogo.push(o);else DATA.catalogo[i]=o;
   DATA.catalogo.sort(function(a,b){var ka=Object.keys(MATS).indexOf(a.mat),kb=Object.keys(MATS).indexOf(b.mat);return ka-kb||a.cod.localeCompare(b.cod)});
   persistLocal();f.innerHTML='';listCat();$('#k-msg').className='msg';$('#k-msg').textContent='Cambio aplicado. Pulse "Guardar catálogo" para conservarlo.';
@@ -1033,15 +1195,31 @@ function bajar(blob,fn,m,compartir){
 var PF={items:[],pago:'total'};
 function getSeq(){return PWA&&R.data?(R.data.prfSeq=R.data.prfSeq||{}):(store('prfseq')||{})}function getHist(){return PWA&&R.data?(R.data.prfHist||[]):(store('prfhist')||[])}function setHist(h){if(PWA&&R.data){R.data.prfHist=h;guardarCambio()}else store('prfhist',h)}
 function prfNum(peek){var y=String(new Date().getFullYear()),s=getSeq();var n=(s[y]||0)+1;if(!peek){s[y]=n;if(!(PWA&&R.data))store('prfseq',s)}return 'PRF-'+y+'-'+String(n).padStart(3,'0')}
+var PROCS={
+ ordinario:{n:'COGEP · Procedimiento ordinario',e:[['Presentación y calificación de la demanda',40],['Audiencia preliminar',25],['Audiencia de juicio',25],['Sentencia y ejecución',10]]},
+ sumario:{n:'COGEP · Procedimiento sumario (alimentos, divorcio contencioso, tenencia, laboral, inquilinato)',e:[['Presentación y calificación de la demanda',50],['Audiencia única',40],['Resolución y ejecución',10]]},
+ ejecutivo:{n:'COGEP · Procedimiento ejecutivo',e:[['Demanda y calificación',40],['Audiencia única',30],['Ejecución (embargo, remate o pago)',30]]},
+ monitorio:{n:'COGEP · Procedimiento monitorio',e:[['Petición y requerimiento de pago',50],['Audiencia única (si hay oposición)',30],['Ejecución',20]]},
+ voluntario:{n:'COGEP · Procedimiento voluntario o trámite notarial',e:[['Solicitud y documentos',50],['Audiencia o diligencia',30],['Resolución e inscripción',20]]},
+ incidente:{n:'Incidente en proceso existente (pensiones atrasadas, apremio)',e:[['Liquidación y petición',60],['Resolución y ejecución',40]]},
+ penal:{n:'COIP · Procedimiento ordinario penal',e:[['Investigación previa',30],['Instrucción fiscal (formulación de cargos)',25],['Evaluación y preparatoria de juicio',20],['Audiencia de juicio y sentencia',25]]},
+ penalDirecto:{n:'COIP · Procedimiento directo o abreviado',e:[['Calificación de flagrancia o formulación',40],['Audiencia de juicio directo o abreviado',45],['Sentencia',15]]},
+ contravencion:{n:'COIP · Contravención de tránsito',e:[['Impugnación',60],['Audiencia y resolución',40]]},
+ administrativo:{n:'COA · Procedimiento administrativo (IESS, ANT, entidades públicas)',e:[['Petición o recurso',50],['Seguimiento e insistencia',30],['Resolución',20]]},
+ gestion:{n:'Gestión o trámite (Fiscalía, contratos, cobro extrajudicial)',e:[['Inicio del trámite',60],['Entrega o resolución',40]]}
+};
+var DEFPROC={'FAM-01':'sumario','FAM-02':'incidente','FAM-03':'voluntario','FAM-04':'sumario','FAM-05':'sumario','FAM-06':'voluntario','CIV-01':'ordinario','CIV-02':'sumario','CIV-03':'monitorio','CIV-04':'ejecutivo','CIV-05':'voluntario','CIV-06':'gestion','CIV-07':'sumario','PEN-01':'penal','PEN-02':'penal','PEN-03':'penal','PEN-04':'gestion','TRA-01':'contravencion','TRA-02':'penal','TRA-03':'gestion','LAB-01':'administrativo','LAB-02':'sumario','LAB-03':'gestion','CAR-01':'gestion','CAR-02':'monitorio','DEU-01':'administrativo','DEU-02':'ejecutivo','PDP-01':'administrativo'};
+var DEFMAT={IESS:'administrativo',FIS:'gestion',ADM:'administrativo',FAM:'sumario',CIV:'ordinario',PEN:'penal',TRA:'contravencion',LAB:'sumario',CAR:'monitorio',DEU:'ejecutivo',PDP:'administrativo'};
+function procDe(s){return s.proc||DEFPROC[s.cod]||DEFMAT[s.mat]||''}
+function procPrincipal(){var best=null;PF.items.forEach(function(it){if(it.reem||!it.proc)return;var v=it.cant*it.valor;if(!best||v>best.v)best={p:it.proc,v:v}});return best?best.p:'gestion'}
+function etapasDe(p){return (PROCS[p]||PROCS.gestion).e.map(function(e){return [e[0],e[1]]})}
+function regDisponible(){return !!(R.key&&R.data)}
+function cliPF(){return PF.cid&&R.data?cliById(PF.cid):null}
 function renderPrf(){
- var v=$('#v-prf'),Q=DATA.cobro||(DATA.cobro={}),P=DATA.prf;
- v.innerHTML='<h2>Proforma</h2><p class="sub">Cotización con servicios del catálogo, forma de pago, cuentas y firma. Exporta PDF y Word, y se comparte por WhatsApp o correo.</p>'+
- '<div class="card"><h3>1 · Cliente</h3><div class="grid">'+
-  '<div class="full"><label for="f-cli">Nombre o razón social</label><input id="f-cli" autocomplete="off"></div>'+
-  '<div><label for="f-ced">Cédula o RUC</label><input id="f-ced" inputmode="numeric"></div><div><label for="f-tel">Teléfono</label><input id="f-tel" inputmode="tel"></div>'+
-  '<div class="full"><label for="f-mail">Correo</label><input id="f-mail" type="email"></div>'+
-  '<label class="chk full"><input type="checkbox" id="f-age"> Es agente de retención (empresa o contribuyente especial)</label>'+
- '</div></div>'+
+ var v=$('#v-prf'),P=DATA.prf||(DATA.prf={}),Q=DATA.cobro||{};
+ var st=store('prf')||{};PF.num=st.num||null;PF.cid=st.cid||null;PF.items=st.items||[];PF.pago=st.pago||'total';PF.cuotas=st.cuotas||3;PF.proc=st.proc||null;PF.etapas=st.etapas||null;
+ v.innerHTML='<h2>Proforma</h2><p class="sub">Cliente del registro, servicios del catálogo y forma de pago. Exporta PDF y Word, y se comparte por WhatsApp o correo.</p>'+
+ '<div class="card"><h3>1 · Cliente</h3><div id="f-cbox"></div></div>'+
  '<div class="card"><h3>2 · Servicios</h3><div class="grid"><div class="full"><label for="f-add">Agregar del catálogo</label><select id="f-add"><option value="">Elegir servicio…</option>'+Object.keys(MATS).map(function(k){var l=cat().filter(function(s){return s.mat===k});return l.length?'<optgroup label="'+esc(MATS[k])+'">'+l.map(function(s){return '<option value="'+esc(s.cod)+'">'+esc(s.cod+' · '+s.n)+'</option>'}).join('')+'</optgroup>':''}).join('')+'</select></div></div>'+
   '<div id="f-items" style="margin-top:8px"></div><button class="btn sec" id="f-libre" type="button" style="margin-top:8px">Agregar ítem libre</button></div>'+
  '<div class="card"><h3>3 · Detalle del trabajo</h3><div class="grid">'+
@@ -1052,46 +1230,53 @@ function renderPrf(){
  '<div class="card"><h3>4 · Forma de pago</h3><div class="seg" id="f-pago"><button type="button" data-p="total">Pago total (−10%)</button><button type="button" data-p="cuotas">Cuotas</button><button type="button" data-p="etapas">Por etapas</button></div>'+
   '<div id="f-pdet" style="margin-top:10px"></div><p class="hint">El 10% por pago total se aplica solo a honorarios, no a gastos reembolsables.</p></div>'+
  '<div class="res" id="f-res"></div>'+
- '<div class="card"><h3>5 · Cuentas y firma</h3><div class="grid">'+
-  '<div class="full"><label for="f-cta">Cuentas bancarias</label><textarea id="f-cta" rows="3" style="width:100%;font:inherit;font-size:14px;padding:10px;border:1px solid #CFCABA;border-radius:8px" placeholder="Banco · tipo de cuenta · número · titular · cédula"></textarea></div>'+
-  '<div class="full"><label for="f-fn">Firma de responsabilidad</label><input id="f-fn" value="'+esc(P.firmaNombre)+'"></div>'+
-  '<div class="full"><label for="f-fc">Cargo / matrícula</label><input id="f-fc" value="'+esc(P.firmaCargo)+'"></div>'+
-  '<div class="full"><label for="f-fimg">Imagen de su firma (opcional, PNG con fondo transparente)</label><input id="f-fimg" type="file" accept="image/png,image/jpeg"></div>'+
- '</div><div class="row" style="margin-top:8px"><button class="btn sec" id="f-sv" type="button" data-needs="art">Guardar cuentas y firma</button></div><div class="msg" id="f-svm"></div></div>'+
- '<div class="card"><h3>6 · Generar y enviar</h3><p class="hint" style="margin-top:0">Número: <b id="f-num"></b> <span id="f-numst"></span></p>'+
+ '<div class="card"><h3>5 · Generar y enviar</h3><p class="hint" style="margin-top:0">Número: <b id="f-num"></b> <span id="f-numst"></span><br>Cuentas, firma y vigencia se toman de <a href="#conf" id="f-goconf">Configuración</a>.'+(Q.cuentas?'':' <b style="color:var(--avi)">Aún no hay cuentas bancarias registradas.</b>')+'</p>'+
   '<div class="row"><button class="btn" id="f-pdf" type="button">PDF</button><button class="btn" id="f-doc" type="button">Word</button><button class="btn sec" id="f-wa" type="button">Mensaje WhatsApp</button><button class="btn sec" id="f-mail2" type="button">Correo</button></div>'+
   '<div class="msg" id="f-msg"></div><div id="f-prev"></div><div class="row" style="margin-top:10px"><button class="btn sec" id="f-new" type="button">Nueva proforma</button></div></div>'+
- '<div class="card"><h3>Proformas emitidas en este dispositivo</h3><div id="f-hist"></div></div>';
- $('#f-cta').value=Q.cuentas||'';
- var st=store('prf')||{};PF.num=st.num||null;PF.items=st.items||[];PF.pago=st.pago||'total';PF.cuotas=st.cuotas||3;PF.etapas=st.etapas||[['Firma del contrato / inicio',50],['Audiencia',30],['Sentencia o cierre',20]];
- ['cli','ced','tel','mail','det','dur','exc'].forEach(function(k){if(st[k])$('#f-'+k).value=st[k]});if(st.age)$('#f-age').checked=true;
- $('#f-add').onchange=function(){var s=srvByCod(this.value);if(s){PF.items.push({cod:s.cod,n:s.n,fact:s.fact,cant:1,valor:s.valor,iva:s.iva,reem:s.unidad==='reembolso'});this.value='';calcPrf()}};
- $('#f-libre').onclick=function(){PF.items.push({cod:'',n:'Servicio',fact:'',cant:1,valor:0,iva:true,reem:false});calcPrf()};
- $$('#f-pago button').forEach(function(b){b.onclick=function(){PF.pago=b.dataset.p;calcPrf()}});
- $$('#v-prf input:not([type=file]),#v-prf textarea').forEach(function(i){i.addEventListener('input',function(){if(!i.closest('#f-items')&&!i.closest('#f-pdet'))calcPrf(true)})});
- $('#f-sv').onclick=function(){Q.cuentas=$('#f-cta').value.trim();P.firmaNombre=$('#f-fn').value.trim();P.firmaCargo=$('#f-fc').value.trim();P.vigencia=num($('#f-vig').value)||15;var f=$('#f-fimg').files[0];var go=function(){guardar($('#f-svm'),'Cuentas y firma guardadas.')};if(f){if(f.size>400000){$('#f-svm').className='msg e';$('#f-svm').textContent='La imagen de la firma pesa más de 400 KB.';return}var r=new FileReader();r.onload=function(){DATA.firma=r.result;go()};r.readAsDataURL(f)}else go()};
+ '<div class="card"><h3>Proformas emitidas</h3><div id="f-hist"></div></div>';
+ ['det','dur','exc'].forEach(function(k){if(st[k])$('#f-'+k).value=st[k]});
+ $('#f-goconf').onclick=function(e){e.preventDefault();show('conf')};
+ $('#f-add').onchange=function(){var s=srvByCod(this.value);if(s){PF.items.push({cod:s.cod,n:s.n,fact:s.fact,cant:1,valor:s.valor,iva:s.iva,reem:s.unidad==='reembolso',proc:procDe(s)});this.value='';if(!PF.proc||!PF.etapasEdit){PF.proc=procPrincipal();PF.etapas=etapasDe(PF.proc)}calcPrf()}};
+ $('#f-libre').onclick=function(){PF.items.push({cod:'',n:'Servicio',fact:'',cant:1,valor:0,iva:true,reem:false,proc:''});calcPrf()};
+ $$('#f-pago button').forEach(function(b){b.onclick=function(){PF.pago=b.dataset.p;if(PF.pago==='etapas'&&!PF.etapas){PF.proc=PF.proc||procPrincipal();PF.etapas=etapasDe(PF.proc)}calcPrf()}});
+ $$('#v-prf textarea,#f-dur,#f-exc,#f-vig').forEach(function(i){i.addEventListener('input',function(){calcPrf(true)})});
  $('#f-pdf').onclick=function(){exportPrf('pdf')};$('#f-doc').onclick=function(){exportPrf('docx')};
- $('#f-wa').onclick=function(){var t=textoPrf(),l=document.createElement('a');l.href='https://wa.me/'+telWa($('#f-tel').value)+'?text='+encodeURIComponent(t);l.target='_blank';l.rel='noopener';document.body.appendChild(l);l.click();l.remove()};
- $('#f-mail2').onclick=function(){var m=prfModel(true);var l=document.createElement('a');l.href='mailto:'+encodeURIComponent($('#f-mail').value.trim())+'?subject='+encodeURIComponent('Proforma de servicios legales – Macías Sánchez Consultores')+'&body='+encodeURIComponent(textoPrf());document.body.appendChild(l);l.click();l.remove();$('#f-msg').className='msg';$('#f-msg').textContent='Si su correo no se abrió, copie el texto desde "Mensaje WhatsApp". Adjunte el PDF generado.'};
- $('#f-new').onclick=function(){if(!$('#f-new').dataset.c&&(PF.items.length||$('#f-cli').value)){$('#f-new').dataset.c=1;$('#f-new').textContent='Confirmar: borrar datos y empezar otra';return}store('prf',{pago:'total'});renderPrf()};
- refreshSave();calcPrf();histPrf();
+ $('#f-wa').onclick=function(){var c=cliPF();if(!c){msgF('Elija el cliente.');return}var l=document.createElement('a');l.href='https://wa.me/'+telWa(c.tel)+'?text='+encodeURIComponent(textoPrf());l.target='_blank';l.rel='noopener';document.body.appendChild(l);l.click();l.remove()};
+ $('#f-mail2').onclick=function(){var m=prfModel(true);if(!cliPF()){msgF('Elija el cliente.');return}var l=document.createElement('a');l.href='mailto:'+encodeURIComponent(m.mail)+'?subject='+encodeURIComponent('Proforma de servicios legales – Macías Sánchez Consultores')+'&body='+encodeURIComponent(textoPrf());document.body.appendChild(l);l.click();l.remove();$('#f-msg').className='msg';$('#f-msg').textContent='Si su correo no se abrió, copie el texto desde "Mensaje WhatsApp". Adjunte el PDF generado.'};
+ $('#f-new').onclick=function(){if(!$('#f-new').dataset.c&&(PF.items.length||PF.cid)){$('#f-new').dataset.c=1;$('#f-new').textContent='Confirmar: empezar otra proforma';return}store('prf',{pago:'total'});renderPrf()};
+ cajaCliente();refreshSave();calcPrf();histPrf();
+}
+function msgF(t){var m=$('#f-msg');m.className='msg e';m.textContent=t;m.scrollIntoView({behavior:'smooth',block:'nearest'})}
+function cajaCliente(){
+ var b=$('#f-cbox');if(!b)return;
+ if(!regDisponible()){b.innerHTML='<p class="hint" style="margin:0">Desbloquee el registro en la pestaña <a href="#cli" id="f-gocli">Clientes</a> para elegir al cliente.</p>';$('#f-gocli').onclick=function(e){e.preventDefault();show('cli')};return}
+ var c=cliPF();
+ if(c){var fac=c.fNom||c.fId;b.innerHTML='<div style="border:1px solid var(--linea);border-radius:8px;padding:10px"><div class="row" style="justify-content:space-between;flex-wrap:nowrap"><div style="min-width:0"><b>'+esc(c.nom)+'</b> <span class="hint">'+esc(c.cod)+'</span><div class="hint" style="margin:2px 0 0">'+[c.ced&&('C.I./RUC '+c.ced),c.tel,c.mailN||c.mail,c.dir].filter(Boolean).map(esc).join(' · ')+'</div>'+(fac?'<div class="hint" style="margin:2px 0 0">Factura a: '+esc(c.fNom||c.nom)+' · '+esc(c.fId||c.ced||'')+'</div>':'')+'</div><button class="btn sec" id="f-chg" type="button" style="min-height:32px;padding:4px 10px;font-size:12.5px;flex:none">Cambiar</button></div></div>'+
+  '<label class="chk" style="margin-top:6px"><input type="checkbox" id="f-age"'+((PF.age!=null?PF.age:c.fAge)?' checked':'')+'> Es agente de retención (para el cálculo de retenciones)</label>';
+  $('#f-chg').onclick=function(){PF.cid=null;PF.age=null;cajaCliente();calcPrf(true)};$('#f-age').onchange=function(){PF.age=this.checked;calcPrf(true)};return}
+ b.innerHTML='<div class="row" style="flex-wrap:nowrap"><input id="f-bus" placeholder="Buscar cliente por nombre, cédula o código" style="flex:1" autocomplete="off"><button class="btn sec" id="f-ncli" type="button" style="flex:none">Nuevo</button></div><div id="f-res-cli" style="margin-top:6px"></div>';
+ var pinta=function(){var q=($('#f-bus').value||'').toLowerCase(),L=clientes().filter(function(x){return !q||(x.nom+' '+(x.ced||'')+' '+x.cod).toLowerCase().indexOf(q)>-1}).sort(function(a,b){return (a.nom||'').localeCompare(b.nom||'')}).slice(0,8);
+  $('#f-res-cli').innerHTML=L.length?L.map(function(x){return '<div data-id="'+x.id+'" style="padding:9px 8px;border-bottom:1px solid var(--linea);cursor:pointer"><b>'+esc(x.nom)+'</b> <span class="hint">'+esc(x.cod)+(x.ced?' · '+esc(x.ced):'')+'</span></div>'}).join(''):'<p class="hint">'+(clientes().length?'Sin coincidencias.':'Aún no hay clientes registrados.')+'</p>';
+  $$('#f-res-cli [data-id]').forEach(function(d){d.onclick=function(){PF.cid=d.dataset.id;PF.age=null;cajaCliente();calcPrf(true)}})};
+ $('#f-bus').oninput=pinta;pinta();
+ $('#f-ncli').onclick=function(){R.view='cli';R.sel='nuevo';show('cli');vista()};
 }
 function telWa(t){t=String(t||'').replace(/\D/g,'');if(t.length===10&&t[0]==='0')t='593'+t.slice(1);else if(t.length===9)t='593'+t;return t}
 function prfModel(peek){
- var age=$('#f-age').checked,ivaP=15;
+ var c=cliPF()||{},age=$('#f-age')?$('#f-age').checked:!!c.fAge,ivaP=15,P=DATA.prf||{},Q=DATA.cobro||{};
  var hon=0,reem=0,ivaB=0;
  PF.items.forEach(function(it){var t=r2(it.cant*it.valor);if(it.reem)reem+=t;else{hon+=t;if(it.iva)ivaB+=t}});
  var dPct=PF.pago==='total'?10:0,desc=r2(hon*dPct/100),ivaBase=r2(ivaB*(1-dPct/100)),base=r2(hon-desc),iva=r2(ivaBase*ivaP/100),total=r2(base+iva+reem);
  var rir=age?r2(base*0.10):0,riva=age?r2(iva):0;
  var plan=[];
  if(PF.pago==='total')plan=[['Pago único al firmar el contrato',total]];
- else if(PF.pago==='cuotas'){var n=PF.cuotas,c=r2(total/n);for(var i=0;i<n;i++)plan.push([['Primera cuota (anticipo) – al firmar','Segunda cuota – a los 30 días','Tercera cuota – a los 60 días'][i],i===n-1?r2(total-c*(n-1)):c])}
- else{var acc=0,sum=PF.etapas.reduce(function(s,e){return s+num(e[1])},0)||100;PF.etapas.forEach(function(e,i){var v=i===PF.etapas.length-1?r2(total-acc):r2(total*num(e[1])/sum);acc+=v;plan.push([e[0]+' ('+pct(num(e[1]))+')',v])})}
- return {num:PF.num||prfNum(true),fecha:new Date(),cli:$('#f-cli').value.trim(),ced:$('#f-ced').value.trim(),tel:$('#f-tel').value.trim(),mail:$('#f-mail').value.trim(),age:age,
+ else if(PF.pago==='cuotas'){var n=PF.cuotas,cc=r2(total/n);for(var i=0;i<n;i++)plan.push([['Primera cuota (anticipo) – al firmar','Segunda cuota – a los 30 días','Tercera cuota – a los 60 días'][i],i===n-1?r2(total-cc*(n-1)):cc])}
+ else{var E=PF.etapas||etapasDe(PF.proc||procPrincipal()),acc=0,sum=E.reduce(function(s,e){return s+num(e[1])},0)||100;E.forEach(function(e,i){var v=i===E.length-1?r2(total-acc):r2(total*num(e[1])/sum);acc+=v;plan.push([e[0]+' ('+pct(num(e[1]))+')',v])})}
+ return {num:PF.num||prfNum(true),fecha:new Date(),cli:c.fNom||c.nom||'',ced:c.fId||c.ced||'',tel:c.tel||'',mail:c.fMail||c.mailN||c.mail||'',dir:c.dir||'',age:age,
   items:PF.items.map(function(it){return {cod:it.cod,n:it.fact||it.n,cant:it.cant,valor:it.valor,tot:r2(it.cant*it.valor),iva:it.iva&&!it.reem,reem:it.reem}}),
-  hon:r2(hon),reem:r2(reem),dPct:dPct,desc:desc,base:base,iva:iva,total:total,rir:rir,riva:riva,neto:r2(total-rir-riva),plan:plan,pago:PF.pago,
-  det:$('#f-det').value.trim(),dur:$('#f-dur').value.trim(),exc:$('#f-exc').value.trim(),vig:num($('#f-vig').value)||15,cuentas:$('#f-cta').value.trim(),
-  fn:$('#f-fn').value.trim(),fc:$('#f-fc').value.trim()};
+  hon:r2(hon),reem:r2(reem),dPct:dPct,desc:desc,base:base,iva:iva,total:total,rir:rir,riva:riva,neto:r2(total-rir-riva),plan:plan,pago:PF.pago,proc:PF.pago==='etapas'?(PROCS[PF.proc]||{}).n:'',
+  det:$('#f-det').value.trim(),dur:$('#f-dur').value.trim(),exc:$('#f-exc').value.trim(),vig:num($('#f-vig').value)||P.vigencia||15,cuentas:(Q.cuentas||'').trim(),
+  fn:P.firmaNombre||'',fc:P.firmaCargo||''};
 }
 function calcPrf(soft){
  $$('#f-pago button').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.p===PF.pago)});
@@ -1099,18 +1284,28 @@ function calcPrf(soft){
   $('#f-items').innerHTML=PF.items.length?PF.items.map(function(it,i){return '<div style="border:1px solid var(--linea);border-radius:8px;padding:8px;margin-bottom:8px"><div class="row" style="justify-content:space-between;flex-wrap:nowrap"><b style="font-size:13.5px">'+(it.cod?'<span class="tag v">'+esc(it.cod)+'</span> ':'')+(it.reem?'<span class="tag">reembolso</span>':'')+'</b><button type="button" data-rm="'+i+'" class="btn sec" style="min-height:30px;padding:2px 10px;font-size:12px">Quitar</button></div>'+
    '<input data-k="n" data-i="'+i+'" value="'+esc(it.fact||it.n)+'" style="margin-top:6px;font-size:14px">'+
    '<div class="grid3" style="margin-top:6px"><div><label>Cantidad</label><input data-k="cant" data-i="'+i+'" type="number" inputmode="decimal" value="'+it.cant+'"></div><div><label>Valor unit.</label><input data-k="valor" data-i="'+i+'" type="number" inputmode="decimal" value="'+it.valor+'"></div><div><label>Subtotal</label><input disabled value="'+usd(r2(it.cant*it.valor))+'"></div></div></div>'}).join(''):'<p class="hint">Agregue al menos un servicio.</p>';
-  $$('#f-items [data-rm]').forEach(function(b){b.onclick=function(){PF.items.splice(+b.dataset.rm,1);calcPrf()}});
+  $$('#f-items [data-rm]').forEach(function(b){b.onclick=function(){PF.items.splice(+b.dataset.rm,1);if(!PF.etapasEdit){PF.proc=procPrincipal();PF.etapas=etapasDe(PF.proc)}calcPrf()}});
   $$('#f-items input[data-k]').forEach(function(inp){inp.oninput=function(){var it=PF.items[+inp.dataset.i];if(inp.dataset.k==='n'){it.fact=inp.value}else{it[inp.dataset.k]=num(inp.value);var sub=inp.closest('.grid3').querySelector('input[disabled]');sub.value=usd(r2(it.cant*it.valor))}calcPrf(true)}});
   var d=$('#f-pdet');
   if(PF.pago==='cuotas')d.innerHTML='<label for="f-ncu">Número de cuotas (máximo 3)</label><select id="f-ncu"><option value="2"'+(PF.cuotas===2?' selected':'')+'>2</option><option value="3"'+(PF.cuotas===3?' selected':'')+'>3</option></select>';
-  else if(PF.pago==='etapas')d.innerHTML=PF.etapas.map(function(e,i){return '<div class="grid" style="grid-template-columns:1fr 90px;margin-bottom:6px"><input data-e="0" data-i="'+i+'" value="'+esc(e[0])+'"><input data-e="1" data-i="'+i+'" type="number" inputmode="decimal" value="'+e[1]+'"></div>'}).join('')+'<p class="hint">Etapa y % del total. Máximo 3 etapas.</p>';
+  else if(PF.pago==='etapas'){
+   PF.proc=PF.proc||procPrincipal();PF.etapas=PF.etapas||etapasDe(PF.proc);
+   d.innerHTML='<label for="f-proc">Tipo de procedimiento</label><select id="f-proc">'+Object.keys(PROCS).map(function(k){return '<option value="'+k+'"'+(k===PF.proc?' selected':'')+'>'+esc(PROCS[k].n)+'</option>'}).join('')+'</select>'+
+    '<p class="hint">Sugerido según el servicio principal de la proforma. Cada procedimiento tiene sus propias etapas.</p>'+
+    PF.etapas.map(function(e,i){return '<div class="grid" style="grid-template-columns:1fr 80px 36px;margin-bottom:6px;align-items:center"><input data-e="0" data-i="'+i+'" value="'+esc(e[0])+'"><input data-e="1" data-i="'+i+'" type="number" inputmode="decimal" value="'+e[1]+'"><button type="button" class="btn sec" data-rme="'+i+'" style="min-height:36px;padding:0">×</button></div>'}).join('')+
+    '<div class="row"><button class="btn sec" id="f-addE" type="button" style="min-height:34px;padding:4px 10px;font-size:12.5px">Agregar etapa</button><button class="btn sec" id="f-rstE" type="button" style="min-height:34px;padding:4px 10px;font-size:12.5px">Restablecer etapas</button></div><p class="hint">Porcentajes de cada etapa: criterio propio, editables.</p>';
+   $('#f-proc').onchange=function(){PF.proc=this.value;PF.etapas=etapasDe(PF.proc);PF.etapasEdit=true;calcPrf()};
+   $('#f-addE').onclick=function(){PF.etapas.push(['Etapa',0]);PF.etapasEdit=true;calcPrf()};
+   $('#f-rstE').onclick=function(){PF.etapas=etapasDe(PF.proc);calcPrf()};
+   $$('#f-pdet [data-rme]').forEach(function(b){b.onclick=function(){PF.etapas.splice(+b.dataset.rme,1);PF.etapasEdit=true;calcPrf()}});
+  }
   else d.innerHTML='';
   if($('#f-ncu'))$('#f-ncu').onchange=function(){PF.cuotas=+this.value;calcPrf(true)};
-  $$('#f-pdet [data-e]').forEach(function(inp){inp.oninput=function(){PF.etapas[+inp.dataset.i][+inp.dataset.e]=inp.dataset.e==='1'?num(inp.value):inp.value;calcPrf(true)}});
+  $$('#f-pdet [data-e]').forEach(function(inp){inp.oninput=function(){PF.etapas[+inp.dataset.i][+inp.dataset.e]=inp.dataset.e==='1'?num(inp.value):inp.value;PF.etapasEdit=true;calcPrf(true)}});
  }
  var m=prfModel(true);
- $('#f-num').textContent=m.num;
- var sumE=PF.pago==='etapas'?PF.etapas.reduce(function(s,e){return s+num(e[1])},0):100;
+ $('#f-num').textContent=m.num;$('#f-numst').textContent=PF.num?'(asignado: PDF y Word usan el mismo número)':'(se asigna al generar)';
+ var sumE=PF.pago==='etapas'?(PF.etapas||[]).reduce(function(s,e){return s+num(e[1])},0):100;
  $('#f-res').className='res ok';
  $('#f-res').innerHTML='<div class="estado" style="color:var(--olivo)">Total de la proforma</div><div class="big">'+usd(m.total)+'</div>'+
   '<table style="margin-top:8px"><tbody><tr><td>Honorarios</td><td>'+usd(m.hon)+'</td></tr>'+(m.desc?'<tr><td>(−) Descuento pago total 10%</td><td>'+usd(-m.desc)+'</td></tr>':'')+
@@ -1118,8 +1313,7 @@ function calcPrf(soft){
   '<tr class="tot"><td>Total</td><td>'+usd(m.total)+'</td></tr>'+(m.age?'<tr><td>(−) Retención IR 10% (estimada)</td><td>'+usd(-m.rir)+'</td></tr><tr><td>(−) Retención IVA 100% (estimada)</td><td>'+usd(-m.riva)+'</td></tr><tr class="tot"><td>Valor neto a recibir</td><td>'+usd(m.neto)+'</td></tr>':'')+'</tbody></table>'+
   '<table style="margin-top:8px"><thead><tr><th>Plan de pago</th><th>Valor</th></tr></thead><tbody>'+m.plan.map(function(p){return '<tr><td>'+esc(p[0])+'</td><td>'+usd(p[1])+'</td></tr>'}).join('')+'</tbody></table>'+
   (PF.pago==='etapas'&&Math.abs(sumE-100)>0.01?'<p class="hint" style="color:var(--mal)">Los % de las etapas suman '+pct(sumE)+'; se reparten en proporción.</p>':'');
- $('#f-numst').textContent=PF.num?'(asignado: PDF y Word usan el mismo número)':'(se asigna al generar)';
- store('prf',{num:PF.num,items:PF.items,pago:PF.pago,cuotas:PF.cuotas,etapas:PF.etapas,cli:$('#f-cli').value,ced:$('#f-ced').value,tel:$('#f-tel').value,mail:$('#f-mail').value,det:$('#f-det').value,dur:$('#f-dur').value,exc:$('#f-exc').value,age:$('#f-age').checked});
+ store('prf',{num:PF.num,cid:PF.cid,items:PF.items,pago:PF.pago,cuotas:PF.cuotas,proc:PF.proc,etapas:PF.etapas,det:$('#f-det').value,dur:$('#f-dur').value,exc:$('#f-exc').value});
 }
 function textoPrf(){
  var m=prfModel(true);
@@ -1132,7 +1326,7 @@ function textoPrf(){
 function exportPrf(fmt){
  var msg=$('#f-msg');
  if(!PF.items.length){msg.className='msg e';msg.textContent='Agregue al menos un servicio.';return}
- if(!$('#f-cli').value.trim()){msg.className='msg e';msg.textContent='Indique el nombre del cliente.';return}
+ if(!cliPF()){msg.className='msg e';msg.textContent='Elija el cliente del registro.';return}
  var m=prfModel(false);if(!PF.num){PF.num=prfNum(false)}m.num=PF.num;
  var h=getHist().filter(function(x){return x.num!==m.num});h.unshift({num:m.num,f:iso(m.fecha),cli:m.cli,tot:m.total});setHist(h.slice(0,200));histPrf();$('#f-num').textContent=m.num;calcPrf(true);
  msg.className='msg';msg.textContent='Generando '+(fmt==='pdf'?'PDF':'Word')+'…';
@@ -1183,7 +1377,7 @@ function pdfPrf(m){
   if(m.age){filaR('(−) Retención IR 10% estimada',usd(-m.rir));filaR('(−) Retención IVA estimada',usd(-m.riva));filaR('Valor neto a recibir',usd(m.neto),true)}
   if(m.det){titulo('Detalle del trabajo');txt(m.det,'500 28px '+FF,'#14181E',null,40)}
   if(m.dur||m.exc){titulo('Condiciones');if(m.dur)txt('Duración estimada: '+m.dur,'500 28px '+FF,'#14181E',null,40);if(m.exc)txt('No incluye: '+m.exc,'500 28px '+FF,'#14181E',null,40);txt('Los gastos judiciales, notariales y de terceros se reembolsan contra comprobante.','500 26px '+FF,'#5B6068',null,38)}
-  titulo('Forma de pago');m.plan.forEach(function(p){filaR(p[0],usd(p[1]))});
+  titulo('Forma de pago');if(m.proc)txt('Etapas según: '+m.proc,'500 26px '+FF,'#5B6068',null,38);m.plan.forEach(function(p){filaR(p[0],usd(p[1]))});
   need((m.cuentas?100+wrap(m.cuentas,W-2*M,'500 28px '+FF).length*40:0)+215);
   if(m.cuentas){titulo('Cuentas para transferencia o depósito');txt(m.cuentas,'500 28px '+FF,'#14181E',null,40)}
   need(215);y+=80;if(fi){var fh=120,fw=Math.min(fh*fi.width/fi.height,480);x.drawImage(fi,M,y-fh+10,fw,fh)}
@@ -1238,7 +1432,7 @@ function docxPrf(m){
   b+=p('',{after:60})+tbl(tr.map(function(t){var f=t[2]===2?'14181E':t[2]===1?'FBF9F1':null,c=t[2]===2?'FFFFFF':null;return [{t:t[0],b:!!t[2],fill:f,c:c},{t:t[1],b:!!t[2],jc:'right',fill:f,c:c}]}),[7238,2400]);
   if(m.det)b+=h('Detalle del trabajo')+p(m.det);
   if(m.dur||m.exc){b+=h('Condiciones');if(m.dur)b+=p('Duración estimada: '+m.dur);if(m.exc)b+=p('No incluye: '+m.exc);b+=p('Los gastos judiciales, notariales y de terceros se reembolsan contra comprobante.',{c:'5B6068',sz:19})}
-  b+=h('Forma de pago')+tbl(m.plan.map(function(pp){return [{t:pp[0]},{t:usd(pp[1]),jc:'right'}]}),[7238,2400]);
+  b+=h('Forma de pago')+(m.proc?p('Etapas según: '+m.proc,{c:'5B6068',sz:19}):'')+tbl(m.plan.map(function(pp){return [{t:pp[0]},{t:usd(pp[1]),jc:'right'}]}),[7238,2400]);
   if(m.cuentas)b+=h('Cuentas para transferencia o depósito')+p(m.cuentas).replace('<w:pPr>','<w:pPr><w:keepNext/><w:keepLines/>');
   b+='<w:p><w:pPr><w:keepNext/><w:spacing w:before="200" w:after="0"/></w:pPr>'+(fi?addImg(fi,'firma.png',200,70):'')+'</w:p>';
   b+='<w:p><w:pPr><w:keepNext/><w:spacing w:after="0"/><w:pBdr><w:top w:val="single" w:sz="8" w:space="4" w:color="14181E"/></w:pBdr><w:ind w:right="5400"/></w:pPr>'+run(m.fn,{b:1,sz:22})+'</w:p>'+p(m.fc+'\nFirma de responsabilidad',{c:'5B6068',sz:19,after:0}).replace('<w:pPr>','<w:pPr><w:keepLines/>');
@@ -1490,7 +1684,7 @@ function calcTra(){
 }
 
 /* ---------- arranque ---------- */
-renderCli();renderHon();renderCat();renderPrf();renderPen();renderPla();renderTra();
+aplicaTema();renderCli();renderHon();renderCat();renderPrf();renderPen();renderPla();renderTra();renderAud();renderConf();
 if(PWA){document.body.classList.add('locked');show('cli')}else show(location.hash.slice(1)||store('tab')||'cat');
 refreshSave();
 })();

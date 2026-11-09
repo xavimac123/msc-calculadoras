@@ -1335,6 +1335,7 @@ function renderPrf(){
  PF.sep=!!st.sep;PF.gOn=!!(st.gastos&&st.gastos.length);PF.dPct=st.dPct!=null?st.dPct:10;PF.gastos=st.gastos||[];PF.contrato=st.contrato!==false;PF.verLista=false;PF.durA=st.durA||'';PF.durB=st.durB||'';PF.durU=st.durU||'meses';
  PF.items=PF.items.filter(function(it){if(it.reem){PF.gastos.push({n:it.fact||it.n,valor:r2(it.cant*it.valor)});return false}return true});
  v.innerHTML='<h2>Proforma</h2><p class="sub">Cliente del registro, servicios del catálogo y forma de pago. Exporta PDF y Word, y se comparte por WhatsApp o correo.</p>'+
+ '<div id="f-pd"></div>'+
  '<div class="card"><h3>1 · Cliente</h3><div id="f-cbox"></div></div>'+
  '<div class="card"><h3>2 · Servicios</h3><div class="seg" id="f-sep" style="margin-bottom:10px"><button type="button" data-s="0">Valor único</button><button type="button" data-s="1">Operativos + prima de éxito</button></div>'+
   '<div class="grid"><div class="full"><label for="f-add">Agregar del catálogo</label><select id="f-add"><option value="">Elegir servicio…</option>'+Object.keys(MATS).filter(function(k){return k!=='GAS'}).map(function(k){var l=cat().filter(function(s){return s.mat===k});return l.length?'<optgroup label="'+esc(MATS[k])+'">'+l.map(function(s){return '<option value="'+esc(s.cod)+'">'+esc(s.cod+' · '+s.n)+'</option>'}).join('')+'</optgroup>':''}).join('')+'</select></div></div>'+
@@ -1366,8 +1367,16 @@ function renderPrf(){
  $('#f-wa').onclick=function(){var c=cliPF();if(!c){msgF('Elija el cliente.');return}var l=document.createElement('a');l.href='https://wa.me/'+telWa(c.tel)+'?text='+encodeURIComponent(textoPrf());l.target='_blank';l.rel='noopener';document.body.appendChild(l);l.click();l.remove()};
  $('#f-mail2').onclick=function(){var m=prfModel(true);if(!cliPF()){msgF('Elija el cliente.');return}var l=document.createElement('a');l.href='mailto:'+encodeURIComponent(m.mail)+'?subject='+encodeURIComponent('Proforma de servicios legales – Macías Sánchez Consultores')+'&body='+encodeURIComponent(textoPrf());document.body.appendChild(l);l.click();l.remove();$('#f-msg').className='msg';$('#f-msg').textContent='Si su correo no se abrió, copie el texto desde "Mensaje WhatsApp". Adjunte el PDF generado.'};
  $('#f-new').onclick=function(){if(!$('#f-new').dataset.c&&(PF.items.length||PF.cid)){$('#f-new').dataset.c=1;$('#f-new').textContent='Confirmar: empezar otra proforma';return}store('prf',{pago:'total'});renderPrf()};
- cajaCliente();refreshSave();calcPrf();histPrf();
+ cajaCliente();refreshSave();calcPrf();histPrf();pdHandoff();
 }
+/* Servicios enviados desde la app MSC Protección de Datos (mismo origen, clave msc:pd-handoff) */
+function pdHandoff(){var b=$('#f-pd');if(!b)return;var h=store('pd-handoff');if(!h||!h.serv||!h.serv.length||Date.now()-(h.t||0)>7*864e5){b.innerHTML='';return}
+ var ok=h.serv.filter(function(c){return srvByCod(c)}),no=h.serv.filter(function(c){return !srvByCod(c)});
+ b.innerHTML='<div class="card" style="border-color:var(--oro)"><h3>Recibido de MSC Protección de Datos</h3><p style="margin:0 0 6px"><b>'+esc(h.rs||'Cliente')+'</b>'+(h.ruc?' · RUC '+esc(h.ruc):'')+(h.tam?' · '+esc(h.tam):'')+'</p><p class="hint" style="margin:0 0 8px">Servicios: '+esc(h.serv.join(', '))+(no.length?' · No están en su catálogo: '+esc(no.join(', ')):'')+'. Elija o cree al cliente en el paso 1; los precios son los de su catálogo.</p><div class="row"><button class="btn" id="pd-ap" type="button">Agregar '+ok.length+' servicio(s)</button><button class="btn sec" id="pd-x" type="button">Descartar</button></div></div>';
+ $('#pd-ap').onclick=function(){ok.forEach(function(c){var s=srvByCod(c);if(PF.items.some(function(i){return i.cod===c}))return;PF.items.push({cod:s.cod,n:s.n,fact:s.fact,cant:1,valor:s.valor,iva:s.iva,proc:procDe(s),exito:0})});
+  if(!$('#f-det').value&&h.rs){$('#f-det').value='Servicios de protección de datos personales (LOPDP) para '+h.rs+(h.ruc?', RUC '+h.ruc:'')+'.'}
+  if(!PF.proc||!PF.etapasEdit){PF.proc=procPrincipal();PF.etapas=etapasDe(PF.proc)}try{localStorage.removeItem('msc:pd-handoff')}catch(e){}b.innerHTML='';calcPrf()};
+ $('#pd-x').onclick=function(){try{localStorage.removeItem('msc:pd-handoff')}catch(e){}b.innerHTML=''}}
 function msgF(t){var m=$('#f-msg');m.className='msg e';m.textContent=t;m.scrollIntoView({behavior:'smooth',block:'nearest'})}
 function cliLinea(x){return [x.cod,(x.nom||'').toUpperCase(),x.ced||'s/c',x.tel||'s/t',x.mailN||x.mail||'s/correo'].map(esc).join(' – ')}
 function cajaCliente(){

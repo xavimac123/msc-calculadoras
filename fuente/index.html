@@ -136,7 +136,7 @@ document.getElementById('root').innerHTML=
 function show(t){var sub=null;if(SUBS.some(function(s){return s[0]===t})){sub=t;t='calc'}else if(t&&t.indexOf('calc-')===0){sub=t.slice(5);t='calc'}
  if(!TABS.some(function(x){return x[0]===t}))t='cat';
  if(t==='calc'){if(!SUBS.some(function(s){return s[0]===sub}))sub=store('sub')||'pen';SUBS.forEach(function(s){$('#v-'+s[0]).hidden=s[0]!==sub});$$('#calc-nav button').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.s===sub)});store('sub',sub)}
- if(t==='prf'&&document.getElementById('f-cbox'))renderPrf();if(t==='aud')renderAud();if(t==='doc')renderDoc();if(t==='conf')renderConf();
+ if(t==='prf'&&document.getElementById('f-cbox'))renderPrf();if(t==='aud')renderAud();if(t==='doc')renderDoc();if(t==='hon'&&document.getElementById('h-op'))calcHon();if(t==='conf')renderConf();
  $$('nav button').forEach(function(b){b.setAttribute('aria-selected',b.dataset.t===t);if(b.dataset.t===t&&b.scrollIntoView)try{b.scrollIntoView({block:'nearest',inline:'nearest'})}catch(e){}});TABS.forEach(function(x){$('#v-'+x[0]).hidden=x[0]!==t});
  var h=t==='calc'?'calc-'+sub:t;try{if(location.hash!=='#'+h)history.replaceState(null,'','#'+h)}catch(e){}if(!document.body.classList.contains('locked'))store('tab',h)}
 $$('#calc-nav button').forEach(function(b){b.onclick=function(){show('calc-'+b.dataset.s)}});
@@ -149,51 +149,68 @@ window.addEventListener('hashchange',function(){show(location.hash.slice(1))});
    ========================================================= */
 var H={mat:DATA.materias[0].id,esc:1};
 function matById(id){return DATA.materias.filter(function(m){return m.id===id})[0]||DATA.materias[0]}
+var RIND={fam:'Familia: prima fija por resultado. En alimentos no se cobra un % de la pensión del menor.',pen:'Penal: prima fija por resultado (archivo, sobreseimiento, ratificación de inocencia o acuerdo favorable).',tra:'Penal-Tránsito: prima fija por resultado (ratificación de inocencia, reducción de la pena o de la multa).',lab:'Laboral: % sobre lo que se liquide o recupere; mientras no haya cifra, estime el valor del reclamo.',civ:'Civil: estime el valor del bien o derecho (avalúo, canon, precio) y aplique el %.',car:'Cartera: % sobre lo efectivamente recuperado.',deu:'Deudas: % sobre lo que el cliente deja de pagar o se le condona.',adm:'Administrativo: prima fija por resolución favorable.',fis:'Fiscalía: normalmente sin prima; si se pacta, prima fija.',iess:'IESS: prima fija, o % del valor reconocido si hay un monto (montepío, aportes, devoluciones).'};
+var PMAT={'civ-ord':'ordinario','civ-sum':'sumario','fam-ali':'sumario','fam-div':'sumario',pen:'penal','tra-con':'contravencion','tra-del':'penal',lab:'sumario',adm:'administrativo',fis:'gestion',car:'monitorio',deu:'ejecutivo',iess:'administrativo','fis-siaf':'gestion'};
+function presMeta(){var p=R.data&&R.data.pres;if(!p)return 0;var s=PRES_K.reduce(function(a,k){return a+num(p[k[0]])},0);return r2(s*(1+num(p.res)/100))}
+var PRES_K=[['ali','Alimentación'],['arr','Arriendo'],['mov','Movilización'],['ope','Gastos operativos del despacho'],['ser','Servicios básicos (luz, agua, internet, teléfono)'],['edu','Educación'],['hij','Hijos'],['deu','Deudas'],['otr','Otros']];
 function renderHon(){
  var v=$('#v-hon');
- v.innerHTML='<div class="seg" id="h-mod" style="margin:4px 0 12px"><button type="button" data-x="casos">Procesos y trámites</button><button type="button" data-x="cons">Consultas</button></div><div id="h-casos"><h2>Calculadora de honorarios</h2><p class="sub">Honorario operativo + prima de éxito, con IVA, retenciones, descuentos y ganancia neta. <span class="tag">Valores sugeridos: criterio propio</span></p>'+
+ v.innerHTML='<div class="seg" id="h-mod" style="margin:4px 0 12px"><button type="button" data-x="casos">Procesos y trámites</button><button type="button" data-x="cons">Consultas</button></div><div id="h-casos"><h2>Calculadora de honorarios</h2><p class="sub">Honorarios operativos + prima de éxito, IVA, retenciones, gastos aparte y ganancia neta. <span class="tag">Valores sugeridos: criterio propio</span></p>'+
  '<div class="card"><h3>1 · Caso</h3><div class="grid">'+
-  '<div class="full"><label for="h-mat">Materia</label><select id="h-mat">'+DATA.materias.map(function(m){return '<option value="'+m.id+'">'+esc(m.n)+'</option>'}).join('')+'</select></div>'+
-  '<div><label for="h-op">Honorario operativo (inicio del proceso)</label><input id="h-op" type="number" inputmode="decimal" min="0" step="10"></div>'+
-  '<div><label for="h-gas">Gastos reembolsables (tasas, copias, peritos)</label><input id="h-gas" type="number" inputmode="decimal" min="0" step="5" value="0"></div>'+
-  '<div class="full"><label>Prima de éxito</label><div class="seg" id="h-modo"><button type="button" data-m="pct">% de lo obtenido</button><button type="button" data-m="fijo">Monto fijo</button></div></div>'+
-  '<div id="h-wpct"><label for="h-cua">Monto en disputa u obtenido</label><input id="h-cua" type="number" inputmode="decimal" min="0" step="50" value="0"></div>'+
-  '<div id="h-wpct2"><label for="h-pct">% de éxito sobre lo obtenido</label><input id="h-pct" type="number" inputmode="decimal" min="0" max="50" step="1"></div>'+
-  '<div id="h-wfij" class="full"><label for="h-fij">Prima de éxito total (100%)</label><input id="h-fij" type="number" inputmode="decimal" min="0" step="10"></div>'+
+  '<div class="full"><label for="h-mat">Materia</label><select id="h-mat">'+DATA.materias.map(function(m){return '<option value="'+m.id+'">'+esc(m.n.replace(/^Tránsito/,'Penal-Tránsito'))+'</option>'}).join('')+'</select></div>'+
+  '<div class="full"><label for="h-op">Honorarios operativos (USD)</label><input id="h-op" type="number" inputmode="decimal" min="0" step="0.01"></div>'+
+  '<div class="full"><label>Cuantía</label><div class="seg" id="h-cuan"><button type="button" data-c="det">Determinada</button><button type="button" data-c="ind">Indeterminada</button><button type="button" data-c="bien">Bienes o servicios</button></div></div>'+
+  '<div id="h-wcua"><label for="h-cua" id="h-lcua">Monto de la cuantía (USD)</label><input id="h-cua" type="number" inputmode="decimal" min="0" step="0.01" value="0"></div>'+
+  '<div id="h-wpct"><label for="h-pct">% de prima de éxito</label><input id="h-pct" type="number" inputmode="decimal" min="0" max="50" step="0.5"></div>'+
+  '<div id="h-wfij" class="full"><label for="h-fij" id="h-lfij">Prima de éxito (monto fijo, USD)</label><input id="h-fij" type="number" inputmode="decimal" min="0" step="0.01"></div>'+
   '<p class="hint full" id="h-ref"></p>'+
+  '<div><label for="h-par">Éxito parcial (% de la prima)</label><input id="h-par" type="number" inputmode="decimal" min="0" max="100" step="5" value="50"></div>'+
  '</div></div>'+
- '<div class="card"><h3>2 · Descuentos y forma de pago</h3>'+
-  '<div class="seg" id="h-pago"><button type="button" data-p="total">Pago total (−10%)</button><button type="button" data-p="cuotas">Cuotas</button><button type="button" data-p="etapa">Por etapa</button></div>'+
-  '<div class="grid" style="margin-top:10px"><div id="h-wcuo"><label for="h-cuo">Número de cuotas (máx. 3)</label><select id="h-cuo"><option>2</option><option selected>3</option></select></div>'+
-  '<div><label for="h-ofe">Oferta o descuento adicional (%)</label><input id="h-ofe" type="number" inputmode="decimal" min="0" max="50" step="1" value="0"></div></div>'+
-  '<p class="hint">Los descuentos se aplican solo al honorario operativo: no a la prima de éxito ni a los gastos reembolsables.</p>'+
+ '<div class="card"><h3>2 · Forma de pago</h3>'+
+  '<div class="seg" id="h-pago"><button type="button" data-p="total">Pago total</button><button type="button" data-p="cuotas">Cuotas</button><button type="button" data-p="etapa">Por etapas</button></div>'+
+  '<div class="grid" style="margin-top:10px"><div id="h-wdes"><label for="h-des">Descuento por pago total (%)</label><input id="h-des" type="number" inputmode="decimal" min="0" max="100" step="0.5" value="10"></div>'+
+  '<div id="h-wcuo"><label for="h-cuo">Número de cuotas</label><div class="row" style="flex-wrap:nowrap;gap:6px"><input id="h-cuo" type="number" inputmode="numeric" min="2" step="1" value="3" style="flex:1"><button class="btn sec" id="h-cuo1" type="button" style="flex:none;min-height:40px;padding:4px 12px">+1</button></div></div>'+
+  '<div><label for="h-ofe">Descuento adicional pactado (%)</label><input id="h-ofe" type="number" inputmode="decimal" min="0" max="50" step="1" value="0"></div></div>'+
+  '<p class="hint">Los descuentos se aplican solo a los honorarios operativos, no a la prima de éxito.</p>'+
  '</div>'+
- '<div class="card"><h3>3 · Impuestos</h3><div class="grid">'+
-  '<div><label for="h-iva">IVA (%)</label><input id="h-iva" type="number" inputmode="decimal" step="1" value="15"></div>'+
-  '<div><label for="h-ir">Impuesto a la renta efectivo estimado (%)</label><input id="h-ir" type="number" inputmode="decimal" step="1" value="10"></div>'+
-  '<label class="chk full"><input type="checkbox" id="h-age"> El cliente es agente de retención (empresa, contribuyente especial)</label>'+
-  '<div id="h-wret" class="grid full" hidden><div><label for="h-rir">Retención IR (%)</label><input id="h-rir" type="number" inputmode="decimal" step="1" value="10"></div><div><label for="h-riva">Retención IVA (% del IVA)</label><input id="h-riva" type="number" inputmode="decimal" step="10" value="100"></div></div>'+
-  '<div class="full"><label for="h-cos">Costos propios no reembolsables (movilización, impresiones)</label><input id="h-cos" type="number" inputmode="decimal" min="0" step="5" value="0"></div>'+
- '</div><p class="hint">Régimen general: IVA 15% sobre honorarios. Retención en la fuente a honorarios de persona natural: 10% (Res. NAC-DGERCGC26-00000009, desde 1-mar-2026). La retención de IR es un anticipo del impuesto anual; el % efectivo es una estimación suya.</p></div>'+
- '<h2 style="margin-top:16px">Resultado</h2><div class="seg" id="h-esc" style="margin-bottom:10px"><button type="button" data-e="0">Sin éxito</button><button type="button" data-e="0.5">Éxito parcial 50%</button><button type="button" data-e="1">Éxito total 100%</button></div>'+
- '<div class="kpis" id="h-kpi"></div><div class="card scroll" id="h-tab"></div><div class="card" id="h-plan"></div>'+
- '<div class="card"><h3>Parámetros de mercado para la prima de éxito</h3><div class="scroll"><table><thead><tr><th>Referencia</th><th>Rango</th></tr></thead><tbody>'+
-  '<tr><td>Mixto: honorario fijo + prima de éxito (España, uso frecuente)</td><td>10%–30%</td></tr>'+
-  '<tr><td>Tarifas de colegios de abogados de Colombia, civil (cuota litis)</td><td>20%–45%</td></tr>'+
-  '<tr><td>Cuota litis pura, sin honorario fijo (Colombia, uso frecuente)</td><td>30%–50%</td></tr>'+
-  '<tr><td>Contingency fees en EE. UU.</td><td>25%–50%</td></tr>'+
- '</tbody></table></div><p class="nota">En Ecuador no existe un arancel oficial: el honorario es de libre pacto y debe constar por escrito. Como usted cobra además un honorario operativo, lo razonable es el rango mixto (10%–30%); se sugiere 15%–20%. Defina en el contrato qué es "éxito parcial" y "éxito total" de forma objetiva (sentencia ejecutoriada, monto recuperado, acuerdo homologado): la Corte Nacional ha interpretado de forma restrictiva el "resultado favorable" en contratos de cuota litis. En alimentos, use prima fija, no un % de la pensión del menor.</p></div>'+
- '<div class="card"><h3>Valores sugeridos</h3><p class="hint" style="margin-top:0">Si cambió el honorario o la prima de esta materia y quiere que queden como sugeridos por defecto, guárdelos.</p><div class="row" style="margin-top:8px"><button class="btn sec" id="h-save" data-needs="art" type="button">Guardar como sugeridos</button></div><div class="msg" id="h-msg"></div></div></div><div id="h-cons" hidden></div>';
+ '<div class="card"><h3>3 · Impuestos</h3>'+
+  '<div style="background:#F3EED9;border:1px solid var(--oroc);border-radius:8px;padding:10px;color:#14181E"><label for="h-iva" style="color:#6E6230;font-weight:800">IVA sobre el servicio (%)</label><input id="h-iva" type="number" inputmode="decimal" step="1" value="15" style="font-size:20px;font-weight:800;max-width:140px"><p class="hint" style="margin:6px 0 0;color:#3A3F47">Régimen general: los honorarios profesionales gravan IVA 15 %. Se suma al total que paga el cliente y usted lo declara al SRI.</p></div>'+
+  '<label class="chk" style="margin-top:10px"><input type="checkbox" id="h-age"> El cliente me retiene impuestos (es agente de retención)</label>'+
+  '<div id="h-wret" hidden style="margin-top:8px;border:1px solid var(--linea);border-radius:8px;padding:10px"><b style="font-size:14px">Retenciones</b><div class="grid" style="margin-top:6px"><div><label for="h-rir">Retención de IR (%)</label><input id="h-rir" type="number" inputmode="decimal" step="1" value="10"></div><div><label for="h-riva">Retención de IVA (% del IVA)</label><input id="h-riva" type="number" inputmode="decimal" step="10" value="100"></div></div>'+
+   '<p class="hint"><b>Quién puede retener:</b> los contribuyentes especiales y los contribuyentes calificados por el SRI como agentes de retención (Res. NAC-DGERCGC20-00000057 y nuevas designaciones de 2026, Res. NAC-DGERCGC26-00000009 y 00000010), además de las entidades públicas. Una persona natural no calificada o un consumidor final no retiene. Verifique en la consulta de RUC del SRI si el cliente consta como agente de retención. Valores de referencia: IR 10 % en honorarios profesionales de persona natural; IVA 100 % en servicios profesionales de persona natural. La retención de IR es un anticipo de su impuesto anual, no un costo.</p></div>'+
+ '</div>'+
+ '<div class="card"><h3>4 · Gastos operativos (aparte del honorario)</h3><div class="grid"><div><label for="h-gas">Gastos estimados (USD)</label><input id="h-gas" type="number" inputmode="decimal" min="0" step="0.01" value="0"></div>'+
+  '<div><label for="h-not">Trámite notarial (tasa)</label><select id="h-not"><option value="">No aplica</option>'+(DATA.notarias||[]).map(function(t){return '<option value="'+t.id+'">'+esc(t.n)+'</option>'}).join('')+'</select></div><div id="h-wnc"><label for="h-nc">Cantidad</label><input id="h-nc" type="number" inputmode="numeric" min="1" value="1"></div><div id="h-wnm"><label for="h-nm">Tasa (USD, sin IVA)</label><input id="h-nm" type="number" inputmode="decimal" step="0.01" value="0"></div></div>'+
+  '<p class="hint" id="h-gnote"></p>'+
+  '<details><summary style="cursor:pointer;font-weight:700;color:var(--olivo)">Cómo organizar los gastos y la notaría</summary><ul style="font-size:13.5px;padding-left:18px;margin:6px 0">'+
+   '<li><b>Peritos:</b> el perito factura directamente al cliente. Usted no intermedia el pago ni lo incluye en su factura.</li>'+
+   '<li><b>Copias y movilización:</b> lleve un registro por caso (fecha, concepto, valor y foto del comprobante). Dos opciones: (a) un fondo de gastos que el cliente entrega al inicio (por ejemplo, $30 a $50) y del que usted rinde cuentas al cierre de cada etapa; o (b) una liquidación de gastos al cierre de cada etapa que el cliente aprueba y paga. Para movilización fuera de la ciudad, fije una tarifa por diligencia en la proforma.</li>'+
+   '<li><b>Notaría (recomendado):</b> el cliente paga la tasa directamente a la notaría y la factura sale a su nombre. Usted cobra solo los honorarios de la gestión (minuta, revisión, acompañamiento).</li>'+
+   '<li><b>Si usted paga la notaría dentro del proceso:</b> pida que la factura salga a nombre del cliente y cóbrele el valor exacto, sin recargo. Si la factura sale a su nombre, trátela como reembolso de gastos (comprobante de reembolso), no como ingreso suyo. No cobre un % sobre la tasa: la tasa la fija el Consejo de la Judicatura y su ganancia debe estar en el honorario de gestión.</li>'+
+  '</ul></details></div>'+
+ '<div class="card"><h3>5 · Su costo</h3><div class="grid"><div><label for="h-hrs">Horas estimadas del caso</label><input id="h-hrs" type="number" inputmode="decimal" min="0" step="1" value="10"></div><div><label for="h-cos">Costos propios no reembolsables (USD)</label><input id="h-cos" type="number" inputmode="decimal" min="0" step="0.01" value="0"></div><div><label for="h-ir">IR efectivo estimado (%)</label><input id="h-ir" type="number" inputmode="decimal" step="1" value="10"></div></div></div>'+
+ '<h2 style="margin-top:16px">Resultado</h2><div class="seg" id="h-esc" style="margin-bottom:10px"><button type="button" data-e="0">Sin éxito</button><button type="button" data-e="p">Éxito parcial</button><button type="button" data-e="1">Éxito total</button></div>'+
+ '<div class="kpis" id="h-kpi"></div><div class="card scroll" id="h-tab"></div><div class="card scroll" id="h-gan"></div><div class="card" id="h-meta"></div><div class="card" id="h-plan"></div>'+
+ '<div class="card"><h3>Parámetros de mercado para la prima de éxito</h3><div class="scroll"><table><thead><tr><th>País y referencia</th><th>Rango</th></tr></thead><tbody>'+
+  '<tr><td><b>Ecuador</b> · honorario de libre pacto, por escrito; sin arancel oficial. Modelo mixto (operativos + prima de éxito)</td><td>10 %–30 %<br><span class="hint" style="margin:0">sugerido 15 %–20 % (criterio propio)</span></td></tr>'+
+  '<tr><td><b>Chile</b> · cuota litis en despidos e indemnizaciones (cobra solo si gana)</td><td>20 %–30 %</td></tr>'+
+  '<tr><td><b>Chile</b> · cobranza ejecutiva con cuota litis</td><td>10 %–25 %</td></tr>'+
+  '<tr><td><b>Colombia</b> · tarifas de colegios de abogados, civil (cuota litis)</td><td>20 %–45 %</td></tr>'+
+  '<tr><td><b>Colombia</b> · cuota litis pura, sin honorario fijo</td><td>30 %–50 %</td></tr>'+
+  '<tr><td><b>Perú</b> · honorario de libre pacto; no encontré una tabla o encuesta pública confiable</td><td>sin dato</td></tr>'+
+ '</tbody></table></div><p class="nota">En Ecuador defina en el contrato qué es "éxito parcial" y "éxito total" de forma objetiva (sentencia ejecutoriada, monto recuperado, acuerdo homologado): la Corte Nacional ha interpretado de forma restrictiva el "resultado favorable" en contratos de cuota litis. Como usted ya cobra honorarios operativos, su prima debe estar en la parte baja de los rangos de cuota litis pura. Los rangos internacionales son estimaciones de mercado, no normas.</p></div>'+
+ '<div class="card"><h3>Valores sugeridos</h3><p class="hint" style="margin-top:0">Guarde el honorario y la prima de esta materia como sugeridos por defecto.</p><div class="row" style="margin-top:8px"><button class="btn sec" id="h-save" data-needs="art" type="button">Guardar como sugeridos</button></div><div class="msg" id="h-msg"></div></div></div><div id="h-cons" hidden></div>';
  var st=store('hon')||{};
- H.pago=st.pago||'total';H.esc=st.esc!=null?st.esc:1;
+ H.pago=st.pago||'total';H.esc=st.esc!=null?st.esc:1;if(H.esc===0.5)H.esc='p';H.cuan=st.cuan||'det';
  $('#h-mat').value=st.mat&&DATA.materias.some(function(m){return m.id===st.mat})?st.mat:DATA.materias[0].id;
  loadMat(st.mat===$('#h-mat').value?st:null);
  $('#h-mat').onchange=function(){loadMat(null);calcHon()};
- $$('#h-modo button').forEach(function(b){b.onclick=function(){H.modo=b.dataset.m;calcHon()}});
+ $$('#h-cuan button').forEach(function(b){b.onclick=function(){H.cuan=b.dataset.c;calcHon()}});
  $$('#h-pago button').forEach(function(b){b.onclick=function(){H.pago=b.dataset.p;calcHon()}});
- $$('#h-esc button').forEach(function(b){b.onclick=function(){H.esc=+b.dataset.e;calcHon()}});
+ $$('#h-esc button').forEach(function(b){b.onclick=function(){H.esc=b.dataset.e==='p'?'p':+b.dataset.e;calcHon()}});
+ $('#h-cuo1').onclick=function(){$('#h-cuo').value=Math.max(2,num($('#h-cuo').value))+1;calcHon()};
  $$('#v-hon input,#v-hon select').forEach(function(i){if(i.id!=='h-mat')i.addEventListener('input',calcHon)});
- $('#h-save').onclick=function(){var m=matById($('#h-mat').value);m.op=num($('#h-op').value);m.modo=H.modo;m.pct=num($('#h-pct').value);m.fijo=num($('#h-fij').value);guardar($('#h-msg'),'Valores sugeridos guardados para "'+m.n+'".')};
+ $('#h-save').onclick=function(){var m=matById($('#h-mat').value);m.op=num($('#h-op').value);m.pct=num($('#h-pct').value);m.fijo=num($('#h-fij').value);guardar($('#h-msg'),'Valores sugeridos guardados para "'+m.n+'".')};
  calcHon();
  var mod=store('hmod')||'casos';function setMod(x){mod=x;$$('#h-mod button').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.x===x)});$('#h-casos').hidden=x!=='casos';$('#h-cons').hidden=x!=='cons';store('hmod',x)}
  $$('#h-mod button').forEach(function(b){b.onclick=function(){setMod(b.dataset.x)}});
@@ -202,61 +219,78 @@ function renderHon(){
 function loadMat(st){
  var m=matById($('#h-mat').value);
  $('#h-op').value=st&&st.op!=null?st.op:m.op;
- H.modo=st&&st.modo?st.modo:m.modo;
  $('#h-pct').value=st&&st.pct!=null?st.pct:(m.pct||15);
  $('#h-fij').value=st&&st.fijo!=null?st.fijo:m.fijo;
- if(st){['gas','cua','ofe','iva','ir','rir','riva','cos'].forEach(function(k){if(st[k]!=null)$('#h-'+k).value=st[k]});$('#h-age').checked=!!st.age;if(st.cuo)$('#h-cuo').value=st.cuo}
- $('#h-ref').innerHTML='Sugerido para esta materia: operativo '+usd(m.op)+' · prima de éxito '+(m.modo==='pct'?pct(m.pct)+' de lo obtenido':usd(m.fijo)+' fija')+'. <span class="tag">criterio propio</span>';
+ if(!st)H.cuan=m.modo==='pct'?'det':'ind';
+ if(st){['cua','ofe','iva','ir','rir','riva','cos','hrs','gas','des','par','cuo','nc','nm'].forEach(function(k){if(st[k]!=null&&$('#h-'+k))$('#h-'+k).value=st[k]});$('#h-age').checked=!!st.age;if(st.not)$('#h-not').value=st.not}
+ var rk=Object.keys(RIND).filter(function(k){return m.id.indexOf(k)===0})[0];
+ $('#h-ref').innerHTML='Sugerido para esta materia: operativos '+usd(m.op)+' · prima '+(m.modo==='pct'?pct(m.pct)+' de la cuantía':usd(m.fijo)+' fija')+'. <span class="tag">criterio propio</span>'+(rk?'<br><b>Cuantía indeterminada:</b> '+esc(RIND[rk]):'');
 }
 function calcEsc(s,I){
- var prima=(I.modo==='pct'?I.cua*I.pct/100:I.fijo)*s;
- var descPct=(I.pago==='total'?10:0)+I.ofe;
- var desc=I.op*Math.min(descPct,100)/100;
+ var prima=(I.cuan==='bien'?I.fijo:I.cuan==='ind'&&I.modoInd==='fijo'?I.fijo:I.cua*I.pct/100)*s;
+ var descPct=Math.min((I.pago==='total'?I.des:0)+I.ofe,100);
+ var desc=I.op*descPct/100;
  var base=I.op-desc+prima;
  var iva=base*I.iva/100;
- var total=base+iva+I.gas;
+ var total=base+iva;
  var rir=I.age?base*I.rir/100:0, riva=I.age?iva*I.riva/100:0;
- var recibe=total-rir-riva;
- var ir=base*I.ir/100;
- return {prima:prima,descPct:descPct,desc:desc,base:base,iva:iva,total:total,rir:rir,riva:riva,recibe:recibe,ivaSri:iva-riva,ir:ir,neta:base-I.cos-ir};
+ var recibe=total-rir-riva, ivaSri=iva-riva, ir=base*I.ir/100, neta=base-I.cos-ir;
+ return {op:I.op,prima:prima,descPct:descPct,desc:desc,base:base,iva:iva,total:total,rir:rir,riva:riva,recibe:recibe,ivaSri:ivaSri,ir:ir,neta:neta,margen:base?neta/base*100:0};
 }
 function calcHon(){
- var I={op:num($('#h-op').value),gas:num($('#h-gas').value),cua:num($('#h-cua').value),pct:num($('#h-pct').value),fijo:num($('#h-fij').value),modo:H.modo,pago:H.pago,ofe:num($('#h-ofe').value),iva:num($('#h-iva').value),ir:num($('#h-ir').value),age:$('#h-age').checked,rir:num($('#h-rir').value),riva:num($('#h-riva').value),cos:num($('#h-cos').value),cuo:+$('#h-cuo').value};
- $$('#h-modo button').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.m===H.modo)});
+ var m=matById($('#h-mat').value);
+ var I={op:num($('#h-op').value),cua:num($('#h-cua').value),pct:num($('#h-pct').value),fijo:num($('#h-fij').value),cuan:H.cuan,modoInd:m.modo==='pct'?'pct':'fijo',pago:H.pago,des:num($('#h-des').value),ofe:num($('#h-ofe').value),iva:num($('#h-iva').value),ir:num($('#h-ir').value),age:$('#h-age').checked,rir:num($('#h-rir').value),riva:num($('#h-riva').value),cos:num($('#h-cos').value),hrs:num($('#h-hrs').value),gas:num($('#h-gas').value),par:Math.min(100,Math.max(0,num($('#h-par').value))),cuo:Math.max(2,Math.round(num($('#h-cuo').value))||3)};
+ $$('#h-cuan button').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.c===H.cuan)});
  $$('#h-pago button').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.p===H.pago)});
- $$('#h-esc button').forEach(function(b){b.setAttribute('aria-pressed',+b.dataset.e===H.esc)});
- $('#h-wpct').hidden=$('#h-wpct2').hidden=H.modo!=='pct';$('#h-wfij').hidden=H.modo!=='fijo';
- $('#h-wcuo').hidden=H.pago!=='cuotas';$('#h-wret').hidden=!I.age;
+ $$('#h-esc button').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.e)===String(H.esc))});
+ var usaPct=H.cuan==='det'||(H.cuan==='ind'&&I.modoInd==='pct');
+ $('#h-wcua').hidden=$('#h-wpct').hidden=!usaPct;$('#h-wfij').hidden=usaPct;
+ $('#h-lcua').textContent=H.cuan==='ind'?'Valor estimado del resultado (USD)':'Monto de la cuantía (USD)';
+ $('#h-lfij').textContent=H.cuan==='bien'?'Prima de éxito por la disputa sobre bienes o servicios (monto fijo, USD)':'Prima de éxito (monto fijo, USD)';
+ $('#h-wdes').hidden=H.pago!=='total';$('#h-wcuo').hidden=H.pago!=='cuotas';$('#h-wret').hidden=!I.age;
  if(I.pct>50){$('#h-pct').value=50;I.pct=50}
- var E=[0,0.5,1].map(function(s){return calcEsc(s,I)});
- var sel=E[[0,0.5,1].indexOf(H.esc)];
- var lbl=['Sin éxito','Parcial 50%','Total 100%'];
- $('#h-kpi').innerHTML=[['Cliente paga',sel.total],['Usted recibe',sel.recibe],['Ganancia neta',sel.neta]].map(function(k,i){return '<div class="kpi'+(i===2?' sel':'')+'"><div class="l">'+k[0]+'</div><div class="n">'+usd(k[1])+'</div></div>'}).join('');
- var rows=[
-  ['Honorario operativo',function(e){return I.op}],
-  ['Descuento ('+pct(sel.descPct)+')',function(e){return -e.desc}],
+ var nt=notById($('#h-not').value),tasa=nt?tasaNot(nt,num($('#h-nc').value)||1,num($('#h-nm').value)):0;
+ $('#h-wnc').hidden=!nt;$('#h-wnm').hidden=!(nt&&nt.modo==='manual');
+ var gtot=r2(I.gas+tasa*1.15);
+ $('#h-gnote').innerHTML=(nt?'Tasa notarial: '+usd(tasa)+' + IVA = <b>'+usd(r2(tasa*1.15))+'</b> (la factura la notaría). ':'')+'Total de gastos operativos: <b>'+usd(gtot)+'</b>. No se suman a los honorarios: los paga el cliente aparte.';
+ var S=[0,I.par/100,1],E=S.map(function(s){return calcEsc(s,I)});
+ var si=H.esc==='p'?1:H.esc===1?2:0,sel=E[si];
+ var lbl=['SIN ÉXITO','ÉXITO PARCIAL ('+pct(I.par)+')','ÉXITO TOTAL'];
+ var th='<thead><tr><th>Concepto</th>'+lbl.map(function(l,i){return '<th'+(i===si?' style="color:var(--carbon);background:#F3EED9"':'')+'>'+l+'</th>'}).join('')+'</tr></thead>';
+ var fila=function(r){return '<tr class="'+(r[2]||'')+'"><td>'+r[0]+'</td>'+E.map(function(e,i){var x=r[1](e);return '<td'+(i===si?' style="background:#FBF9F1"':'')+'>'+(r[3]?pct(r2(x)):usd(r2(x)))+'</td>'}).join('')+'</tr>'};
+ $('#h-kpi').innerHTML=[['Cliente paga',sel.total],['Usted recibe',sel.recibe],['Ganancia neta',sel.neta]].map(function(k,i){return '<div class="kpi'+(i===2?' sel':'')+'"><div class="l">'+k[0]+'</div><div class="n">'+usd(r2(k[1]))+'</div></div>'}).join('');
+ $('#h-tab').innerHTML='<h3>Lo que paga el cliente</h3><table>'+th+'<tbody>'+[
+  ['Honorarios operativos',function(e){return e.op}],
   ['Prima de éxito',function(e){return e.prima}],
+  ['Descuentos ('+pct(sel.descPct)+')',function(e){return -e.desc}],
   ['Base imponible',function(e){return e.base},'hi'],
   ['IVA '+pct(I.iva),function(e){return e.iva}],
-  ['Gastos reembolsables',function(e){return I.gas}],
-  ['Total que paga el cliente',function(e){return e.total},'tot'],
- ];
- if(I.age){rows.push(['Retención IR '+pct(I.rir),function(e){return -e.rir}]);rows.push(['Retención IVA '+pct(I.riva),function(e){return -e.riva}]);rows.push(['Valor que usted recibe',function(e){return e.recibe},'tot'])}
- rows.push(['IVA que usted paga al SRI',function(e){return e.ivaSri}]);
- rows.push(['Costos propios',function(e){return -I.cos}]);
- rows.push(['IR estimado '+pct(I.ir),function(e){return -e.ir}]);
- rows.push(['Ganancia neta estimada',function(e){return e.neta},'tot']);
- $('#h-tab').innerHTML='<table><thead><tr><th>Concepto</th>'+lbl.map(function(l,i){return '<th'+([0,0.5,1][i]===H.esc?' style="color:var(--carbon)"':'')+'>'+l+'</th>'}).join('')+'</tr></thead><tbody>'+
-  rows.map(function(r){return '<tr class="'+(r[2]||'')+'"><td>'+r[0]+'</td>'+E.map(function(e){return '<td>'+usd(r2(r[1](e)))+'</td>'}).join('')+'</tr>'}).join('')+'</tbody></table>'+
-  '<p class="hint">La ganancia neta ya descuenta el IVA (no es ingreso suyo), los gastos reembolsables (los paga el cliente y usted los traslada) y el IR estimado. La retención de IR '+(I.age?'que le hacen':'')+' se acredita a su IR anual: no es un costo adicional.</p>';
- var opNeto=I.op-sel.desc, opIva=opNeto*(1+I.iva/100);
- var plan='';
- if(H.pago==='total')plan='<p style="margin:0">Pago único al firmar el contrato: <b>'+usd(opIva+I.gas)+'</b> (honorario con 10% de descuento + IVA'+(I.gas?' + gastos':'')+').</p>';
- else if(H.pago==='cuotas'){var c=opIva/I.cuo;plan='<table><thead><tr><th>Cuota</th><th>Momento</th><th>Valor</th></tr></thead><tbody>'+Array.apply(null,Array(I.cuo)).map(function(_,i){return '<tr><td>'+(i+1)+(i===0?' (anticipo)':'')+'</td><td>'+(i===0?'Al firmar':(i===1?'30 días':'60 días'))+'</td><td>'+usd(c+(i===0?I.gas:0))+'</td></tr>'}).join('')+'</tbody></table>'}
- else {var et=[['Demanda / inicio',.5],['Audiencia preliminar o única',.3],['Sentencia / cierre',.2]];plan='<table><thead><tr><th>Etapa</th><th>%</th><th>Valor</th></tr></thead><tbody>'+et.map(function(x,i){return '<tr><td>'+x[0]+'</td><td>'+pct(x[1]*100)+'</td><td>'+usd(opIva*x[1]+(i===0?I.gas:0))+'</td></tr>'}).join('')+'</tbody></table><p class="hint">Distribución 50/30/20 de criterio propio.</p>'}
- if(sel.prima>0)plan+='<p class="hint">La prima de éxito ('+usd(sel.prima)+' + IVA = '+usd(sel.prima*(1+I.iva/100))+') se factura aparte, cuando se cumple la condición pactada.</p>';
- $('#h-plan').innerHTML='<h3>Plan de pago del honorario operativo</h3>'+plan;
- var st={mat:$('#h-mat').value,modo:H.modo,pago:H.pago,esc:H.esc,cuo:I.cuo,age:I.age};['op','gas','cua','pct','fijo','ofe','iva','ir','rir','riva','cos'].forEach(function(k){st[k]=I[k]});store('hon',st);
+  ['TOTAL A PAGAR',function(e){return e.total},'tot']].map(fila).join('')+'</tbody></table>'+
+  '<p class="hint">Gastos operativos aparte: '+usd(gtot)+' (los paga el cliente directamente; no forman parte del total).</p>';
+ var tiempo=0,meta=presMeta(),hf=num(R.data&&R.data.pres&&R.data.pres.hf)||120,vh=meta?meta/hf:0;tiempo=I.hrs*vh;
+ $('#h-gan').innerHTML='<h3>Lo que usted gana</h3><table>'+th+'<tbody>'+[
+  ['Total a pagar por el cliente',function(e){return e.total}]].concat(I.age?[
+  ['(−) Retención de IR '+pct(I.rir),function(e){return -e.rir}],
+  ['(−) Retención de IVA '+pct(I.riva),function(e){return -e.riva}],
+  ['Valor que usted recibe',function(e){return e.recibe},'hi']]:[]).concat([
+  ['(−) IVA que usted declara y paga al SRI',function(e){return -e.ivaSri}],
+  ['(−) Costos propios',function(){return -I.cos}],
+  [I.age?'(−) IR por pagar: estimado '+pct(I.ir)+' menos lo retenido':'(−) IR estimado '+pct(I.ir),function(e){return -(e.ir-(I.age?e.rir:0))}]]).concat([
+  ['GANANCIA NETA',function(e){return e.neta},'tot'],
+  ['Margen sobre la base imponible',function(e){return e.margen},'',1]]).concat(vh?[
+  ['Costo de su tiempo ('+I.hrs+' h × '+usd(r2(vh))+')',function(){return -tiempo}],
+  ['Resultado frente a su meta',function(e){return e.neta-tiempo},'tot']]:[]).map(fila).join('')+'</tbody></table>'+
+  '<p class="hint"><b>Método:</b> ganancia neta = base imponible − costos propios − IR estimado. El IVA y los gastos operativos no son ingreso suyo. Margen = ganancia neta ÷ base imponible. '+(vh?'El caso es rentable si la ganancia neta cubre sus horas al valor hora objetivo (meta mensual ÷ horas facturables al mes). Un resultado negativo indica pérdida frente a su meta.':'Registre su presupuesto mensual en Configuración para comparar con el valor de su tiempo.')+'</p>';
+ var mh=$('#h-meta');
+ if(meta){var g=sel.neta,need=g>0?Math.ceil(meta/g):0;mh.hidden=false;mh.innerHTML='<h3>Meta mensual <span class="tag">privado: no sale en proformas</span></h3><p style="margin:0 0 6px">Meta: <b>'+usd(meta)+'</b> · valor hora objetivo: <b>'+usd(r2(vh))+'</b> ('+hf+' h facturables/mes).</p><table><thead><tr><th>Casos similares al mes</th><th>Ganancia neta</th><th>% de la meta</th></tr></thead><tbody>'+[2,3,4].map(function(n){return '<tr><td>'+n+'</td><td>'+usd(r2(g*n))+'</td><td>'+pct(r2(meta?g*n/meta*100:0))+'</td></tr>'}).join('')+'</tbody></table><p class="hint">'+(g>0?'Con este escenario necesita <b>'+need+'</b> caso(s) similares al mes para cubrir la meta. La referencia es que 2 a 4 casos por mes la alcancen, no un solo caso.'+(need>4?' <b style="color:var(--mal)">Más de 4: revise el honorario o combine con casos de mayor valor.</b>':''):'Este escenario no deja ganancia.')+'</p>'}
+ else{mh.hidden=!(R.key&&R.data);mh.innerHTML='<h3>Meta mensual</h3><p class="hint" style="margin:0">Registre su presupuesto mensual en Configuración para ver cuántos casos como este necesita al mes.</p>'}
+ var opNeto=I.op-sel.desc,opIva=opNeto*(1+I.iva/100),plan='';
+ if(H.pago==='total')plan='<p style="margin:0">Pago único al firmar el contrato: <b>'+usd(r2(opIva))+'</b> (honorarios operativos'+(sel.desc?' con descuento':'')+' + IVA).</p>';
+ else if(H.pago==='cuotas'){var c=r2(opIva/I.cuo);plan='<table><thead><tr><th>Cuota</th><th>Momento</th><th>Valor</th></tr></thead><tbody>'+Array.apply(null,Array(I.cuo)).map(function(_,i){return '<tr><td>'+(i+1)+(i===0?' (anticipo)':'')+'</td><td>'+(i===0?'Al firmar':'A los '+(30*i)+' días')+'</td><td>'+usd(i===I.cuo-1?r2(opIva-c*(I.cuo-1)):c)+'</td></tr>'}).join('')+'</tbody></table>'}
+ else{var et=etapasDe(PMAT[m.id]||'gestion'),sm=et.reduce(function(a,x){return a+x[1]},0)||100;plan='<table><thead><tr><th>Etapa</th><th>%</th><th>Valor</th></tr></thead><tbody>'+et.map(function(x){return '<tr><td>'+esc(x[0])+'</td><td>'+pct(x[1])+'</td><td>'+usd(r2(opIva*x[1]/sm))+'</td></tr>'}).join('')+'</tbody></table><p class="hint">Etapas de '+esc((PROCS[PMAT[m.id]||'gestion']||{}).n||'')+'. Porcentajes de criterio propio.</p>'}
+ if(sel.prima>0)plan+='<p class="hint">La prima de éxito ('+usd(r2(sel.prima))+' + IVA = '+usd(r2(sel.prima*(1+I.iva/100)))+') se factura aparte, cuando se cumple la condición pactada.</p>';
+ $('#h-plan').innerHTML='<h3>Forma de pago de los honorarios operativos</h3>'+plan;
+ var st={mat:$('#h-mat').value,cuan:H.cuan,pago:H.pago,esc:H.esc,age:I.age,not:$('#h-not').value};['op','cua','pct','fijo','des','ofe','iva','ir','rir','riva','cos','hrs','gas','par','cuo'].forEach(function(k){st[k]=I[k]});st.nc=num($('#h-nc').value);st.nm=num($('#h-nm').value);store('hon',st);
 }
 
 /* =========================================================
@@ -976,7 +1010,7 @@ function dActualizar(id,obj){return gapi(UAPI+'/'+id+'?uploadType=media&fields=i
 function dBorrar(id){return gapi(DAPI+'/'+id,{method:'DELETE'})}
 function fusionar(a,b){var out=fusionar0(a,b);var nb=(b.cfgUpd||0)>(a.cfgUpd||0);out.cfg=nb?b.cfg:a.cfg;out.cfgUpd=Math.max(a.cfgUpd||0,b.cfgUpd||0)||undefined;var ps={};[a.prfSeq||{},b.prfSeq||{}].forEach(function(o){Object.keys(o).forEach(function(k){ps[k]=Math.max(ps[k]||0,o[k])})});out.prfSeq=ps;var hm={};(a.prfHist||[]).concat(b.prfHist||[]).forEach(function(x){hm[x.num]=hm[x.num]||x});out.prfHist=Object.keys(hm).map(function(k){return hm[k]}).sort(function(x,y){return y.num.localeCompare(x.num)});return out}
 function fusionar0(a,b){function mm(x,y){var m={};(x||[]).concat(y||[]).forEach(function(r){var c=m[r.id];if(!c||(r.upd||0)>(c.upd||0))m[r.id]=r});return Object.keys(m).map(function(k){return m[k]})}
- var s={};[a.seq||{},b.seq||{}].forEach(function(o){Object.keys(o).forEach(function(k){s[k]=Math.max(s[k]||0,o[k])})});var gc=((a.gcal||{}).upd||0)>=((b.gcal||{}).upd||0)?a.gcal:b.gcal;return {clientes:mm(a.clientes,b.clientes),casos:mm(a.casos,b.casos),aud:mm(a.aud,b.aud),docs:mm(a.docs,b.docs),gcal:gc,seq:s}}
+ var s={};[a.seq||{},b.seq||{}].forEach(function(o){Object.keys(o).forEach(function(k){s[k]=Math.max(s[k]||0,o[k])})});var gc=((a.gcal||{}).upd||0)>=((b.gcal||{}).upd||0)?a.gcal:b.gcal;var pr=((a.pres||{}).upd||0)>=((b.pres||{}).upd||0)?a.pres:b.pres;return {clientes:mm(a.clientes,b.clientes),casos:mm(a.casos,b.casos),aud:mm(a.aud,b.aud),docs:mm(a.docs,b.docs),gcal:gc,pres:pr,seq:s}}
 function paraSubir(){var v=JSON.parse(JSON.stringify(R.vault));delete v.ls;delete v.fid;return v}
 function sincroAuto(){if(!syncDisponible()||!navigator.onLine||!R.key)return;tokenG(false).then(function(){sincronizar(false)},function(){estadoSync()})}
 var SYNC_RUN=false;
@@ -1146,6 +1180,7 @@ function renderConf(){
  '<div class="card"><h3>Google Calendar (audiencias)</h3><label class="chk"><input type="checkbox" id="g-cal"'+(calOn()?' checked':'')+'> Agendar cada audiencia automáticamente al guardarla</label><p class="hint">Crea el evento en su calendario principal con dos recordatorios: 1 semana y 3 días antes. Si cambia la fecha, la hora o el estado, el evento se actualiza; si la elimina o la suspende, se quita del calendario.</p>'+
   '<div class="row"><button class="btn sec" id="g-calc" type="button">Conectar y sincronizar audiencias</button></div><p class="hint" id="g-calst">'+(R.data.gcal&&R.data.gcal.ls?'Última sincronización: '+new Date(R.data.gcal.ls).toLocaleString('es-EC',{dateStyle:'medium',timeStyle:'short'}):'Pendientes: '+calPendientes().length)+'</p>'+
   '<details><summary>Requisito único en Google Cloud</summary><ol style="font-size:13.5px;padding-left:18px;margin:6px 0"><li>console.cloud.google.com › su proyecto › APIs y servicios › Biblioteca › "Google Calendar API" › Habilitar.</li><li>Google Auth Platform › Acceso a los datos › Agregar o quitar permisos › marque <b>.../auth/calendar.events</b> › Actualizar › Guardar.</li><li>Vuelva aquí y toque "Conectar y sincronizar audiencias". En la ventana de Google marque el permiso de Calendar.</li></ol></details></div>'+
+ '<div class="card"><h3>Presupuesto mensual (privado)</h3><p class="hint" style="margin-top:0">Define su meta mensual. Se usa solo como referencia en la calculadora de Honorarios; no aparece en proformas, documentos ni mensajes. Se guarda cifrado.</p><div class="grid">'+PRES_K.map(function(k){return inp('g-p'+k[0],k[1]+' (USD)',(R.data.pres||{})[k[0]]||'','number')}).join('')+inp('g-pres','Reserva o ahorro (%)',(R.data.pres||{}).res||10,'number')+inp('g-phf','Horas facturables al mes',(R.data.pres||{}).hf||120,'number')+'</div><p style="margin:8px 0 0">Meta mensual: <b id="g-pmeta">'+usd(presMeta())+'</b></p><div class="row" style="margin-top:8px"><button class="btn sec" id="g-psv" type="button">Guardar presupuesto</button></div></div>'+
  '<div class="card"><h3>Seguridad</h3><div class="grid">'+inp('g-pa','Contraseña actual','','password')+inp('g-pn','Nueva contraseña','','password')+'</div><div class="row" style="margin-top:8px"><button class="btn sec" id="g-cpw" type="button">Cambiar contraseña</button></div>'+
   '<label class="chk" style="margin-top:8px"><input type="checkbox" id="g-rem"'+(R.remember?' checked':'')+'> Mantener desbloqueado en este equipo (7 días)</label><div class="row" style="margin-top:6px"><button class="btn sec" id="g-lock" type="button">Bloquear ahora</button></div><p class="hint">Al cambiar la contraseña recibirá una clave de recuperación nueva.</p></div>'+
  '<div class="card"><h3>Respaldo manual</h3><div class="row"><button class="btn sec" id="g-exp" type="button">Descargar respaldo cifrado</button><button class="btn sec" id="g-csv" type="button">Casos (CSV)</button><button class="btn sec" id="g-acsv" type="button">Audiencias (CSV)</button></div><p class="hint">El respaldo cifrado se restaura con su contraseña. Los CSV no van cifrados: guárdelos en un lugar seguro.</p>'+
@@ -1177,6 +1212,9 @@ function renderConf(){
   abrirBoveda(R.vault,a,false).then(function(dek){var rc=codRec();return envolver(R.vault,dek,n,rc).then(function(){return guardarCambio()}).then(function(){show('cli');mostrarRec(rc,false)})}).catch(function(){gm('La contraseña actual no es correcta.')})};
  $('#g-rem').onchange=function(){R.remember=this.checked;if(this.checked)recordar(R.key,7);else olvidar()};
  $('#g-lock').onclick=bloquear;
+ var leePres=function(){var o={upd:Date.now()};PRES_K.forEach(function(k){o[k[0]]=num(val('g-p'+k[0]))});o.res=num(val('g-pres'));o.hf=num(val('g-phf'))||120;return o};
+ $$('#v-conf [id^=g-p]').forEach(function(i){i.addEventListener('input',function(){var o=R.data.pres;R.data.pres=leePres();$('#g-pmeta').textContent=usd(presMeta());R.data.pres=o})});
+ $('#g-psv').onclick=function(){R.data.pres=leePres();guardarCambio().then(function(){gm('Presupuesto guardado. Meta mensual: '+usd(presMeta())+'.',1)})};
  $('#g-cal').onchange=function(){R.data.gcal=Object.assign(R.data.gcal||{},{on:this.checked,upd:Date.now()});guardarCambio();gm(this.checked?'Las audiencias nuevas o editadas se agendarán en Google Calendar.':'Sincronización con Calendar desactivada.',1)};
  $('#g-calc').onclick=function(){var st=$('#g-calst');st.textContent='Conectando…';tokenCal(true).then(function(){st.textContent='Sincronizando…';return calSyncTodas(true)}).then(function(n){R.data.gcal=Object.assign(R.data.gcal||{},{ls:Date.now()});return guardarCambio().then(function(){st.textContent=n?n+' audiencia(s) sincronizadas con Google Calendar.':'Todo al día en Google Calendar.'})}).catch(function(e){st.textContent=e.message;st.style.color='var(--mal)'})};
  $('#g-rdr').onclick=function(){if(!confirmarBtn(this))return;R.key=null;R.data=null;localStorage.removeItem('msc:vault');olvidar();if(PWA){location.reload();return}show('cli');restaurarDrive()};

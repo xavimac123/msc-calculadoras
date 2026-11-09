@@ -2,7 +2,7 @@
 
 Herramienta de uso interno de **Macías Sánchez Consultores** (Guayaquil, Ecuador). App web instalable en el teléfono (PWA) que funciona sin internet.
 
-**Abrir / instalar:** https://xavimac123.github.io/msc-calculadoras/
+**Abrir / instalar:** https://xavimac123.github.io/msc-gestorlegal/
 
 ## Qué incluye
 - **Honorarios:** honorarios operativos + prima de éxito con cuantía determinada (monto y % que usted fija), indeterminada (regla por materia) o disputa sobre bienes o servicios (monto fijo); pago total con descuento editable, cuotas ampliables o etapas del procedimiento; IVA destacado y retenciones solo si el cliente es agente de retención (reglas del SRI); resultado en tres columnas (sin éxito, parcial, total); separación entre lo que paga el cliente y la ganancia neta, margen y costo del tiempo; gastos operativos y tasa notarial aparte; meta mensual desde un presupuesto privado (2 a 4 casos al mes). Parámetros de mercado: Ecuador, Chile, Colombia y Perú.

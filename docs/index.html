@@ -1196,7 +1196,7 @@ function renderConf(){
   '<div class="full"><label for="g-logo">Logo (PNG con fondo transparente) · '+(DATA.logo?'cargado':'provisional')+'</label><input id="g-logo" type="file" accept="image/png,image/svg+xml,image/jpeg"></div>'+
  '</div><div class="row" style="margin-top:8px"><button class="btn" id="g-sv" type="button" data-needs="art">Guardar datos del despacho</button></div></div>'+
  '<div class="msg" id="g-msg"></div>'+
- '<div class="card"><h3>Acerca de</h3><p style="font-size:14px;margin:0">MSC Gestor Legal. Uso interno de Macías Sánchez Consultores. Código: github.com/xavimac123/msc-calculadoras</p></div>';
+ '<div class="card"><h3>Acerca de</h3><p style="font-size:14px;margin:0">MSC Gestor Legal. Uso interno de Macías Sánchez Consultores. Código: github.com/xavimac123/msc-gestorlegal</p></div>';
  var gm=function(t,ok){var m=$('#g-msg');m.className='msg '+(ok?'o':'e');m.textContent=t;m.scrollIntoView({behavior:'smooth',block:'nearest'})};
  var tm=store('tema')||'auto';$$('#g-tema button').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.t===tm);b.onclick=function(){store('tema',b.dataset.t);aplicaTema();renderConf()}});
  $('#g-sv').onclick=function(){Q.cuentas=val('g-cta');Q.metodo=val('g-met');Q.gracias=val('g-gra');Q.lugar=val('g-lug');P.firmaNombre=val('g-fn');P.firmaCargo=val('g-fc');P.vigencia=num(val('g-vig'))||15;

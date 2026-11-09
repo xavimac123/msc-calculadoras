@@ -9,7 +9,7 @@ header{background:var(--carbon);color:#fff;padding:14px 16px 0}
 .wm{font-stretch:118%;font-weight:700;letter-spacing:.06em;font-size:12.5px;line-height:1.15;color:var(--oro)}
 .wm small{display:block;color:var(--oroc);font-weight:500;letter-spacing:.14em;font-size:9.5px;margin-top:2px}
 nav{display:flex;gap:2px;margin-top:12px;overflow-x:auto;scrollbar-width:none}nav::-webkit-scrollbar{display:none}
-nav button{flex:1 0 auto;min-width:0;background:none;border:0;color:#C9C6BA;font:inherit;font-weight:600;font-size:13.5px;padding:10px 6px 11px;border-bottom:3px solid transparent;cursor:pointer;white-space:nowrap}
+nav button{flex:1 1 auto;min-width:0;background:none;border:0;color:#C9C6BA;font:inherit;font-weight:600;font-size:12.5px;letter-spacing:-.01em;padding:10px 3px 11px;border-bottom:3px solid transparent;cursor:pointer;white-space:nowrap}
 nav button[aria-selected=true]{color:#fff;border-bottom-color:var(--oro)}
 main{max-width:760px;margin:0 auto;padding:14px 14px 40px}
 h2{font-stretch:115%;font-size:18px;margin:6px 0 4px;letter-spacing:.01em}
@@ -106,13 +106,20 @@ function refreshSave(){$$('[data-needs=art]').forEach(function(b){b.disabled=!AR
 
 /* ---------- estructura ---------- */
 var ISO='<svg class="iso" viewBox="0 0 40 40" aria-hidden="true"><path d="M0 0h40v30L30 40H0z" fill="#A09046"/><path d="M9 29V11h4.2l6.8 9.4 6.8-9.4H31v18h-4V17.6l-7 9.4-7-9.4V29z" fill="#fff"/></svg>';
-var TABS=[['hon','Honorarios'],['prf','Proforma'],['cat','Catálogo'],['pen','Pensiones'],['pla','Plazos'],['tra','Tránsito']];
+var TABS=[['cat','Catálogo'],['cli','Clientes'],['prf','Proforma'],['hon','Honorarios'],['calc','Calculadoras']];
+var SUBS=[['pen','Pensiones'],['pla','Plazos y términos'],['tra','Tránsito']];
 document.getElementById('root').innerHTML=
- '<header><div class="marca">'+(DATA.logo?'<img src="'+DATA.logo+'" alt="" style="height:38px;width:auto;max-width:160px;display:block">':ISO)+'<div class="wm">MACÍAS SÁNCHEZ CONSULTORES<small>CALCULADORAS LEGALES · USO INTERNO</small></div></div>'+
+ '<header><div class="marca">'+(DATA.logo?'<img src="'+DATA.logo+'" alt="" style="height:38px;width:auto;max-width:160px;display:block">':ISO)+'<div class="wm">MACÍAS SÁNCHEZ CONSULTORES<small>HERRAMIENTAS DEL DESPACHO · USO INTERNO</small></div></div>'+
  '<nav role="tablist">'+TABS.map(function(t){return '<button role="tab" data-t="'+t[0]+'" aria-selected="false">'+t[1]+'</button>'}).join('')+'</nav></header>'+
- '<main><section id="v-hon"></section><section id="v-prf" hidden></section><section id="v-cat" hidden></section><section id="v-pen" hidden></section><section id="v-pla" hidden></section><section id="v-tra" hidden></section></main>'+
+ '<main><section id="v-cat"></section><section id="v-cli" hidden></section><section id="v-prf" hidden></section><section id="v-hon" hidden></section><section id="v-calc" hidden><div class="seg" id="calc-nav" style="margin:4px 0 12px">'+SUBS.map(function(s){return '<button type="button" data-s="'+s[0]+'">'+s[1]+'</button>'}).join('')+'</div><section id="v-pen"></section><section id="v-pla" hidden></section><section id="v-tra" hidden></section></section></main>'+
  '<footer>Herramienta de uso interno de Macías Sánchez Consultores. Resultados referenciales: verifique la norma vigente y el caso concreto antes de actuar. Abg. Mariano X. Macías Sánchez · Mat. 09-2022-736.</footer>';
-function show(t){if(!TABS.some(function(x){return x[0]===t}))t='hon';if(t==='prf'&&document.getElementById('f-cli'))renderPrf();$$('nav button').forEach(function(b){b.setAttribute('aria-selected',b.dataset.t===t)});TABS.forEach(function(x){$('#v-'+x[0]).hidden=x[0]!==t});try{if(location.hash!=='#'+t)history.replaceState(null,'','#'+t)}catch(e){}store('tab',t)}
+function show(t){var sub=null;if(SUBS.some(function(s){return s[0]===t})){sub=t;t='calc'}else if(t&&t.indexOf('calc-')===0){sub=t.slice(5);t='calc'}
+ if(!TABS.some(function(x){return x[0]===t}))t='cat';
+ if(t==='calc'){if(!SUBS.some(function(s){return s[0]===sub}))sub=store('sub')||'pen';SUBS.forEach(function(s){$('#v-'+s[0]).hidden=s[0]!==sub});$$('#calc-nav button').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.s===sub)});store('sub',sub)}
+ if(t==='prf'&&document.getElementById('f-cli'))renderPrf();
+ $$('nav button').forEach(function(b){b.setAttribute('aria-selected',b.dataset.t===t);if(b.dataset.t===t&&b.scrollIntoView)try{b.scrollIntoView({block:'nearest',inline:'nearest'})}catch(e){}});TABS.forEach(function(x){$('#v-'+x[0]).hidden=x[0]!==t});
+ var h=t==='calc'?'calc-'+sub:t;try{if(location.hash!=='#'+h)history.replaceState(null,'','#'+h)}catch(e){}store('tab',h)}
+$$('#calc-nav button').forEach(function(b){b.onclick=function(){show('calc-'+b.dataset.s)}});
 $$('nav button').forEach(function(b){b.onclick=function(){show(b.dataset.t)}});
 window.addEventListener('hashchange',function(){show(location.hash.slice(1))});
 
@@ -584,6 +591,22 @@ function generarImg(){
     Promise.resolve(window.claude&&window.claude.use?window.claude.use('downloads'):null).then(function(dl){if(!dl){m.className='msg e';m.textContent='Guardar no está disponible aquí: mantenga presionada la imagen.';return}return dl.save({filename:'consulta-msc-'+($('#c-fec').value||'cita')+'.png',data:blob}).then(function(){m.className='msg o';m.textContent='Imagen guardada.'},function(e){m.className='msg e';m.textContent=e&&e.code==='declined'?'Guardado cancelado.':'No se pudo guardar: mantenga presionada la imagen.'})}).catch(function(){m.className='msg e';m.textContent='Mantenga presionada la imagen para guardarla.'})};
   },'image/png');
  });
+}
+
+/* =========================================================
+   2. REGISTRO DE CLIENTES Y CASOS (en preparación)
+   ========================================================= */
+function renderCli(){
+ $('#v-cli').innerHTML='<h2>Registro de clientes y casos</h2><p class="sub">En preparación. Se construirá cuando se defina dónde se guardan y sincronizan los datos.</p>'+
+ '<div class="card"><h3>Qué tendrá</h3><ul style="margin:0;padding-left:18px;font-size:14px">'+
+  '<li><b>Clientes:</b> nombre, cédula o RUC, teléfono, correo, materia y problema legal; constancia del aviso de privacidad (LOPDP).</li>'+
+  '<li><b>Casos vinculados al cliente:</b> número de causa, actor o demandado, materia, unidad judicial o dependencia, Fiscalía, patrocinio total, parcial o solo consulta, fecha de inicio y de cierre.</li>'+
+  '<li><b>Estados:</b> por concretar, consulta, activo, suspendido, cerrado. Los activos arriba; consultas y cerrados abajo.</li>'+
+  '<li><b>Pendientes por llamar</b> en rojo, con fecha de recordatorio.</li>'+
+  '<li><b>Vista por mes:</b> casos vigentes en cada mes desde su fecha de inicio, y pendientes por concretar.</li>'+
+  '<li><b>Enlaces:</b> crear una proforma desde el cliente y registrar el caso cuando la acepte.</li>'+
+  '<li><b>Respaldo cifrado</b> con contraseña.</li>'+
+ '</ul></div>';
 }
 
 /* =========================================================
@@ -1119,8 +1142,8 @@ function calcTra(){
 }
 
 /* ---------- arranque ---------- */
-renderHon();renderCat();renderPrf();renderPen();renderPla();renderTra();
-show(location.hash.slice(1)||store('tab')||'hon');
+renderCli();renderHon();renderCat();renderPrf();renderPen();renderPla();renderTra();
+show(location.hash.slice(1)||store('tab')||'cat');
 refreshSave();
 })();
 </script></body></html>

@@ -594,20 +594,344 @@ function generarImg(){
 }
 
 /* =========================================================
-   2. REGISTRO DE CLIENTES Y CASOS (en preparación)
+   2. REGISTRO DE CLIENTES Y CASOS
+   Bóveda cifrada (AES-GCM 256, clave derivada con PBKDF2-SHA256).
+   Sincronización con la carpeta oculta de Google Drive (appDataFolder).
    ========================================================= */
+var GCID='107156492846-bonbgep6b3vk8kshv3tb2vj0sa17fsot.apps.googleusercontent.com',GSCOPE='https://www.googleapis.com/auth/drive.appdata',VFILE='msc-registro.json',ITER=310000;
+var DAPI='https://www.googleapis.com/drive/v3/files',UAPI='https://www.googleapis.com/upload/drive/v3/files';
+var R={vault:null,key:null,data:null,view:'cli',q:'',sel:null,cas:null,mes:null,token:null,tokExp:0,dirty:false,sync:{st:'',msg:'',t:0},timer:null,hidAt:0,remember:false};
+var TE=new TextEncoder(),TD=new TextDecoder();
+var EST_CLI={concretar:['Por concretar','#8A5A00','#FBF0D9'],consulta:['Consulta','#3A3F47','#ECEAE2'],activo:['Activo','#2F6B3A','#E5F0E4'],suspendido:['Suspendido','#5B6068','#ECEAE2'],cerrado:['Cerrado','#5B6068','#F1F1F1']};
+var EST_CAS={activo:'Activo',concretar:'Por concretar',suspendido:'Suspendido',cerrado:'Cerrado'};
+var VIN={consulta:'Solo consulta',total:'Patrocinio total',parcial:'Patrocinio parcial'};
+var ROL=['Actor','Demandado','Víctima / acusador','Procesado / investigado','Solicitante','Tercero','Otro'];
+var UNIDADES=['Florida Norte','Valdivia','Albán Borja','Otra'],FISCALIAS=['Merced','Montecristi','Otra'];
+var MATERIAS=['Civil','Familia','Penal','Tránsito','Laboral','IESS','Fiscalía','Administrativo','Cartera','Deudas','Protección de datos','Otra'];
+
+/* ---------- criptografía ---------- */
+function rnd(n){return crypto.getRandomValues(new Uint8Array(n))}
+function b64(u){u=new Uint8Array(u);var s='';for(var i=0;i<u.length;i+=0x8000)s+=String.fromCharCode.apply(null,u.subarray(i,i+0x8000));return btoa(s)}
+function kdf(pw,salt,iter){return crypto.subtle.importKey('raw',TE.encode(pw),'PBKDF2',false,['deriveKey']).then(function(b){return crypto.subtle.deriveKey({name:'PBKDF2',salt:salt,iterations:iter,hash:'SHA-256'},b,{name:'AES-GCM',length:256},false,['encrypt','decrypt'])})}
+function cifra(key,bytes){var iv=rnd(12);return crypto.subtle.encrypt({name:'AES-GCM',iv:iv},key,bytes).then(function(ct){return {iv:b64(iv),ct:b64(ct)}})}
+function descifra(key,o){return crypto.subtle.decrypt({name:'AES-GCM',iv:b64bytes(o.iv)},key,b64bytes(o.ct)).then(function(b){return new Uint8Array(b)})}
+function importDek(raw){return crypto.subtle.importKey('raw',raw,{name:'AES-GCM'},false,['encrypt','decrypt'])}
+function normRec(s){return String(s||'').toUpperCase().replace(/[^A-Z0-9]/g,'')}
+function codRec(){var A='ABCDEFGHJKLMNPQRSTUVWXYZ23456789',u=rnd(24),s='';for(var i=0;i<24;i++){s+=A[u[i]%32];if(i%4===3&&i<23)s+='-'}return s}
+function devId(){var d=store('dev');if(!d){d=b64(rnd(6)).replace(/[^A-Za-z0-9]/g,'');store('dev',d)}return d}
+function envolver(v,dek,pw,rc){var salt=rnd(16),rs=rnd(16);v.iter=ITER;v.salt=b64(salt);v.rsalt=b64(rs);v.pwUpd=Date.now();
+ return Promise.all([kdf(pw,salt,ITER),kdf(normRec(rc),rs,ITER)]).then(function(k){return Promise.all([cifra(k[0],dek),cifra(k[1],dek)])}).then(function(w){v.wpw=w[0];v.wrec=w[1];return v})}
+function crearBoveda(pw){var dek=rnd(32),rc=codRec(),v={format:'msc-vault',v:1,data:null,upd:0,dev:devId()};
+ return envolver(v,dek,pw,rc).then(function(){return importDek(dek)}).then(function(key){return {v:v,key:key,rc:rc,dek:dek}})}
+function abrirBoveda(v,secreto,esRec){return kdf(esRec?normRec(secreto):secreto,b64bytes(esRec?v.rsalt:v.salt),v.iter).then(function(k){return descifra(k,esRec?v.wrec:v.wpw)})}
+function leerDatos(v,key){if(!v.data)return Promise.resolve(vacio());return descifra(key,v.data).then(function(b){return JSON.parse(TD.decode(b))})}
+function vacio(){return {clientes:[],casos:[],seq:{}}}
+function sellar(){return cifra(R.key,TE.encode(JSON.stringify(R.data))).then(function(d){R.vault.data=d;R.vault.upd=Date.now();R.vault.dev=devId();guardaLocal()})}
+function guardaLocal(){try{localStorage.setItem('msc:vault',JSON.stringify(R.vault))}catch(e){alertaR('No se pudo guardar en este dispositivo: '+e.message)}}
+function bovedaLocal(){try{return JSON.parse(localStorage.getItem('msc:vault'))}catch(e){return null}}
+
+/* ---------- llave recordada en el dispositivo (IndexedDB, no exportable) ---------- */
+function idb(){return new Promise(function(res,rej){var r=indexedDB.open('msc',1);r.onupgradeneeded=function(){r.result.createObjectStore('k')};r.onsuccess=function(){res(r.result)};r.onerror=function(){rej(r.error)}})}
+function idbOp(mode,fn){return idb().then(function(db){return new Promise(function(res,rej){var t=db.transaction('k',mode),s=t.objectStore('k'),q=fn(s);t.oncomplete=function(){res(q&&q.result)};t.onerror=function(){rej(t.error)}})})}
+function recordar(key,dias){return idbOp('readwrite',function(s){return s.put({key:key,exp:Date.now()+dias*864e5},'dek')})}
+function olvidar(){return idbOp('readwrite',function(s){return s.delete('dek')}).catch(function(){})}
+function llaveRecordada(){return idbOp('readonly',function(s){return s.get('dek')}).then(function(o){return o&&o.exp>Date.now()?o.key:null}).catch(function(){return null})}
+
+/* ---------- utilidades del registro ---------- */
+function uid(){return b64(rnd(9)).replace(/[^A-Za-z0-9]/g,'').slice(0,12)}
+function sigCod(tipo){var y=String(new Date().getFullYear()),k=tipo==='CLI'?'CLI':'CAS-'+y;R.data.seq[k]=(R.data.seq[k]||0)+1;return tipo==='CLI'?'CLI-'+String(R.data.seq[k]).padStart(4,'0'):'CAS-'+y+'-'+String(R.data.seq[k]).padStart(3,'0')}
+function clientes(){return R.data.clientes.filter(function(c){return !c.del})}
+function casos(cid){return R.data.casos.filter(function(c){return !c.del&&(cid==null||c.cli===cid)})}
+function cliById(id){return R.data.clientes.filter(function(c){return c.id===id})[0]}
+function hoyISO(){return iso(new Date())}
+function llamPend(c){return c.llam&&c.llam.slice(0,10)<=hoyISO()}
+function estCli(c){return casos(c.id).some(function(k){return k.est==='activo'})?'activo':(c.est||'concretar')}
+var ORD={activo:1,concretar:2,suspendido:3,consulta:4,cerrado:5};
+function alertaR(t,ok){var m=$('#r-msg');if(m){m.className='msg '+(ok?'o':'e');m.textContent=t}}
+function fmtFH(s){if(!s)return '';var d=new Date(s);if(isNaN(d))return s;return d.getDate()+' '+MESES[d.getMonth()].slice(0,3)+' '+d.getFullYear()+(s.length>10?' · '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0'):'')}
+function chip(t,c,bg){return '<span class="tag" style="color:'+c+';background:'+bg+'">'+esc(t)+'</span>'}
+function inp(id,label,val,type,extra){return '<div'+(extra&&extra.full?' class="full"':'')+'><label for="'+id+'">'+label+'</label><input id="'+id+'" type="'+(type||'text')+'" value="'+esc(val==null?'':val)+'"'+(extra&&extra.attr?' '+extra.attr:'')+'></div>'}
+function sel(id,label,val,opts,full){return '<div'+(full?' class="full"':'')+'><label for="'+id+'">'+label+'</label><select id="'+id+'">'+opts.map(function(o){var v=Array.isArray(o)?o[0]:o,t=Array.isArray(o)?o[1]:o;return '<option value="'+esc(v)+'"'+(v===val?' selected':'')+'>'+esc(t)+'</option>'}).join('')+'</select></div>'}
+function area_(id,label,val){return '<div class="full"><label for="'+id+'">'+label+'</label><textarea id="'+id+'" rows="3" style="width:100%;font:inherit;font-size:14px;padding:10px;border:1px solid #CFCABA;border-radius:8px">'+esc(val||'')+'</textarea></div>'}
+function val(id){var e=$('#'+id);return e?(e.type==='checkbox'?e.checked:e.value.trim()):''}
+
+/* ---------- pantallas ---------- */
 function renderCli(){
- $('#v-cli').innerHTML='<h2>Registro de clientes y casos</h2><p class="sub">En preparación. Se construirá cuando se defina dónde se guardan y sincronizan los datos.</p>'+
- '<div class="card"><h3>Qué tendrá</h3><ul style="margin:0;padding-left:18px;font-size:14px">'+
-  '<li><b>Clientes:</b> nombre, cédula o RUC, teléfono, correo, materia y problema legal; constancia del aviso de privacidad (LOPDP).</li>'+
-  '<li><b>Casos vinculados al cliente:</b> número de causa, actor o demandado, materia, unidad judicial o dependencia, Fiscalía, patrocinio total, parcial o solo consulta, fecha de inicio y de cierre.</li>'+
-  '<li><b>Estados:</b> por concretar, consulta, activo, suspendido, cerrado. Los activos arriba; consultas y cerrados abajo.</li>'+
-  '<li><b>Pendientes por llamar</b> en rojo, con fecha de recordatorio.</li>'+
-  '<li><b>Vista por mes:</b> casos vigentes en cada mes desde su fecha de inicio, y pendientes por concretar.</li>'+
-  '<li><b>Enlaces:</b> crear una proforma desde el cliente y registrar el caso cuando la acepte.</li>'+
-  '<li><b>Respaldo cifrado</b> con contraseña.</li>'+
- '</ul></div>';
+ var v=$('#v-cli');
+ if(R.key&&R.data)return pintaRegistro();
+ var bv=bovedaLocal();
+ if(!bv){
+  v.innerHTML='<h2>Registro de clientes y casos</h2><p class="sub">Los datos se guardan cifrados con su contraseña en este teléfono y, si lo activa, en una carpeta oculta de su Google Drive.</p>'+
+  '<div class="card"><h3>Crear el registro</h3><div class="grid">'+inp('r-p1','Contraseña (mínimo 8 caracteres)','','password',{full:1,attr:'autocomplete="new-password"'})+inp('r-p2','Repita la contraseña','','password',{full:1,attr:'autocomplete="new-password"'})+'</div>'+
+  '<p class="hint">Esta contraseña cifra los datos de sus clientes. Nadie puede recuperarla por usted: al crear el registro recibirá una clave de recuperación para guardar.</p><div class="row" style="margin-top:8px"><button class="btn" id="r-crear" type="button">Crear registro</button></div></div>'+
+  '<div class="card"><h3>¿Ya tiene un registro?</h3><p class="hint" style="margin-top:0">Para un teléfono nuevo o después de reinstalar.</p><div class="row"><button class="btn sec" id="r-rest" type="button">Restaurar desde Google Drive</button><label class="btn sec" style="margin:0">Importar archivo de respaldo<input id="r-imp" type="file" accept=".json,application/json" hidden></label></div></div>'+
+  '<div class="msg" id="r-msg"></div>';
+  $('#r-crear').onclick=function(){var a=$('#r-p1').value,b=$('#r-p2').value;if(a.length<8)return alertaR('La contraseña debe tener al menos 8 caracteres.');if(a!==b)return alertaR('Las contraseñas no coinciden.');alertaR('Creando el registro cifrado…',1);
+   crearBoveda(a).then(function(o){R.vault=o.v;R.key=o.key;R.data=vacio();return sellar().then(function(){mostrarRec(o.rc,true)})}).catch(function(e){alertaR('No se pudo crear: '+e.message)})};
+  $('#r-rest').onclick=restaurarDrive;$('#r-imp').onchange=importarArchivo;
+  return;
+ }
+ llaveRecordada().then(function(k){
+  if(k){R.vault=bv;return leerDatos(bv,k).then(function(d){R.key=k;R.data=d;R.remember=true;pintaRegistro();sincroAuto()}).catch(function(){olvidar();pantallaBloqueo(bv)})}
+  pantallaBloqueo(bv);
+ });
 }
+function pantallaBloqueo(bv){
+ var v=$('#v-cli');
+ v.innerHTML='<h2>Registro de clientes y casos</h2><div class="card" style="max-width:420px"><h3>Registro bloqueado</h3><div class="grid">'+inp('r-pw','Contraseña','','password',{full:1,attr:'autocomplete="current-password"'})+'</div>'+
+ '<label class="chk"><input type="checkbox" id="r-rem"> Mantener desbloqueado en este teléfono por 7 días</label>'+
+ '<div class="row" style="margin-top:8px"><button class="btn" id="r-ab" type="button">Desbloquear</button></div>'+
+ '<details style="margin-top:10px"><summary>Olvidé la contraseña</summary><div class="grid" style="margin-top:8px">'+inp('r-rc','Clave de recuperación','',null,{full:1,attr:'autocapitalize="characters" placeholder="XXXX-XXXX-XXXX-XXXX-XXXX-XXXX"'})+inp('r-n1','Nueva contraseña','','password',{full:1})+'</div><div class="row" style="margin-top:8px"><button class="btn sec" id="r-rcok" type="button">Recuperar acceso</button></div></details>'+
+ '<div class="msg" id="r-msg"></div></div>';
+ var go=function(){var pw=$('#r-pw').value;if(!pw)return;alertaR('Verificando…',1);abrirBoveda(bv,pw,false).then(function(dek){return entrar(bv,dek)}).catch(function(){alertaR('Contraseña incorrecta.')})};
+ $('#r-ab').onclick=go;$('#r-pw').onkeydown=function(e){if(e.key==='Enter')go()};
+ $('#r-rcok').onclick=function(){var rc=$('#r-rc').value,n=$('#r-n1').value;if(n.length<8)return alertaR('La nueva contraseña debe tener al menos 8 caracteres.');alertaR('Verificando la clave…',1);
+  abrirBoveda(bv,rc,true).then(function(dek){var nrc=codRec();return envolver(bv,dek,n,nrc).then(function(){return entrar(bv,dek)}).then(function(){R.dirty=true;return sellar()}).then(function(){mostrarRec(nrc,false)})}).catch(function(){alertaR('La clave de recuperación no es válida.')})};
+}
+function entrar(bv,dek){return importDek(dek).then(function(key){return leerDatos(bv,key).then(function(d){R.vault=bv;R.key=key;R.data=d;R.remember=$('#r-rem')&&$('#r-rem').checked;if(R.remember)recordar(key,7);pintaRegistro();sincroAuto()})})}
+function mostrarRec(rc,nuevo){
+ $('#v-cli').innerHTML='<h2>Clave de recuperación</h2><div class="card" style="border-color:var(--oro)"><p style="margin-top:0">Si olvida su contraseña, esta es la <b>única</b> forma de recuperar el registro. Anótela en papel o guárdela fuera del teléfono. No se volverá a mostrar.</p>'+
+ '<div style="font:700 20px/1.5 ui-monospace,Menlo,monospace;letter-spacing:.04em;background:var(--marfil);border:1px dashed var(--oro);border-radius:8px;padding:12px;text-align:center;word-break:break-all">'+rc+'</div>'+
+ '<label class="chk" style="margin-top:10px"><input type="checkbox" id="r-ok"> Ya la guardé en un lugar seguro</label><div class="row" style="margin-top:8px"><button class="btn" id="r-cont" type="button" disabled>Continuar</button></div></div>';
+ $('#r-ok').onchange=function(){$('#r-cont').disabled=!this.checked};$('#r-cont').onclick=function(){pintaRegistro();if(nuevo)setTimeout(function(){alertaR('Registro creado. Active la sincronización con Google Drive en "Respaldo y sincronización".',1)},50)};
+}
+function bloquear(){R.key=null;R.data=null;R.sel=null;R.cas=null;R.view='cli';R.q='';olvidar();renderCli();badgeCli()}
+
+/* ---------- registro principal ---------- */
+function pintaRegistro(){
+ var v=$('#v-cli');
+ v.innerHTML='<div class="row" style="justify-content:space-between;align-items:center;margin-bottom:8px"><h2 style="margin:0">Clientes y casos</h2><div class="row"><button class="btn sec" id="r-sync" type="button" style="min-height:36px;padding:6px 10px">Sincronizar</button><button class="btn sec" id="r-lock" type="button" style="min-height:36px;padding:6px 10px">Bloquear</button></div></div>'+
+ '<p class="hint" id="r-sst" style="margin:0 0 10px"></p>'+
+ '<div class="seg" id="r-vw" style="margin-bottom:12px"><button type="button" data-v="cli">Clientes</button><button type="button" data-v="mes">Por mes</button><button type="button" data-v="llam">Llamadas</button></div>'+
+ '<div class="msg" id="r-msg"></div><div id="r-body"></div>'+
+ '<details class="card" style="margin-top:14px"><summary>Respaldo y sincronización</summary><div id="r-cfg"></div></details>';
+ $('#r-lock').onclick=bloquear;$('#r-sync').onclick=function(){sincronizar(true)};
+ $$('#r-vw button').forEach(function(b){b.onclick=function(){R.view=b.dataset.v;R.sel=null;R.cas=null;vista()}});
+ pintaCfg();estadoSync();vista();badgeCli();
+}
+function vista(){
+ $$('#r-vw button').forEach(function(b){var n=b.dataset.v==='llam'?clientes().filter(llamPend).length:0;b.setAttribute('aria-pressed',b.dataset.v===R.view);if(b.dataset.v==='llam')b.innerHTML='Llamadas'+(n?' <span style="background:var(--mal);color:#fff;border-radius:10px;padding:0 6px;font-size:11px">'+n+'</span>':'')});
+ if(R.view==='mes')return vistaMes();if(R.view==='llam')return vistaLlam();
+ if(R.sel)return fichaCliente(R.sel);
+ var b=$('#r-body'),q=R.q.toLowerCase();
+ var L=clientes().filter(function(c){return !q||(c.nom+' '+c.cod+' '+(c.ced||'')+' '+(c.mat||'')+' '+(c.sol||'')).toLowerCase().indexOf(q)>-1});
+ L.sort(function(a,b){var pa=llamPend(a)?0:ORD[estCli(a)]||9,pb=llamPend(b)?0:ORD[estCli(b)]||9;return pa-pb||(a.nom||'').localeCompare(b.nom||'')});
+ b.innerHTML='<div class="row" style="margin-bottom:10px;flex-wrap:nowrap"><input id="r-q" placeholder="Buscar nombre, cédula, código o materia" value="'+esc(R.q)+'" style="flex:1"><button class="btn" id="r-new" type="button" style="flex:none">Nuevo</button></div>'+
+ (L.length?L.map(function(c){var e=EST_CLI[estCli(c)],n=casos(c.id).length,lp=llamPend(c);return '<div class="card" data-c="'+c.id+'" style="cursor:pointer;padding:12px;'+(lp?'border-color:var(--mal);background:var(--malf)':'')+'"><div class="row" style="justify-content:space-between;flex-wrap:nowrap"><div style="min-width:0"><b>'+esc(c.nom)+'</b><div class="hint" style="margin:2px 0 0">'+esc(c.cod)+(c.mat?' · '+esc(c.mat):'')+' · '+esc(VIN[c.vin]||'')+(n?' · '+n+' caso'+(n>1?'s':''):'')+'</div></div><div style="flex:none">'+chip(e[0],e[1],e[2])+'</div></div>'+
+  (c.llam?'<div style="margin-top:6px;font-size:13px;font-weight:700;color:'+(lp?'var(--mal)':'var(--olivo)')+'">'+(lp?'Llamar: ':'Próxima llamada: ')+fmtFH(c.llam)+(c.llamN?' · '+esc(c.llamN):'')+'</div>':'')+'</div>'}).join(''):'<p class="hint">'+(q?'Sin resultados.':'Aún no hay clientes. Toque "Nuevo".')+'</p>');
+ $('#r-q').oninput=function(){R.q=this.value;var p=this.selectionStart;vista();var i=$('#r-q');i.focus();try{i.setSelectionRange(p,p)}catch(e){}};
+ $('#r-new').onclick=function(){R.sel='nuevo';vista()};
+ $$('#r-body [data-c]').forEach(function(d){d.onclick=function(){R.sel=d.dataset.c;vista();window.scrollTo(0,0)}});
+}
+function fichaCliente(id){
+ var nuevo=id==='nuevo',c=nuevo?{id:uid(),cod:'(se asigna al guardar)',est:'concretar',vin:'consulta',f0:hoyISO(),mat:'Familia'}:cliById(id),b=$('#r-body');
+ if(!c){R.sel=null;return vista()}
+ b.innerHTML='<button class="btn sec" id="r-back" type="button" style="min-height:34px;padding:4px 12px;margin-bottom:10px">← Clientes</button>'+
+ '<div class="card"><h3>'+(nuevo?'Nuevo cliente':esc(c.cod))+'</h3><div class="grid">'+
+  inp('c_nom','Nombre o razón social *',c.nom,null,{full:1})+inp('c_ced','Cédula o RUC',c.ced,null,{attr:'inputmode="numeric"'})+inp('c_tel','Teléfono',c.tel,'tel')+inp('c_mail','Correo',c.mail,'email',{full:1})+
+  sel('c_mat','Materia',c.mat,MATERIAS)+sel('c_vin','Tipo de vínculo',c.vin,Object.keys(VIN).map(function(k){return [k,VIN[k]]}))+
+  area_('c_sol','Solicitud o problema legal',c.sol)+
+  sel('c_est','Estado del cliente',c.est,Object.keys(EST_CLI).map(function(k){return [k,EST_CLI[k][0]]}))+inp('c_f0','Fecha de primer contacto',c.f0,'date')+
+ '</div><p class="hint">Si el cliente tiene un caso activo, se muestra como Activo aunque aquí diga otro estado.</p></div>'+
+ '<div class="card"><h3>Seguimiento</h3><div class="grid">'+inp('c_llam','Próxima llamada (fecha y hora)',c.llam,'datetime-local',{full:1})+inp('c_llamN','Motivo de la llamada',c.llamN,null,{full:1})+'</div>'+
+  (c.llam&&!nuevo?'<div class="row" style="margin-top:8px"><button class="btn sec" id="c_hecha" type="button">Llamada hecha</button><a class="btn sec" id="c_cal" target="_blank" rel="noopener">Agendar en Google Calendar</a></div>':'')+'</div>'+
+ '<div class="card"><h3>Protección de datos</h3><label class="chk"><input type="checkbox" id="c_priv"'+(c.priv?' checked':'')+'> Se entregó el aviso de privacidad</label><div class="grid">'+inp('c_privF','Fecha de entrega',c.privF,'date')+'</div>'+
+  '<div class="row" style="margin-top:8px"><button class="btn sec" id="c_aviso" type="button">Copiar aviso de privacidad</button></div><p class="hint">Datos mínimos: registre solo lo necesario para el servicio.</p></div>'+
+ '<div class="card">'+area_('c_notas','Notas internas',c.notas)+'</div>'+
+ '<div class="row"><button class="btn" id="c_save" type="button">Guardar cliente</button>'+(nuevo?'':'<button class="btn sec" id="c_prf" type="button">Crear proforma</button><button class="btn sec" id="c_del" type="button" style="color:var(--mal);border-color:var(--mal)">Eliminar</button>')+'</div>'+
+ '<div class="msg" id="c_msg"></div>'+
+ (nuevo?'':'<div class="card" style="margin-top:14px"><div class="row" style="justify-content:space-between"><h3 style="margin:0">Casos</h3><button class="btn" id="c_ncas" type="button" style="min-height:36px;padding:6px 12px">Nuevo caso</button></div><div id="c_cas" style="margin-top:8px"></div></div>')+
+ (nuevo||!(c.tel)?'':'<div class="row" style="margin-top:10px"><a class="btn sec" href="tel:'+esc(c.tel)+'">Llamar '+esc(c.tel)+'</a><a class="btn sec" target="_blank" rel="noopener" href="https://wa.me/'+telWa(c.tel)+'">WhatsApp</a></div>');
+ $('#r-back').onclick=function(){R.sel=null;vista()};
+ $('#c_priv').onchange=function(){if(this.checked&&!$('#c_privF').value)$('#c_privF').value=hoyISO()};
+ $('#c_aviso').onclick=function(){copiar(avisoPriv(),$('#c_msg'))};
+ if($('#c_cal'))$('#c_cal').href=calLink('Llamar a '+c.nom+(c.llamN?' – '+c.llamN:''),c.llam,15,(c.tel?'Tel. '+c.tel:''));
+ if($('#c_hecha'))$('#c_hecha').onclick=function(){c.llam='';c.llamN='';c.upd=Date.now();guardarCambio('Llamada marcada como hecha.').then(function(){vista()})};
+ $('#c_save').onclick=function(){
+  if(!val('c_nom'))return msgC('El nombre es obligatorio.');
+  var o=nuevo?{id:c.id,cod:sigCod('CLI')}:c;
+  ['nom','ced','tel','mail','mat','vin','sol','est','f0','llam','llamN','privF','notas'].forEach(function(k){o[k]=val('c_'+k)});o.priv=$('#c_priv').checked;o.upd=Date.now();
+  if(nuevo)R.data.clientes.push(o);
+  guardarCambio('Cliente guardado.').then(function(){R.sel=o.id;vista();msgC('Cliente guardado.',1)});
+ };
+ if(!nuevo){
+  $('#c_prf').onclick=function(){var s=store('prf')||{};s.num=null;s.cli=c.nom;s.ced=c.ced||'';s.tel=c.tel||'';s.mail=c.mail||'';s.items=[];s.det='';store('prf',s);show('prf')};
+  $('#c_del').onclick=function(){var bt=$('#c_del');if(!bt.dataset.c){bt.dataset.c=1;bt.textContent='Confirmar: eliminar cliente y sus casos';return}
+   c.del=true;c.upd=Date.now();['nom','ced','tel','mail','sol','notas','llam','llamN'].forEach(function(k){delete c[k]});casos(c.id).forEach(function(k){k.del=true;k.upd=Date.now()});
+   guardarCambio('Cliente eliminado.').then(function(){R.sel=null;vista();alertaR('Cliente eliminado.',1)})};
+  $('#c_ncas').onclick=function(){R.cas='nuevo';listaCasos(c)};
+  listaCasos(c);
+ }
+}
+function msgC(t,ok){var m=$('#c_msg');if(m){m.className='msg '+(ok?'o':'e');m.textContent=t}}
+function listaCasos(c){
+ var box=$('#c_cas');if(!box)return;var L=casos(c.id).sort(function(a,b){return (b.fi||'').localeCompare(a.fi||'')});
+ box.innerHTML=(R.cas?'<div id="c_form"></div>':'')+(L.length?L.map(function(k){return '<div data-k="'+k.id+'" style="padding:10px 0;border-bottom:1px solid var(--linea);cursor:pointer"><div class="row" style="justify-content:space-between;flex-wrap:nowrap"><div style="min-width:0"><b>'+esc(k.cod)+'</b>'+(k.causa?' · '+esc(k.causa):'')+'<div class="hint" style="margin:2px 0 0">'+esc(k.mat||'')+(k.proc?' · '+esc(k.proc):'')+' · '+esc(k.rol||'')+' · inicio '+esc(k.fi||'—')+(k.fc?' · cierre '+esc(k.fc):'')+'</div>'+(k.prox?'<div style="font-size:13px;font-weight:700;color:var(--olivo)">Próxima diligencia: '+fmtFH(k.prox)+(k.proxN?' · '+esc(k.proxN):'')+'</div>':'')+'</div><div style="flex:none">'+chip(EST_CAS[k.est]||k.est,k.est==='activo'?'#2F6B3A':'#5B6068',k.est==='activo'?'#E5F0E4':'#ECEAE2')+'</div></div></div>'}).join(''):(R.cas?'':'<p class="hint">Sin casos registrados.</p>'));
+ $$('#c_cas [data-k]').forEach(function(d){d.onclick=function(){R.cas=d.dataset.k;listaCasos(c);$('#c_form').scrollIntoView({behavior:'smooth'})}});
+ if(R.cas)formCaso(c,R.cas);
+}
+function formCaso(c,kid){
+ var nuevo=kid==='nuevo',k=nuevo?{id:uid(),cli:c.id,mat:c.mat,est:'activo',pat:c.vin==='consulta'?'total':c.vin,fi:hoyISO(),rol:'Actor',unidad:'',fis:''}:R.data.casos.filter(function(x){return x.id===kid})[0];
+ var f=$('#c_form');
+ f.innerHTML='<div class="card" style="border-color:var(--oro);margin:6px 0 10px"><h3>'+(nuevo?'Nuevo caso':esc(k.cod))+'</h3><div class="grid">'+
+  inp('k_causa','Número de causa / proceso',k.causa,null,{full:1,attr:'placeholder="Ej.: 09209-2026-01234"'})+sel('k_mat','Materia',k.mat,MATERIAS)+inp('k_proc','Tipo de proceso o trámite',k.proc,null,{attr:'placeholder="Ordinario, sumario, versión…"'})+
+  sel('k_rol','Calidad del cliente',k.rol,ROL)+inp('k_contra','Contraparte',k.contra)+
+  sel('k_unidad','Unidad judicial',k.unidad,[['','—']].concat(UNIDADES))+inp('k_unidadO','Otra unidad / juzgado',k.unidadO)+
+  inp('k_dep','Dependencia administrativa',k.dep,null,{attr:'placeholder="IESS, ANT, Municipio…"'})+sel('k_fis','Fiscalía',k.fis,[['','—']].concat(FISCALIAS))+
+  sel('k_pat','Patrocinio',k.pat,Object.keys(VIN).map(function(x){return [x,VIN[x]]}))+sel('k_est','Estado',k.est,Object.keys(EST_CAS).map(function(x){return [x,EST_CAS[x]]}))+
+  inp('k_fi','Fecha de inicio *',k.fi,'date')+inp('k_fc','Fecha de cierre',k.fc,'date')+
+  inp('k_prox','Próxima audiencia o diligencia',k.prox,'datetime-local')+inp('k_proxN','Detalle',k.proxN)+
+  inp('k_hon','Honorario pactado (USD)',k.hon,'number',{attr:'inputmode="decimal"'})+inp('k_prf','Proforma Nº',k.prf,null,{attr:'placeholder="PRF-2026-001"'})+
+  area_('k_res','Resultado (al cerrar)',k.res)+area_('k_notas','Notas del caso',k.notas)+
+ '</div><div class="row" style="margin-top:8px"><button class="btn" id="k_save" type="button">Guardar caso</button><button class="btn sec" id="k_x" type="button">Cancelar</button>'+(nuevo?'':'<a class="btn sec" id="k_cal" target="_blank" rel="noopener"'+(k.prox?'':' hidden')+'>Agendar diligencia</a><button class="btn sec" id="k_del" type="button" style="color:var(--mal);border-color:var(--mal)">Eliminar</button>')+'</div><div class="msg" id="k_msg"></div></div>';
+ var m=function(t,ok){$('#k_msg').className='msg '+(ok?'o':'e');$('#k_msg').textContent=t};
+ $('#k_x').onclick=function(){R.cas=null;listaCasos(c)};
+ if($('#k_cal'))$('#k_cal').href=calLink((k.proxN||'Diligencia')+' – '+(k.causa||k.cod)+' ('+c.nom+')',k.prox,60,(k.unidad||k.unidadO||k.dep||'')+(k.fis?' · Fiscalía '+k.fis:''));
+ $('#k_save').onclick=function(){
+  if(!val('k_fi'))return m('La fecha de inicio es obligatoria.');
+  if(val('k_est')==='cerrado'&&!val('k_fc'))$('#k_fc').value=hoyISO();
+  if(val('k_fc')&&val('k_fc')<val('k_fi'))return m('La fecha de cierre no puede ser anterior a la de inicio.');
+  var o=nuevo?{id:k.id,cli:c.id,cod:sigCod('CAS')}:k;
+  ['causa','mat','proc','rol','contra','unidad','unidadO','dep','fis','pat','est','fi','fc','prox','proxN','hon','prf','res','notas'].forEach(function(x){o[x]=val('k_'+x)});o.upd=Date.now();
+  if(nuevo)R.data.casos.push(o);
+  if(o.est==='activo'&&c.est!=='activo'){c.est='activo';c.upd=Date.now()}
+  guardarCambio('Caso guardado.').then(function(){R.cas=null;listaCasos(c);msgC('Caso '+o.cod+' guardado.',1)});
+ };
+ if($('#k_del'))$('#k_del').onclick=function(){var bt=$('#k_del');if(!bt.dataset.c){bt.dataset.c=1;bt.textContent='Confirmar eliminación';return}k.del=true;k.upd=Date.now();guardarCambio('Caso eliminado.').then(function(){R.cas=null;listaCasos(c)})};
+}
+function vistaMes(){
+ var b=$('#r-body'),m=R.mes||hoyISO().slice(0,7),y=+m.slice(0,4),mo=+m.slice(5,7),ini=m+'-01',fin=iso(new Date(y,mo,0));
+ var K=casos().filter(function(k){return k.fi&&k.fi<=fin&&(!k.fc||k.fc>=ini)&&k.est!=='concretar'});
+ var nuevos=K.filter(function(k){return k.fi>=ini}),cerr=K.filter(function(k){return k.fc&&k.fc<=fin}),vig=K.filter(function(k){return !k.fc||k.fc>fin});
+ var porC=clientes().filter(function(c){return estCli(c)==='concretar'&&(!c.f0||c.f0<=fin)}).concat([]),porCK=casos().filter(function(k){return k.est==='concretar'&&k.fi<=fin});
+ function fila(k){var c=cliById(k.cli)||{};return '<tr data-cl="'+esc(k.cli)+'" style="cursor:pointer"><td><b>'+esc(k.cod)+'</b><div class="hint" style="margin:0">'+esc(c.nom||'')+' · '+esc(k.mat||'')+'</div></td><td>'+esc(k.fi)+'</td><td>'+esc(k.fc||'—')+'</td></tr>'}
+ b.innerHTML='<div class="card"><div class="grid"><div><label for="r-mes">Mes</label><input id="r-mes" type="month" value="'+m+'"></div><div style="display:flex;align-items:flex-end"><button class="btn sec" id="r-csv" type="button" style="width:100%">Exportar CSV</button></div></div></div>'+
+ '<div class="kpis"><div class="kpi sel"><div class="l">Vigentes</div><div class="n">'+vig.length+'</div></div><div class="kpi"><div class="l">Nuevos</div><div class="n">'+nuevos.length+'</div></div><div class="kpi"><div class="l">Cerrados</div><div class="n">'+cerr.length+'</div></div></div>'+
+ '<div class="card"><h3>Casos vigentes en '+MESES[mo-1]+' '+y+'</h3>'+(vig.length?'<table><thead><tr><th>Caso</th><th>Inicio</th><th>Cierre</th></tr></thead><tbody>'+vig.map(fila).join('')+'</tbody></table>':'<p class="hint">Ninguno.</p>')+'</div>'+
+ (cerr.length?'<div class="card"><h3>Cerrados en el mes</h3><table><tbody>'+cerr.map(fila).join('')+'</tbody></table></div>':'')+
+ '<div class="card"><h3>Pendientes por concretar</h3>'+((porC.length||porCK.length)?'<table><tbody>'+porC.map(function(c){return '<tr data-cl="'+c.id+'" style="cursor:pointer"><td><b>'+esc(c.nom)+'</b><div class="hint" style="margin:0">'+esc(c.cod)+' · '+esc(c.mat||'')+'</div></td><td>'+esc(c.f0||'')+'</td></tr>'}).join('')+porCK.map(fila).join('')+'</tbody></table>':'<p class="hint">Ninguno.</p>')+'</div>';
+ $('#r-mes').onchange=function(){R.mes=this.value;vistaMes()};
+ $('#r-csv').onclick=exportarCSV;
+ $$('#r-body [data-cl]').forEach(function(t){t.onclick=function(){R.view='cli';R.sel=t.dataset.cl;vista()}});
+}
+function vistaLlam(){
+ var L=clientes().filter(function(c){return c.llam}).sort(function(a,b){return a.llam.localeCompare(b.llam)}),A=casos().filter(function(k){return k.prox&&k.prox.slice(0,10)>=hoyISO()}).sort(function(a,b){return a.prox.localeCompare(b.prox)});
+ $('#r-body').innerHTML='<div class="card"><h3>Llamadas</h3>'+(L.length?L.map(function(c){var lp=llamPend(c);return '<div data-cl="'+c.id+'" style="padding:10px;margin:0 -6px 6px;border-radius:8px;cursor:pointer;'+(lp?'background:var(--malf);border:1px solid #E7BDB6':'border:1px solid var(--linea)')+'"><b style="color:'+(lp?'var(--mal)':'inherit')+'">'+fmtFH(c.llam)+'</b> · '+esc(c.nom)+'<div class="hint" style="margin:2px 0 0">'+esc(c.llamN||'Sin motivo')+(c.tel?' · '+esc(c.tel):'')+'</div></div>'}).join(''):'<p class="hint">No hay llamadas programadas.</p>')+'</div>'+
+ '<div class="card"><h3>Próximas audiencias y diligencias</h3>'+(A.length?A.map(function(k){var c=cliById(k.cli)||{};return '<div data-cl="'+esc(k.cli)+'" style="padding:8px 0;border-bottom:1px solid var(--linea);cursor:pointer"><b>'+fmtFH(k.prox)+'</b> · '+esc(k.proxN||'Diligencia')+'<div class="hint" style="margin:2px 0 0">'+esc(k.cod)+(k.causa?' · '+esc(k.causa):'')+' · '+esc(c.nom||'')+'</div></div>'}).join(''):'<p class="hint">Sin diligencias próximas.</p>')+'</div>'+
+ '<p class="nota">La app no puede sonar una alarma estando cerrada. Use "Agendar en Google Calendar" en la ficha del cliente o del caso para recibir el recordatorio en su teléfono.</p>';
+ $$('#r-body [data-cl]').forEach(function(t){t.onclick=function(){R.view='cli';R.sel=t.dataset.cl;vista()}});
+}
+function calLink(t,dt,min,det){if(!dt)return '#';var d=new Date(dt);if(isNaN(d))return '#';var e=new Date(d.getTime()+min*60000),f=function(x){return x.getFullYear()+String(x.getMonth()+1).padStart(2,'0')+String(x.getDate()).padStart(2,'0')+'T'+String(x.getHours()).padStart(2,'0')+String(x.getMinutes()).padStart(2,'0')+'00'};
+ return 'https://calendar.google.com/calendar/render?action=TEMPLATE&text='+encodeURIComponent(t)+'&dates='+f(d)+'/'+f(e)+'&ctz=America/Guayaquil&details='+encodeURIComponent(det||'')}
+function avisoPriv(){return 'Aviso de privacidad – Macías Sánchez Consultores\n\nSus datos personales (identificación, contacto e información de su caso) son tratados por el Abg. Mariano X. Macías Sánchez, como responsable, con la finalidad de brindarle asesoría y patrocinio legal y de facturar los servicios, conforme a la Ley Orgánica de Protección de Datos Personales.\n\nSolo se comunican a autoridades judiciales, administrativas o tributarias cuando el caso o la ley lo requieren. Se guardan cifrados y con respaldo cifrado en un servicio de almacenamiento en la nube. Se conservan mientras dure la relación profesional y los plazos legales aplicables.\n\nPuede ejercer sus derechos de acceso, rectificación, eliminación, oposición y portabilidad escribiendo a msconsultores.ec@gmail.com.'}
+function copiar(t,m){try{navigator.clipboard.writeText(t).then(function(){m.className='msg o';m.textContent='Texto copiado.'},function(){m.className='msg';m.innerHTML='<textarea style="width:100%;min-height:160px">'+esc(t)+'</textarea>'})}catch(e){m.className='msg';m.innerHTML='<textarea style="width:100%;min-height:160px">'+esc(t)+'</textarea>'}}
+function exportarCSV(){
+ var q=function(x){x=String(x==null?'':x);return /[;"\n]/.test(x)?'"'+x.replace(/"/g,'""')+'"':x};
+ var rows=[['Código caso','Cliente','Código cliente','Cédula/RUC','Teléfono','Materia','Proceso','Causa','Calidad','Unidad/dependencia','Fiscalía','Patrocinio','Estado','Inicio','Cierre','Honorario','Proforma']];
+ casos().forEach(function(k){var c=cliById(k.cli)||{};rows.push([k.cod,c.nom,c.cod,c.ced,c.tel,k.mat,k.proc,k.causa,k.rol,k.unidad==='Otra'?k.unidadO:(k.unidad||k.dep),k.fis,VIN[k.pat],EST_CAS[k.est],k.fi,k.fc,k.hon,k.prf])});
+ bajar(new Blob(['﻿'+rows.map(function(r){return r.map(q).join(';')}).join('\r\n')],{type:'text/csv'}),'casos-msc-'+hoyISO()+'.csv',$('#r-msg'));
+ alertaR('El CSV no está cifrado: guárdelo en un lugar seguro y bórrelo cuando ya no lo necesite.',0);
+}
+function badgeCli(){var b=document.querySelector('nav button[data-t=cli]');if(!b)return;var n=R.data?clientes().filter(llamPend).length:0;b.innerHTML='Clientes'+(n?' <span style="background:var(--mal);color:#fff;border-radius:10px;padding:0 5px;font-size:10.5px">'+n+'</span>':'')}
+
+/* ---------- guardar + sincronizar ---------- */
+function guardarCambio(){return sellar().then(function(){R.dirty=true;estadoSync();badgeCli();clearTimeout(R.timer);R.timer=setTimeout(function(){sincroAuto()},4000)})}
+function syncDisponible(){return PWA&&location.protocol==='https:'||location.hostname==='localhost'}
+function estadoSync(){var e=$('#r-sst');if(!e)return;var s=R.vault||{},t;
+ if(!syncDisponible())t='Sincronización con Google Drive disponible solo en la app instalada.';
+ else if(R.sync.st==='run')t='Sincronizando con Google Drive…';
+ else if(R.sync.st==='err')t='<span style="color:var(--mal)">'+esc(R.sync.msg)+'</span>';
+ else if(!navigator.onLine)t='Sin conexión: los cambios quedan guardados en el teléfono.';
+ else if(!s.ls)t='<span style="color:var(--avi)">Aún no se ha sincronizado con Google Drive.</span>';
+ else{var d=new Date(s.ls);t=(R.dirty?'<span style="color:var(--avi)">Cambios sin sincronizar</span> · ':'')+'Última sincronización con Google Drive: '+d.getDate()+' '+MESES[d.getMonth()].slice(0,3)+', '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')}
+ e.innerHTML=t;}
+function cargaGIS(){if(window.google&&google.accounts&&google.accounts.oauth2)return Promise.resolve();return new Promise(function(res,rej){var s=document.createElement('script');s.src='https://accounts.google.com/gsi/client';s.async=true;s.onload=function(){res()};s.onerror=function(){rej(new Error('No se pudo conectar con Google. Revise su conexión.'))};document.head.appendChild(s)})}
+function tokenG(interactivo){
+ if(R.token&&Date.now()<R.tokExp-60000)return Promise.resolve(R.token);
+ try{var t=JSON.parse(sessionStorage.getItem('msc:tok'));if(t&&Date.now()<t[1]-60000){R.token=t[0];R.tokExp=t[1];return Promise.resolve(R.token)}}catch(e){}
+ if(!interactivo)return Promise.reject(new Error('sin-token'));
+ return cargaGIS().then(function(){return new Promise(function(res,rej){
+  var tc=google.accounts.oauth2.initTokenClient({client_id:GCID,scope:GSCOPE,callback:function(r){if(r.error)return rej(new Error('Google no autorizó el acceso ('+r.error+').'));R.token=r.access_token;R.tokExp=Date.now()+(+r.expires_in||3600)*1000;try{sessionStorage.setItem('msc:tok',JSON.stringify([R.token,R.tokExp]))}catch(e){}res(R.token)},
+   error_callback:function(e){rej(new Error(e&&e.type==='popup_closed'?'Se cerró la ventana de Google sin autorizar.':'No se pudo abrir el inicio de sesión de Google.'))}});
+  tc.requestAccessToken({prompt:''});
+ })});
+}
+function gapi(url,opt,interactivo){return tokenG(interactivo).then(function(t){opt=opt||{};opt.headers=Object.assign({Authorization:'Bearer '+t},opt.headers||{});return fetch(url,opt)}).then(function(r){
+ if(r.status===401){R.token=null;try{sessionStorage.removeItem('msc:tok')}catch(e){}throw new Error('La sesión de Google expiró. Toque "Sincronizar".')}
+ if(!r.ok)return r.text().then(function(x){throw new Error('Google Drive respondió '+r.status+'. '+(r.status===403?'Revise que la API de Drive esté activa y su cuenta sea usuario de prueba.':''))});return r})}
+function dLista(i){return gapi(DAPI+'?spaces=appDataFolder&pageSize=200&fields=files(id,name,modifiedTime)',null,i).then(function(r){return r.json()}).then(function(j){return j.files||[]})}
+function dLeer(id){return gapi(DAPI+'/'+id+'?alt=media').then(function(r){return r.json()})}
+function dCrear(name,obj){var b='msc'+Date.now(),body='--'+b+'\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n'+JSON.stringify({name:name,parents:['appDataFolder']})+'\r\n--'+b+'\r\nContent-Type: application/json\r\n\r\n'+JSON.stringify(obj)+'\r\n--'+b+'--';return gapi(UAPI+'?uploadType=multipart&fields=id',{method:'POST',headers:{'Content-Type':'multipart/related; boundary='+b},body:body}).then(function(r){return r.json()})}
+function dActualizar(id,obj){return gapi(UAPI+'/'+id+'?uploadType=media&fields=id',{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify(obj)})}
+function dBorrar(id){return gapi(DAPI+'/'+id,{method:'DELETE'})}
+function fusionar(a,b){function mm(x,y){var m={};(x||[]).concat(y||[]).forEach(function(r){var c=m[r.id];if(!c||(r.upd||0)>(c.upd||0))m[r.id]=r});return Object.keys(m).map(function(k){return m[k]})}
+ var s={};[a.seq||{},b.seq||{}].forEach(function(o){Object.keys(o).forEach(function(k){s[k]=Math.max(s[k]||0,o[k])})});return {clientes:mm(a.clientes,b.clientes),casos:mm(a.casos,b.casos),seq:s}}
+function paraSubir(){var v=JSON.parse(JSON.stringify(R.vault));delete v.ls;delete v.fid;return v}
+function sincroAuto(){if(!syncDisponible()||!navigator.onLine||!R.key)return;tokenG(false).then(function(){sincronizar(false)},function(){estadoSync()})}
+var SYNC_RUN=false;
+function sincronizar(interactivo){
+ if(!R.key)return;
+ if(!syncDisponible()){alertaR('La sincronización funciona solo en la app instalada desde xavimac123.github.io.');return}
+ if(!navigator.onLine){R.sync={st:'',msg:''};estadoSync();return}
+ if(SYNC_RUN)return;SYNC_RUN=true;R.sync={st:'run'};estadoSync();
+ var files;
+ return dLista(interactivo).then(function(f){files=f;var main=f.filter(function(x){return x.name===VFILE})[0];
+  if(!main)return null;
+  return dLeer(main.id).then(function(rv){
+   if(!rv||rv.format!=='msc-vault')throw new Error('El archivo en Drive no es un registro válido.');
+   return leerDatos(rv,R.key).then(function(rd){
+    R.data=fusionar(R.data,rd);
+    if((rv.pwUpd||0)>(R.vault.pwUpd||0)){['iter','salt','rsalt','wpw','wrec','pwUpd'].forEach(function(k){R.vault[k]=rv[k]})}
+   },function(){throw new Error('El registro guardado en Drive usa otra llave (se creó en otro registro). Use "Reemplazar con el de Drive" o "Reemplazar Drive con este teléfono" en Respaldo y sincronización.')});
+  }).then(function(){return main.id});
+ }).then(function(mid){return sellar().then(function(){var v=paraSubir();return mid?dActualizar(mid,v):dCrear(VFILE,v)})})
+ .then(function(){return versiones(files)})
+ .then(function(){R.vault.ls=Date.now();R.dirty=false;guardaLocal();R.sync={st:'ok'};SYNC_RUN=false;estadoSync();badgeCli();if(R.view!=='cli'||!R.sel)vista();if(interactivo)alertaR('Sincronizado con Google Drive.',1)})
+ .catch(function(e){SYNC_RUN=false;if(e.message==='sin-token'){R.sync={st:''};estadoSync();return}R.sync={st:'err',msg:e.message};estadoSync()});
+}
+function versiones(files){
+ var d=hoyISO(),mes=d.slice(0,7),v=paraSubir(),p=[];
+ var diarias=files.filter(function(f){return /^msc-registro-\d{4}-\d{2}-\d{2}\.json$/.test(f.name)}).sort(function(a,b){return b.name.localeCompare(a.name)});
+ var mens=files.filter(function(f){return /^msc-registro-mes-\d{4}-\d{2}\.json$/.test(f.name)}).sort(function(a,b){return b.name.localeCompare(a.name)});
+ var hd=diarias.filter(function(f){return f.name==='msc-registro-'+d+'.json'})[0];
+ p.push(hd?dActualizar(hd.id,v):dCrear('msc-registro-'+d+'.json',v));
+ if(!mens.some(function(f){return f.name==='msc-registro-mes-'+mes+'.json'}))p.push(dCrear('msc-registro-mes-'+mes+'.json',v));
+ diarias.slice(hd?10:9).forEach(function(f){p.push(dBorrar(f.id))});
+ mens.slice(12).forEach(function(f){p.push(dBorrar(f.id))});
+ return Promise.all(p);
+}
+function restaurarDrive(){
+ if(!syncDisponible())return alertaR('Restaurar desde Drive funciona solo en la app instalada desde xavimac123.github.io.');
+ alertaR('Conectando con Google…',1);
+ dLista(true).then(function(f){var main=f.filter(function(x){return x.name===VFILE})[0];if(!main)throw new Error('No se encontró un registro en el Google Drive de esta cuenta.');return dLeer(main.id)})
+ .then(function(rv){if(!rv||rv.format!=='msc-vault')throw new Error('El archivo en Drive no es válido.');rv.ls=Date.now();R.vault=rv;guardaLocal();pantallaBloqueo(rv);alertaR('Registro descargado. Ingrese su contraseña.',1)})
+ .catch(function(e){alertaR(e.message)});
+}
+function importarArchivo(){var f=this.files[0];if(!f)return;var r=new FileReader();r.onload=function(){try{var v=JSON.parse(r.result);if(v.format!=='msc-vault')throw 0;delete v.ls;R.vault=v;guardaLocal();pantallaBloqueo(v);alertaR('Respaldo importado. Ingrese la contraseña con la que se creó.',1)}catch(e){alertaR('El archivo no es un respaldo válido del registro.')}};r.readAsText(f)}
+function pintaCfg(){
+ var c=$('#r-cfg');
+ c.innerHTML='<div style="font-size:14px;margin-top:8px"><p style="margin:0 0 8px"><b>Google Drive:</b> la app guarda una copia cifrada en una carpeta oculta de su Drive (solo esta app la ve), una versión por día (últimos 10 días) y una por mes (últimos 12 meses).</p>'+
+ '<div class="row"><button class="btn" id="g-con" type="button">'+(R.vault&&R.vault.ls?'Sincronizar ahora':'Conectar Google Drive')+'</button></div>'+
+ '<p class="hint">Use la cuenta msconsultores.ec@gmail.com (la registrada como usuario de prueba). Google puede pedir autorizar de nuevo de vez en cuando.</p>'+
+ '<hr style="border:0;border-top:1px solid var(--linea);margin:12px 0"><p style="margin:0 0 6px"><b>Respaldo manual</b></p><div class="row"><button class="btn sec" id="g-exp" type="button">Descargar respaldo cifrado</button><button class="btn sec" id="g-csv" type="button">Exportar casos (CSV)</button></div>'+
+ '<hr style="border:0;border-top:1px solid var(--linea);margin:12px 0"><p style="margin:0 0 6px"><b>Seguridad</b></p><div class="grid">'+inp('g-pa','Contraseña actual','','password')+inp('g-pn','Nueva contraseña','','password')+'</div><div class="row" style="margin-top:8px"><button class="btn sec" id="g-cpw" type="button">Cambiar contraseña</button></div>'+
+ '<label class="chk" style="margin-top:8px"><input type="checkbox" id="g-rem"'+(R.remember?' checked':'')+'> Mantener desbloqueado en este teléfono (7 días)</label>'+
+ '<details style="margin-top:6px"><summary>Opciones avanzadas</summary><div class="row" style="margin-top:8px"><button class="btn sec" id="g-rdr" type="button">Reemplazar con el de Drive</button><button class="btn sec" id="g-rdp" type="button">Reemplazar Drive con este teléfono</button><button class="btn sec" id="g-del" type="button" style="color:var(--mal);border-color:var(--mal)">Borrar registro de este teléfono</button></div><p class="hint">Úselas solo si la sincronización avisa que el registro de Drive usa otra llave.</p></details><div class="msg" id="g-msg"></div></div>';
+ var gm=function(t,ok){$('#g-msg').className='msg '+(ok?'o':'e');$('#g-msg').textContent=t};
+ $('#g-con').onclick=function(){sincronizar(true)};
+ $('#g-exp').onclick=function(){bajar(new Blob([JSON.stringify(paraSubir())],{type:'application/json'}),'respaldo-registro-msc-'+hoyISO()+'.json',$('#g-msg'),true)};
+ $('#g-csv').onclick=exportarCSV;
+ $('#g-cpw').onclick=function(){var a=$('#g-pa').value,n=$('#g-pn').value;if(n.length<8)return gm('La nueva contraseña debe tener al menos 8 caracteres.');gm('Verificando…',1);
+  abrirBoveda(R.vault,a,false).then(function(dek){var rc=codRec();return envolver(R.vault,dek,n,rc).then(function(){return guardarCambio()}).then(function(){mostrarRec(rc,false)})}).catch(function(){gm('La contraseña actual no es correcta.')})};
+ $('#g-rem').onchange=function(){R.remember=this.checked;if(this.checked)recordar(R.key,7);else olvidar()};
+ $('#g-rdr').onclick=function(){if(!confirmarBtn(this))return;R.key=null;R.data=null;localStorage.removeItem('msc:vault');olvidar();restaurarDrive()};
+ $('#g-rdp').onclick=function(){if(!confirmarBtn(this))return;gm('Subiendo…',1);dLista(true).then(function(f){var m=f.filter(function(x){return x.name===VFILE})[0];return m?dActualizar(m.id,paraSubir()):dCrear(VFILE,paraSubir())}).then(function(){R.vault.ls=Date.now();R.dirty=false;guardaLocal();estadoSync();gm('Drive reemplazado con el registro de este teléfono.',1)}).catch(function(e){gm(e.message)})};
+ $('#g-del').onclick=function(){if(!confirmarBtn(this))return;localStorage.removeItem('msc:vault');olvidar();R.key=null;R.data=null;R.vault=null;renderCli();badgeCli()};
+}
+function confirmarBtn(b){if(b.dataset.c)return true;b.dataset.c=1;b.dataset.t=b.textContent;b.textContent='Toque otra vez para confirmar';setTimeout(function(){delete b.dataset.c;b.textContent=b.dataset.t},5000);return false}
+document.addEventListener('visibilitychange',function(){if(document.hidden){R.hidAt=Date.now();if(R.dirty)sincroAuto()}else if(R.key&&!R.remember&&R.hidAt&&Date.now()-R.hidAt>10*60000){bloquear()}});
+window.addEventListener('online',function(){if(R.dirty)sincroAuto();estadoSync()});
+window.addEventListener('offline',estadoSync);
 
 /* =========================================================
    5. CATÁLOGO DE SERVICIOS

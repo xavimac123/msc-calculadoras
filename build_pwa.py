@@ -15,12 +15,9 @@ assert out.count('MSC_PWA=true')==1 and out.endswith('</body></html>\n') or out.
 (D/'index.html').write_text(out,encoding='utf-8')
 # íconos: isotipo provisional (cuadro dorado oliva, esquina recortada, M blanca)
 def icon(size,maskable=False):
-    im=Image.new('RGBA',(size,size),(20,24,30,255)); d=ImageDraw.Draw(im)
-    pad=int(size*(0.2 if maskable else 0.12)); s=size-2*pad; u=s/40
-    P=lambda pts:[(pad+x*u,pad+y*u) for x,y in pts]
-    d.polygon(P([(0,0),(40,0),(40,30),(30,40),(0,40)]),fill=(160,144,70,255))
-    d.polygon(P([(9,29),(9,11),(13.2,11),(20,20.4),(26.8,11),(31,11),(31,29),(27,29),(27,17.6),(20,27),(13,17.6),(13,29)]),fill=(255,255,255,255))
-    return im
+    em=Image.open(R/'assets'/'logo-msc-original.png').convert('RGBA').crop((0,0,876,889))
+    im=Image.new('RGBA',(size,size),(20,24,30,255)); s=int(size*(0.62 if maskable else 0.78))
+    e=em.resize((s,round(s*889/876)),Image.LANCZOS); im.alpha_composite(e,((size-e.width)//2,(size-e.height)//2)); return im
 for n in (180,192,512): icon(n).save(D/'icons'/f'icon-{n}.png')
 icon(512,True).save(D/'icons'/'maskable-512.png')
 man={"name":"MSC · Calculadoras legales","short_name":"MSC Legal","lang":"es-EC","start_url":"./","scope":"./","display":"standalone",

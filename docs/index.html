@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es"><head><meta charset="utf-8"><script>window.MSC_PWA=true</script><link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#14181E"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="MSC Legal"><link rel="apple-touch-icon" href="icons/icon-180.png"><link rel="icon" href="icons/icon-192.png"><meta name="viewport" content="width=device-width,initial-scale=1"><title>MSC · Calculadoras legales</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&display=swap"><style id="css">
+<html lang="es"><head><meta charset="utf-8"><script>window.MSC_PWA=true</script><link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#14181E"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="MSC Gestor Legal"><link rel="apple-touch-icon" href="icons/icon-180.png"><link rel="icon" href="icons/icon-192.png"><meta name="viewport" content="width=device-width,initial-scale=1"><title>MSC Gestor Legal</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&display=swap"><style id="css">
 :root{--card:#fff;--oro:#A09046;--oroc:#C9BC82;--olivo:#6E6230;--carbon:#14181E;--marfil:#F7F5EE;--linea:#E3DFD0;--gris:#5B6068;--ok:#2F6B3A;--okf:#E5F0E4;--mal:#9B2C22;--malf:#F7E4E1;--avi:#8A5A00;--avif:#FBF0D9}
 *{box-sizing:border-box}
 html,body{margin:0;background:var(--marfil);color:var(--carbon);font-family:'Archivo',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;font-size:15px;line-height:1.45}
@@ -87,7 +87,7 @@ var PWA=!!window.MSC_PWA;
 if(location.hostname==='localhost')window.__t=function(c){return eval(c)};
 var DEF_CAT=JSON.parse(JSON.stringify(DATA.catalogo)),DEF_CATV=DATA.catVer||1;
 if(PWA){try{var _s=JSON.parse(localStorage.getItem('msc:data'));if(_s&&_s.version===DATA.version){if((_s.catVer||1)<(DATA.catVer||1)&&_s.catalogo){delete _s.catalogo}Object.keys(DATA).forEach(function(k){if(!(k in _s))_s[k]=DATA[k]});DATA=_s}}catch(e){}}
-var HEAD='<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>MSC · Calculadoras legales</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&display=swap">';
+var HEAD='<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>MSC Gestor Legal</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&display=swap">';
 var CSS=document.getElementById('css').textContent;
 var APP=document.getElementById('app').textContent;
 var ART=null,SAMPLE=null;
@@ -129,7 +129,7 @@ var ISO='<img class="iso" src="'+ISOURL+'" alt="">';
 var TABS=[['cat','Catálogo'],['cli','Clientes'],['aud','Audiencias'],['prf','Proforma'],['hon','Honorarios'],['doc','Plantillas'],['calc','Calculadoras'],['conf','Configuración']];
 var SUBS=[['pen','Pensiones alimenticias'],['pla','Plazos y términos'],['tra','Tránsito']];
 document.getElementById('root').innerHTML=
- '<header><div class="marca">'+(DATA.logo?'<img src="'+DATA.logo+'" alt="Macías Sánchez Consultores" style="height:42px;width:auto;max-width:62%;display:block"><div class="wm" style="border-left:1px solid #3A3F47;padding-left:10px"><small style="margin:0;line-height:1.5">HERRAMIENTAS<br>DEL DESPACHO</small></div>':ISO+'<div class="wm">MACÍAS SÁNCHEZ CONSULTORES<small>HERRAMIENTAS DEL DESPACHO · USO INTERNO</small></div>')+'</div>'+
+ '<header><div class="marca">'+(DATA.logo?'<img src="'+DATA.logo+'" alt="Macías Sánchez Consultores" style="height:42px;width:auto;max-width:62%;display:block"><div class="wm" style="border-left:1px solid #3A3F47;padding-left:10px"><small style="margin:0;line-height:1.5">GESTOR<br>LEGAL</small></div>':ISO+'<div class="wm">MACÍAS SÁNCHEZ CONSULTORES<small>GESTOR LEGAL · USO INTERNO</small></div>')+'</div>'+
  (PWA?'<button id="hdr-lock" type="button">Bloquear</button>':'')+'<nav role="tablist">'+TABS.map(function(t){return '<button role="tab" data-t="'+t[0]+'" aria-selected="false">'+t[1]+'</button>'}).join('')+'</nav></header>'+
  '<main><section id="v-cat"></section><section id="v-cli" hidden></section><section id="v-aud" hidden></section><section id="v-prf" hidden></section><section id="v-hon" hidden></section><section id="v-doc" hidden></section><section id="v-calc" hidden><div class="seg" id="calc-nav" style="margin:4px 0 12px">'+SUBS.map(function(s){return '<button type="button" data-s="'+s[0]+'">'+s[1]+'</button>'}).join('')+'</div><section id="v-pen"></section><section id="v-pla" hidden></section><section id="v-tra" hidden></section></section><section id="v-conf" hidden></section></main>'+
  '<footer>Herramienta de uso interno de Macías Sánchez Consultores. Resultados referenciales: verifique la norma vigente y el caso concreto antes de actuar. Abg. Mariano X. Macías Sánchez · Mat. 09-2022-736.</footer>';
@@ -941,7 +941,7 @@ function calEvento(a){
  var c=cliById(a.cli)||{},dep=depTxt(a),sbu=function(d){var x=new Date(d+'T12:00:00');x.setDate(x.getDate()+1);return iso(x)};
  var b={summary:'Audiencia '+(a.tipo||'')+' – '+(c.nom||'')+(a.causa?' ('+a.causa+')':''),
   location:a.mod==='tele'?(a.link||'Telemática'):[dep,a.sala].filter(Boolean).join(', '),
-  description:[(a.mod==='tele'?'Modalidad: telemática':'Modalidad: presencial'),a.mat?'Materia: '+a.mat:'',a.juez?'Juez o fiscal: '+a.juez:'',a.sec?'Secretario: '+a.sec:'',a.link?'Enlace: '+a.link:'',(EST_AUD[a.est]?'Estado: '+EST_AUD[a.est]:''),'Registrada desde MSC · Herramientas del despacho'].filter(Boolean).join('\n'),
+  description:[(a.mod==='tele'?'Modalidad: telemática':'Modalidad: presencial'),a.mat?'Materia: '+a.mat:'',a.juez?'Juez o fiscal: '+a.juez:'',a.sec?'Secretario: '+a.sec:'',a.link?'Enlace: '+a.link:'',(EST_AUD[a.est]?'Estado: '+EST_AUD[a.est]:''),'Registrada desde MSC Gestor Legal'].filter(Boolean).join('\n'),
   reminders:{useDefault:false,overrides:[{method:'popup',minutes:10080},{method:'popup',minutes:4320}]},
   extendedProperties:{private:{msc:a.id}}};
  if(a.h){b.start={dateTime:a.f+'T'+a.h+':00',timeZone:'America/Guayaquil'};b.end={dateTime:a.f+'T'+horaMas(a.h,60)+':00',timeZone:'America/Guayaquil'}}
@@ -1196,7 +1196,7 @@ function renderConf(){
   '<div class="full"><label for="g-logo">Logo (PNG con fondo transparente) · '+(DATA.logo?'cargado':'provisional')+'</label><input id="g-logo" type="file" accept="image/png,image/svg+xml,image/jpeg"></div>'+
  '</div><div class="row" style="margin-top:8px"><button class="btn" id="g-sv" type="button" data-needs="art">Guardar datos del despacho</button></div></div>'+
  '<div class="msg" id="g-msg"></div>'+
- '<div class="card"><h3>Acerca de</h3><p style="font-size:14px;margin:0">MSC · Herramientas del despacho. Uso interno de Macías Sánchez Consultores. Código: github.com/xavimac123/msc-calculadoras</p></div>';
+ '<div class="card"><h3>Acerca de</h3><p style="font-size:14px;margin:0">MSC Gestor Legal. Uso interno de Macías Sánchez Consultores. Código: github.com/xavimac123/msc-calculadoras</p></div>';
  var gm=function(t,ok){var m=$('#g-msg');m.className='msg '+(ok?'o':'e');m.textContent=t;m.scrollIntoView({behavior:'smooth',block:'nearest'})};
  var tm=store('tema')||'auto';$$('#g-tema button').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.t===tm);b.onclick=function(){store('tema',b.dataset.t);aplicaTema();renderConf()}});
  $('#g-sv').onclick=function(){Q.cuentas=val('g-cta');Q.metodo=val('g-met');Q.gracias=val('g-gra');Q.lugar=val('g-lug');P.firmaNombre=val('g-fn');P.firmaCargo=val('g-fc');P.vigencia=num(val('g-vig'))||15;

@@ -1,4 +1,4 @@
-# MSC · Calculadoras legales
+# MSC Gestor Legal
 
 Herramienta de uso interno de **Macías Sánchez Consultores** (Guayaquil, Ecuador). App web instalable en el teléfono (PWA) que funciona sin internet.
 

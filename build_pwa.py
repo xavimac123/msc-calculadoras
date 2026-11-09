@@ -7,7 +7,7 @@ ver=hashlib.sha1(src.encode()).hexdigest()[:8]
 head=('<script>window.MSC_PWA=true</script><link rel="manifest" href="manifest.webmanifest">'
  '<meta name="theme-color" content="#14181E"><meta name="apple-mobile-web-app-capable" content="yes">'
  '<meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">'
- '<meta name="apple-mobile-web-app-title" content="MSC Legal"><link rel="apple-touch-icon" href="icons/icon-180.png"><link rel="icon" href="icons/icon-192.png">')
+ '<meta name="apple-mobile-web-app-title" content="MSC Gestor Legal"><link rel="apple-touch-icon" href="icons/icon-180.png"><link rel="icon" href="icons/icon-192.png">')
 reg=('<script>if("serviceWorker" in navigator){window.addEventListener("load",function(){navigator.serviceWorker.register("sw.js").catch(function(){})})}</script>')
 out=src.replace('<meta charset="utf-8">','<meta charset="utf-8">'+head,1)
 i=out.rindex('</body></html>');out=out[:i]+reg+out[i:]
@@ -20,7 +20,7 @@ def icon(size,maskable=False):
     e=em.resize((s,round(s*889/876)),Image.LANCZOS); im.alpha_composite(e,((size-e.width)//2,(size-e.height)//2)); return im
 for n in (180,192,512): icon(n).save(D/'icons'/f'icon-{n}.png')
 icon(512,True).save(D/'icons'/'maskable-512.png')
-man={"name":"MSC · Calculadoras legales","short_name":"MSC Legal","lang":"es-EC","start_url":"./","scope":"./","display":"standalone",
+man={"name":"MSC Gestor Legal","short_name":"MSC Gestor Legal","lang":"es-EC","start_url":"./","scope":"./","display":"standalone",
  "background_color":"#F7F5EE","theme_color":"#14181E","description":"Honorarios, consultas, pensiones, plazos y tránsito. Uso interno de Macías Sánchez Consultores.",
  "icons":[{"src":"icons/icon-192.png","sizes":"192x192","type":"image/png"},{"src":"icons/icon-512.png","sizes":"512x512","type":"image/png"},
           {"src":"icons/maskable-512.png","sizes":"512x512","type":"image/png","purpose":"maskable"}]}

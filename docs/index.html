@@ -63,6 +63,33 @@ details{margin-top:8px}summary{cursor:pointer;font-weight:600;font-size:13.5px;c
 .msg.e{color:var(--mal)}.msg.o{color:var(--ok)}
 footer{max-width:760px;margin:0 auto;padding:0 14px 28px;font-size:11.5px;color:var(--gris)}
 [hidden]{display:none!important}
+.hero{display:flex;gap:14px;justify-content:space-between;align-items:stretch;flex-wrap:wrap;background:linear-gradient(135deg,#14181E 0%,#22262C 60%,#3A3420 100%);color:#fff;border-radius:14px;padding:18px;margin:2px 0 12px;box-shadow:0 8px 24px rgba(20,24,30,.18);position:relative;overflow:hidden}
+.hero::after{content:'';position:absolute;right:-60px;top:-60px;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(201,188,130,.28),transparent 70%);pointer-events:none}
+.hero-s{font-size:15px;color:var(--oroc);font-weight:700}.hero-h{font-size:40px;font-weight:800;letter-spacing:-.02em;font-variant-numeric:tabular-nums;line-height:1.1;margin-top:2px}.hero-h .seg2{font-size:20px;color:#9A978C;font-weight:700}.hero-f{font-size:13.5px;color:#D9D6CB}
+.hero-c{display:flex;gap:10px;align-items:center;min-width:220px;flex:1;justify-content:flex-end;position:relative;z-index:1}.cl-i{font-size:38px;line-height:1}.cl-t{font-size:22px;font-weight:800}.cl-t small{font-size:13px;font-weight:600;color:#D9D6CB}.cl-s{font-size:12px;color:#B9B6AA;margin-top:2px}
+.lnk{background:none;border:0;color:var(--oroc);font:inherit;font-size:12px;font-weight:700;padding:4px 0;cursor:pointer;text-decoration:underline}
+.foco{display:grid;gap:6px;margin:0 0 12px}.foco-it{display:flex;gap:10px;align-items:center;text-align:left;width:100%;font:inherit;font-size:13.5px;font-weight:600;border-radius:10px;padding:10px 12px;border:1px solid var(--linea);background:var(--card);color:inherit;cursor:pointer}.foco-it .fl{margin-left:auto;font-size:18px;color:var(--gris)}
+.f-mal{background:var(--malf);border-color:#E7B9B3;color:var(--mal)}.f-avi{background:var(--avif);border-color:#EBD39E;color:var(--avi)}.f-ok{background:var(--okf);border-color:#BFD8BE;color:var(--ok);cursor:default}
+.ini-k{grid-template-columns:repeat(3,1fr)}.ini-k .kpi{text-align:left;font:inherit;color:inherit;cursor:pointer;transition:transform .15s,box-shadow .15s}.ini-k .kpi:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(20,24,30,.08)}.kpi .n.rojo{color:var(--mal)}
+.ini-h{margin:14px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.05em;color:var(--gris)}
+.herr{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:12px}.herr-b{display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 4px;border-radius:12px;border:1px solid var(--linea);background:var(--card);color:inherit;font:inherit;font-size:11.5px;font-weight:700;cursor:pointer;transition:transform .15s,border-color .15s,box-shadow .15s;text-align:center;line-height:1.2}
+.herr-b svg{width:26px;height:26px;fill:none;stroke:var(--olivo);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;background:rgba(160,144,70,.12);border-radius:10px;padding:6px;box-sizing:content-box}.herr-b:hover{transform:translateY(-2px);border-color:var(--oro);box-shadow:0 6px 16px rgba(20,24,30,.08)}
+.ini-2{display:grid;grid-template-columns:1fr;gap:0}@media(min-width:900px){.ini-2{grid-template-columns:1.2fr 1fr;gap:12px}.ini-k{grid-template-columns:repeat(6,1fr)}.herr{grid-template-columns:repeat(10,1fr)}}
+@media(max-width:420px){.herr{grid-template-columns:repeat(4,1fr)}.hero-h{font-size:34px}.hero-c{justify-content:flex-start}}
+.btn.mini{min-height:32px;padding:4px 10px;font-size:12.5px}.badge{display:inline-block;background:var(--mal);color:#fff;border-radius:99px;font-size:11px;padding:1px 7px;vertical-align:middle}
+.cj-it{display:flex;gap:10px;padding:10px 0;border-bottom:1px solid var(--linea)}.cj-bar{width:4px;border-radius:4px;flex:none;background:var(--gris)}.s-mal .cj-bar{background:var(--mal)}.s-avi .cj-bar{background:#D39B23}.s-ok .cj-bar{background:var(--ok)}.cj-t{font-weight:700}
+.sem{font-size:11.5px;font-weight:700;border-radius:99px;padding:3px 9px;background:var(--marfil);border:1px solid var(--linea)}.s-mal .sem{background:var(--malf);color:var(--mal);border-color:#E7B9B3}.s-avi .sem{background:var(--avif);color:var(--avi);border-color:#EBD39E}
+.gm-it{display:flex;gap:8px;align-items:center;padding:9px 0;border-bottom:1px solid var(--linea)}.gm-a{font-weight:600;font-size:13.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.gm-it.nuevo .gm-a{font-weight:800}.gm-b{display:flex;gap:6px;flex:none}.punto{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--mal);margin-right:6px;vertical-align:middle}.chipok{font-size:11.5px;color:var(--ok);font-weight:700;align-self:center}
+.chips{display:flex;gap:6px;flex-wrap:wrap}.chips button{font:inherit;font-size:12px;font-weight:600;border:1px solid var(--linea);background:var(--card);color:inherit;border-radius:99px;padding:5px 10px;cursor:pointer}.chips button:hover{border-color:var(--oro)}
+.ag-it{display:flex;gap:10px;align-items:center;width:100%;font:inherit;color:inherit;background:none;border:0;border-bottom:1px solid var(--linea);padding:9px 0;cursor:pointer}.ag-d{width:44px;flex:none;text-align:center;border-radius:10px;background:var(--marfil);border:1px solid var(--linea);padding:4px 0;line-height:1.1}.ag-d b{font-size:18px;display:block}.ag-d small{font-size:11px;text-transform:uppercase;color:var(--gris)}
+.aviso{background:var(--avif);border-color:#EBD39E}
+.skel{height:14px;border-radius:6px;margin:6px 0;background:linear-gradient(90deg,var(--linea),var(--marfil),var(--linea));background-size:200% 100%;animation:sk 1.2s infinite}@keyframes sk{to{background-position:-200% 0}}
+.pulso{animation:pu 1.2s}@keyframes pu{0%{box-shadow:0 0 0 0 rgba(160,144,70,.6)}100%{box-shadow:0 0 0 14px rgba(160,144,70,0)}}
+#v-ini>*{animation:entra .35s ease both}@keyframes entra{from{opacity:0;transform:translateY(6px)}}
+.btn{transition:transform .08s,filter .15s}.btn:active,.herr-b:active,.kpi:active,.foco-it:active{transform:scale(.97)}.btn:hover{filter:brightness(1.08)}
+.msg.flash{animation:fl 1s}@keyframes fl{0%{background:rgba(160,144,70,.25)}100%{background:transparent}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+body.dark .res{background:#171B21}body.dark .herr-b,body.dark .foco-it{background:#171B21}
 .monw{position:relative;display:block}.monw::before{content:'$';position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--gris);font-weight:700;font-size:14px;pointer-events:none}.monw input.mon{padding-left:24px;text-align:right;font-variant-numeric:tabular-nums}
 .tabla-ed .monw::before{left:6px}
 body.dark{--marfil:#0F1216;--linea:#2A3038;--gris:#9AA1AA;--card:#171B21;--okf:#14261A;--malf:#2B1714;--avif:#2A2212;--olivo:#C9BC82;background:#0F1216;color:#E7E4DA}
@@ -129,6 +156,9 @@ function monetiza(root){$$('input',root||document).forEach(function(i){if(!esMon
  if(!i.placeholder)i.placeholder='0,00';i.addEventListener('focus',function(){if(num(VSET.get.call(i))===0)VSET.set.call(i,'')});
  i.addEventListener('blur',function(){var x=VSET.get.call(i).trim();if(x!=='')VSET.set.call(i,fmtMon(num(x)))})})}
 new MutationObserver(function(ms){ms.forEach(function(m){m.addedNodes.forEach(function(n){if(n.nodeType===1)monetiza(n.tagName==='INPUT'?n.parentNode:n)})})}).observe(document.getElementById('root'),{childList:true,subtree:true});
+/* retroalimentación visible: todo mensaje que cambia tras pulsar un botón se lleva a la vista y se resalta */
+var ULT_CLICK=0;document.addEventListener('click',function(e){if(e.target.closest('button,.btn'))ULT_CLICK=Date.now()},true);
+new MutationObserver(function(ms){if(Date.now()-ULT_CLICK>1500)return;var vis={};ms.forEach(function(m){var t=m.target.nodeType===1?m.target:m.target.parentNode;var g=t&&t.closest&&t.closest('.msg');if(g&&g.textContent.trim()&&!vis[g.id||'x']){vis[g.id||'x']=1;var r=g.getBoundingClientRect();if(r.top<60||r.bottom>innerHeight-20)try{g.scrollIntoView({behavior:'smooth',block:'center'})}catch(e){}g.classList.remove('flash');void g.offsetWidth;g.classList.add('flash')}})}).observe(document.getElementById('root'),{childList:true,subtree:true,characterData:true});
 
 /* ---------- publicar estado (guardar cambios en la app) ---------- */
 function buildDoc(){
@@ -147,17 +177,17 @@ function refreshSave(){$$('[data-needs=art]').forEach(function(b){b.disabled=!AR
 /* ---------- estructura ---------- */
 var ISOURL='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAPAAAAD0CAMAAACSGlu2AAAAkFBMVEWgkEb+/v4AAACejkOaiTqgj0afj0bDuIrq5ta0p23g28Ta1LjSyqi7sHzLwpvw7eKfkEW+s4Hf2cCci0OcjEW/fz9/fz+gj0Wjkketn2CZZjOejkWfjkW/vz+Ug0GdjUSZmTOekESekEaekEagj0agj0agkUeqqlUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB3FOfdAAAAMHRSTlP+/wD6/9qg/////////////f//MFEEBP7a/wWe0wQfYQUlRWxpiWQDAAAAAAAAAACke3BqAAAFuUlEQVR42u3da5ubNhAFYIGmNTdf28TeJG167///hxW2n/VWRiDJEozQ4fsmvOaIAWksizKzQwAM8MrA3y6XH7I5vl3+FgeR1fFjXtyz+CpkTmCprjDAAAMMMMAAAwwwwAADDDDAAAMMMMAAAwwwwAADDDDAAAMMMMAAAwwwwAADDDDAAAMMMMAAAwwwwAADDDDAAAMM8PrB5H3IJMG0bU6Nz3FqtpQgWIrC96gmMRzB1HiDBSUYadp4e2tK8Kb1QqA3lOJd2j/QLaVYlvwDXckU6/ALgRZJgqmKeMNiCPYP9IZSfLT0D/SRknyWlp6B7gQl+fJAO63ObKyOWpBM8m2J3rQ6E+wViSlYD3RN634f1gO9o3VPAFDt8+CUMHiWQDMCzxNoPuCZAu0JlhQ90G9O/0XkOizrmgKTqfMPtCRZ2xt8wOoJv60lSRaBVmnbVEV0sDqnjQhH1gNtfUoqaZ3TH/iD+9yJQMnWA237qkdUt46f0Etg9XQfZDA/BZoss3ysnCPxIrgomm2AZHsE+jZ0i/nBAQazR6BVlju/QR8A3L9/v72QbD3QDVmUoVNRLAkuXihTUuydzl3L8lJg/2S7BVolaec/RRsUXBR7nzLlFOhHGWIB9ilTDoFWWd42r03Chwf3ZerskmxqLQM9PHQZgN0Gsx7oE5my/NYFWGaJA75NE5PXvPvgqfRlqA2yrhQNbFumbAI9kWUuYKtk03ZyfbcvQ/tgK4dRwdNlajrQ5jK0IHjbjiZ7hKwHWus4UmNiO9YMsNstAxb3V3BTmTIO5vFATwzdfsBsFgJLi3OTjoGm6U9xQfCtcDSOZcoc6PNEGepu42RJ8PT9pS9T//83jqZAj+flcSdcGDxZQarjx2SbA03Hvd3wWBw8eaP5WKboZFhIImEbEwbg6afA+/B7quSPQJubHvQbAQvw0HTTwA1WD/T+Eeid9a2eC9iqhDamQNf2xZwPeOJdvU+wFtbxQBse1ziBnR6DxwNtfiBnBjbPt5l7Bp8DPfbKxQ5s+yprDvT4SzVD8PCc+dO3FA7DE7ZT0yYswdNlyhBom+kDpuCJZA8G2mqFji/4VqaqiS72R6AtJ7c5g81l6inQ9ssXzMHDL/WPQN/WiJ3mtLmD+2TXo4F2W4JMAGzuLuw/ic5xXSoBsLG7UIpm57zYyh9sDrQUHmvL/MEj7bLSmZvCXTpwuyx3cPB2We7g4P3f3J+0utD937zBEfq/eYPPvu2yiYJ922VTBfu1y6YLPojwgWYNjhFozmDndtnEwa7tssmD4wSa8TRtnECzBccKNFtwrEBzBUcLNNe1Jat22RWBrfu/VwK2aJddFThmoFmC9UAfSaQP3r+vZ88b6MXAZkXcQC8GNk8+TvR/vw4+LgE2X2Bzu6yIsBXVXGDzvpmxA61FaCZwa/5TY7tsyEtczQreq14MafvFlzbKxknnXTULWL73MIjlAn3vrp5pp5br4bAZZ6SNhN5PRS68F88sgWa0+ZC5/3ul4PkCzQOsB7qjde8RzzrQMcCsAx0BzDvQ4cF6oCvz+/I6wFSxDvQLYDm8ayrzQPuCVcd3XW+fj3oz096FM4NV57PNTgQMA+0FltLu+0gcA+0DlrINui0/ezC1gbepZw6237Z+R2v4vSX7besrnr9b5QqmU9KBdgbryyepBdoVnHygXcHUJR5oR7DhK/ov/JAIc7BsK7ujlSv5GUBpebC9vvihR4ABBhhggAEGGGCAAQYYYIABBhhggAEGGGCAAQYYYIABBhhggAEGGGCAAeYA/oorvG6v+CcnsKL+VWYEVtI/y0/5gBX0e/kpnyusnD8rbzbgQ+/9rcwGfPV+KbMBH+55zgV8Hb+/lNmAFfGP+/XNAvzx+uYAvno/l9mAle+n9zxnAL56v5TZgK/ez2U2YD3Pawc/X991g4e8awYPelcMPojL7+W/ZT5gcfn1+fqW5X8CuFb/IdpCOwAAAABJRU5ErkJggg==';
 var ISO='<img class="iso" src="'+ISOURL+'" alt="">';
-var TABS=[['cat','Catálogo'],['cli','Clientes'],['aud','Audiencias'],['prf','Proforma'],['hon','Honorarios'],['doc','Plantillas'],['calc','Calculadoras'],['conf','Configuración']];
+var TABS=[['ini','Inicio'],['cat','Catálogo'],['cli','Clientes'],['aud','Audiencias'],['prf','Proforma'],['hon','Honorarios'],['doc','Plantillas'],['calc','Calculadoras'],['conf','Configuración']];
 var SUBS=[['pen','Pensiones alimenticias'],['pla','Plazos y términos'],['tra','Tránsito']];
 document.getElementById('root').innerHTML=
  '<header><div class="marca">'+(DATA.logo?'<img src="'+DATA.logo+'" alt="Macías Sánchez Consultores" style="height:42px;width:auto;max-width:62%;display:block"><div class="wm" style="border-left:1px solid #3A3F47;padding-left:10px"><small style="margin:0;line-height:1.5">GESTOR<br>LEGAL</small></div>':ISO+'<div class="wm">MACÍAS SÁNCHEZ CONSULTORES<small>GESTOR LEGAL · USO INTERNO</small></div>')+'</div>'+
  (PWA?'<button id="hdr-lock" type="button">Bloquear</button>':'')+'<nav role="tablist">'+TABS.map(function(t){return '<button role="tab" data-t="'+t[0]+'" aria-selected="false">'+t[1]+'</button>'}).join('')+'</nav></header>'+
- '<main><section id="v-cat"></section><section id="v-cli" hidden></section><section id="v-aud" hidden></section><section id="v-prf" hidden></section><section id="v-hon" hidden></section><section id="v-doc" hidden></section><section id="v-calc" hidden><div class="seg" id="calc-nav" style="margin:4px 0 12px">'+SUBS.map(function(s){return '<button type="button" data-s="'+s[0]+'">'+s[1]+'</button>'}).join('')+'</div><section id="v-pen"></section><section id="v-pla" hidden></section><section id="v-tra" hidden></section></section><section id="v-conf" hidden></section></main>'+
+ '<main><section id="v-ini"></section><section id="v-cat" hidden></section><section id="v-cli" hidden></section><section id="v-aud" hidden></section><section id="v-prf" hidden></section><section id="v-hon" hidden></section><section id="v-doc" hidden></section><section id="v-calc" hidden><div class="seg" id="calc-nav" style="margin:4px 0 12px">'+SUBS.map(function(s){return '<button type="button" data-s="'+s[0]+'">'+s[1]+'</button>'}).join('')+'</div><section id="v-pen"></section><section id="v-pla" hidden></section><section id="v-tra" hidden></section></section><section id="v-conf" hidden></section></main>'+
  '<footer>Herramienta de uso interno de Macías Sánchez Consultores. Resultados referenciales: verifique la norma vigente y el caso concreto antes de actuar. Abg. Mariano X. Macías Sánchez · Mat. 09-2022-736.</footer>';
 function show(t){var sub=null;if(SUBS.some(function(s){return s[0]===t})){sub=t;t='calc'}else if(t&&t.indexOf('calc-')===0){sub=t.slice(5);t='calc'}
- if(!TABS.some(function(x){return x[0]===t}))t='cat';
+ if(!TABS.some(function(x){return x[0]===t}))t='ini';
  if(t==='calc'){if(!SUBS.some(function(s){return s[0]===sub}))sub=store('sub')||'pen';SUBS.forEach(function(s){$('#v-'+s[0]).hidden=s[0]!==sub});$$('#calc-nav button').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.s===sub)});store('sub',sub)}
- if(t==='prf'&&document.getElementById('f-cbox'))renderPrf();if(t==='aud')renderAud();if(t==='doc')renderDoc();if(t==='hon'&&document.getElementById('h-op'))calcHon();if(t==='conf')renderConf();
+ if(t==='prf'&&document.getElementById('f-cbox'))renderPrf();if(t==='aud')renderAud();if(t==='doc')renderDoc();if(t==='hon'&&document.getElementById('h-op'))calcHon();if(t==='conf')renderConf();if(t==='ini')renderIni();
  $$('nav button').forEach(function(b){b.setAttribute('aria-selected',b.dataset.t===t);if(b.dataset.t===t&&b.scrollIntoView)try{b.scrollIntoView({block:'nearest',inline:'nearest'})}catch(e){}});TABS.forEach(function(x){$('#v-'+x[0]).hidden=x[0]!==t});
  var h=t==='calc'?'calc-'+sub:t;try{if(location.hash!=='#'+h)history.replaceState(null,'','#'+h)}catch(e){}if(!document.body.classList.contains('locked'))store('tab',h)}
 $$('#calc-nav button').forEach(function(b){b.onclick=function(){show('calc-'+b.dataset.s)}});
@@ -998,7 +1028,217 @@ var CFG_KEYS=['catalogo','catVer','notarias','notariasNota','consulta','cobro','
 function pickCfg(){var o={};CFG_KEYS.forEach(function(k){if(k in DATA)o[k]=JSON.parse(JSON.stringify(DATA[k]))});return o}
 function migraCat(old,def){var oc={};old.forEach(function(x){oc[x.cod]=x});var dc={};var out=def.map(function(x){dc[x.cod]=1;var o=JSON.parse(JSON.stringify(x)),p=oc[x.cod];if(p&&p.n===x.n&&p.valor!==x.valor){o.valor=p.valor;delete o.tam}return o});old.forEach(function(x){if(!dc[x.cod]&&x.cod!=='PDP-01')out.push(x)});return out}
 function aplicaCfg(){var dv=DEF_CATV,def=DEF_CAT,mig=false;if(R.data.cfg){CFG_KEYS.forEach(function(k){if(k in R.data.cfg)DATA[k]=R.data.cfg[k]});if((R.data.cfg.catVer||1)<dv&&R.data.cfg.catalogo){DATA.catalogo=migraCat(R.data.cfg.catalogo,def);DATA.catVer=dv;mig=true}}CFG_APLICADA=R.data.cfgUpd||0;if(mig){R.data.cfg=pickCfg();R.data.cfgUpd=Date.now();CFG_APLICADA=R.data.cfgUpd;try{guardarCambio().catch(function(){})}catch(e){}}}
-function rerender(){var t=store('tab');renderHon();renderCat();renderPrf();renderPen();renderPla();renderTra();renderAud();renderConf();if(t)show(t)}
+/* ==========================================================================
+   INICIO · saludo, fecha y hora, clima, resumen del despacho, herramientas,
+   casillero judicial de pendientes y correos de la Función Judicial / Fiscalía
+   ========================================================================== */
+var GMSCOPE='https://www.googleapis.com/auth/gmail.readonly',GMAPI='https://gmail.googleapis.com/gmail/v1/users/me/messages';
+var GMQ_DEF='from:(sender.satje@funcionjudicial.gob.ec OR satje.guayas@funcionjudicial.gob.ec OR fiscalia.gob.ec) -from:Escuela.Judicial@funcionjudicial.gob.ec newer_than:30d';
+var LINKS_J=[['https://procesosjudiciales.funcionjudicial.gob.ec/busqueda','Consulta de procesos (e-SATJE)'],['https://www.gestiondefiscalias.gob.ec/siaf/informacion/web/noticiasdelito/index.php','Noticias del delito (Fiscalía · SIAF)'],['https://mail.google.com/mail/u/0/#search/from%3Afuncionjudicial.gob.ec','Notificaciones en Gmail']];
+var WMO={0:['Despejado','☀️'],1:['Mayormente despejado','🌤️'],2:['Parcialmente nublado','⛅'],3:['Nublado','☁️'],45:['Neblina','🌫️'],48:['Neblina','🌫️'],51:['Llovizna ligera','🌦️'],53:['Llovizna','🌦️'],55:['Llovizna intensa','🌧️'],61:['Lluvia ligera','🌦️'],63:['Lluvia','🌧️'],65:['Lluvia intensa','🌧️'],80:['Chubascos','🌦️'],81:['Chubascos','🌧️'],82:['Chubascos fuertes','⛈️'],95:['Tormenta','⛈️'],96:['Tormenta con granizo','⛈️'],99:['Tormenta con granizo','⛈️']};
+var INI={gm:null,gmErr:'',gmCarga:false,clima:null,climaErr:'',reloj:null};
+function saludo(){var h=new Date().getHours();return h<12?'Buenos días':h<19?'Buenas tardes':'Buenas noches'}
+function nombreSaludo(){var n=((DATA.prf||{}).firmaNombre||'').trim(),m=n.match(/^(Abg\.|Dr\.|Dra\.|Lcdo\.|Lcda\.)?\s*([^\s]+)/);return m?((m[1]?m[1]+' ':'')+m[2]):''}
+function fechaLarga(d){return DIAS[d.getDay()].charAt(0).toUpperCase()+DIAS[d.getDay()].slice(1)+', '+d.getDate()+' de '+MESES[d.getMonth()]+' de '+d.getFullYear()}
+function horaTxt(d){return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')+'<span class="seg2">:'+String(d.getSeconds()).padStart(2,'0')+'</span>'}
+function diasEntre(a,b){return Math.round((parseD(b)-parseD(a))/864e5)}
+function fCorta(s){if(!s)return '';var d=parseD(s.slice(0,10));return d.getDate()+' '+MESES[d.getMonth()].slice(0,3)}
+function cuenta(el,fin,fmt){if(!el)return;var t0=performance.now(),dur=650;function paso(t){var k=Math.min(1,(t-t0)/dur),v=fin*(1-Math.pow(1-k,3));el.textContent=fmt?fmt(v):Math.round(v);if(k<1)requestAnimationFrame(paso)}if(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches){el.textContent=fmt?fmt(fin):fin;return}requestAnimationFrame(paso)}
+
+/* ---------- casillero judicial (pendientes) ---------- */
+function casj(){return R.data?(R.data.casj||(R.data.casj=[])).filter(function(x){return !x.del}):[]}
+function vencCasj(f,n,tipo){if(!f||!n)return '';try{return iso(computar(parseD(f),n,tipo,feriadosSet()).fin)}catch(e){return ''}}
+function casoPorCausa(c){if(!c||!R.data)return null;var q=c.replace(/\s/g,'').toUpperCase();return casos().filter(function(k){return (k.causa||'').replace(/\s/g,'').toUpperCase()===q})[0]||null}
+function semCasj(x){if(x.est==='ok')return ['ok','Atendido'];if(!x.venc)return ['gris','Sin plazo'];var d=diasEntre(hoyISO(),x.venc);if(d<0)return ['mal','Vencido hace '+(-d)+' día'+(d===-1?'':'s')];if(d===0)return ['mal','Vence hoy'];if(d<=2)return ['avi','Vence en '+d+' día'+(d===1?'':'s')];return ['ok','Vence en '+d+' días']}
+
+/* ---------- Gmail (solo lectura; no se guarda el contenido de los correos) ---------- */
+function gmOn(){return !!(PWA&&R.data&&R.data.gm&&R.data.gm.on)}
+function tokenGm(inter){
+ if(R.gtok&&Date.now()<R.gtokExp-60000)return Promise.resolve(R.gtok);
+ try{var t=JSON.parse(sessionStorage.getItem('msc:gtok'));if(t&&Date.now()<t[1]-60000){R.gtok=t[0];R.gtokExp=t[1];return Promise.resolve(R.gtok)}}catch(e){}
+ if(!inter)return Promise.reject(new Error('sin-token'));
+ if(R.gtokP)return R.gtokP;
+ R.gtokP=cargaGIS().then(function(){return new Promise(function(res,rej){
+  var tc=google.accounts.oauth2.initTokenClient({client_id:GCID,scope:GMSCOPE,callback:function(r){if(r.error)return rej(new Error('Google no autorizó Gmail ('+r.error+').'));if(r.scope&&r.scope.indexOf('gmail')<0)return rej(new Error('No se marcó el permiso de Gmail en la ventana de Google.'));R.gtok=r.access_token;R.gtokExp=Date.now()+(+r.expires_in||3600)*1000;try{sessionStorage.setItem('msc:gtok',JSON.stringify([R.gtok,R.gtokExp]))}catch(e){}res(R.gtok)},
+   error_callback:function(e){rej(new Error(e&&e.type==='popup_closed'?'Se cerró la ventana de Google sin autorizar.':'No se pudo abrir la autorización de Google (¿ventanas emergentes bloqueadas?).'))}});
+  tc.requestAccessToken({prompt:''});
+ })});
+ var p=R.gtokP;p.then(function(){R.gtokP=null},function(){R.gtokP=null});return p;
+}
+function gmapi(url,inter){return tokenGm(inter).then(function(t){return fetch(url,{headers:{Authorization:'Bearer '+t}})}).then(function(r){
+ if(r.status===401){R.gtok=null;try{sessionStorage.removeItem('msc:gtok')}catch(e){}throw new Error('La autorización de Gmail expiró. Toque «Revisar Gmail».')}
+ if(r.status===403)throw new Error('Gmail respondió 403: active la API de Gmail y agregue el permiso gmail.readonly en Google Cloud (vea la guía en Configuración).');
+ if(!r.ok)throw new Error('Gmail respondió '+r.status+'.');return r.json()})}
+function hdr(m,n){var h=((m.payload||{}).headers||[]).filter(function(x){return x.name.toLowerCase()===n.toLowerCase()})[0];return h?h.value:''}
+var RX_CAUSA=/\b\d{5}-?\d{4}-?\d{5}[A-Z]?\b/;
+function revisarGmail(inter){
+ if(INI.gmCarga)return;INI.gmCarga=true;INI.gmErr='';pintaGm();
+ var q=(R.data&&R.data.gm&&R.data.gm.q)||GMQ_DEF;
+ gmapi(GMAPI+'?maxResults=25&q='+encodeURIComponent(q),inter).then(function(j){
+  var ids=(j.messages||[]).slice(0,25);
+  return Promise.all(ids.map(function(m){return gmapi(GMAPI+'/'+m.id+'?format=metadata&metadataHeaders=Subject&metadataHeaders=From&metadataHeaders=Date',false)}));
+ }).then(function(ms){
+  var vistos=(R.data.gm&&R.data.gm.vistos)||[];
+  INI.gm=ms.map(function(m){var asu=hdr(m,'Subject'),de=hdr(m,'From'),c=(asu+' '+(m.snippet||'')).match(RX_CAUSA);
+   return {id:m.id,th:m.threadId,f:iso(new Date(+m.internalDate)),de:de.replace(/<.*?>/,'').replace(/"/g,'').trim()||de,dom:/fiscalia/i.test(de)?'Fiscalía':'Función Judicial',asu:asu,causa:c?c[0]:'',nuevo:vistos.indexOf(m.id)<0,unread:(m.labelIds||[]).indexOf('UNREAD')>-1}});
+  R.data.gm=Object.assign({},R.data.gm||{},{on:true,at:Date.now(),upd:Date.now()});guardarCambio();
+ }).catch(function(e){if(e.message!=='sin-token')INI.gmErr=e.message}).then(function(){INI.gmCarga=false;pintaGm()});
+}
+function marcarVistos(){if(!INI.gm||!R.data)return;var v=(R.data.gm&&R.data.gm.vistos)||[];INI.gm.forEach(function(m){if(v.indexOf(m.id)<0)v.unshift(m.id);m.nuevo=false});R.data.gm=Object.assign({},R.data.gm||{},{vistos:v.slice(0,300),upd:Date.now()});guardarCambio();pintaGm()}
+function pintaGm(){
+ var b=$('#i-gm');if(!b)return;
+ if(!PWA){b.innerHTML='<p class="hint" style="margin:0">Disponible en la app instalada (la autorización de Google solo funciona en la dirección publicada).</p>';return}
+ if(!regDisponible()){b.innerHTML='<p class="hint" style="margin:0">Desbloquee el registro para revisar los correos judiciales.</p>';return}
+ var h='';
+ if(INI.gmCarga)h+='<div class="skel"></div><div class="skel" style="width:70%"></div>';
+ else if(INI.gmErr)h+='<p class="msg e" style="margin:0 0 8px">'+esc(INI.gmErr)+'</p>';
+ if(INI.gm&&!INI.gmCarga){
+  var n=INI.gm.filter(function(m){return m.nuevo}).length;
+  h+=INI.gm.length?'<p class="hint" style="margin:0 0 6px">'+INI.gm.length+' correo'+(INI.gm.length===1?'':'s')+' en los últimos 30 días'+(n?' · <b style="color:var(--mal)">'+n+' sin revisar en la app</b>':'')+'.</p>'+
+   INI.gm.slice(0,8).map(function(m){var ya=casj().some(function(x){return x.gid===m.id});return '<div class="gm-it'+(m.nuevo?' nuevo':'')+'"><div style="min-width:0;flex:1"><div class="gm-a">'+(m.nuevo?'<span class="punto"></span>':'')+esc(m.asu||'(sin asunto)')+'</div><div class="hint" style="margin:2px 0 0">'+esc(m.dom)+' · '+fCorta(m.f)+(m.causa?' · Causa '+esc(m.causa):'')+'</div></div>'+
+    '<div class="gm-b"><a class="btn sec mini" href="https://mail.google.com/mail/u/0/#all/'+esc(m.th)+'" target="_blank" rel="noopener">Abrir</a>'+(ya?'<span class="chipok">En casillero</span>':'<button type="button" class="btn mini" data-gadd="'+esc(m.id)+'">+ Casillero</button>')+'</div></div>'}).join('')
+  :'<p class="hint" style="margin:0">No hay correos de la Función Judicial ni de Fiscalía en los últimos 30 días.</p>';
+ }else if(!INI.gmCarga&&!INI.gmErr)h+='<p class="hint" style="margin:0 0 8px">Detecta notificaciones de e-SATJE (sender.satje@ y satje.guayas@funcionjudicial.gob.ec) y de Fiscalía (@fiscalia.gob.ec). Solo lectura: la app no guarda el contenido de los correos.</p>';
+ h+='<div class="row" style="margin-top:8px"><button type="button" class="btn" id="i-gmr">'+(INI.gm?'Actualizar':'Revisar Gmail')+'</button>'+(INI.gm&&INI.gm.some(function(m){return m.nuevo})?'<button type="button" class="btn sec" id="i-gmv">Marcar como revisados</button>':'')+'</div>';
+ b.innerHTML=h;
+ $('#i-gmr').onclick=function(){revisarGmail(true)};
+ if($('#i-gmv'))$('#i-gmv').onclick=marcarVistos;
+ $$('#i-gm [data-gadd]').forEach(function(x){x.onclick=function(){var m=INI.gm.filter(function(g){return g.id===x.dataset.gadd})[0];if(!m)return;formCasj({f:m.f,causa:m.causa,det:m.asu,gid:m.id,origen:m.dom});var c=$('#i-cj');if(c&&c.scrollIntoView)c.scrollIntoView({behavior:'smooth',block:'start'})}});
+ var bd=$('#i-gmbadge');if(bd){var nn=INI.gm?INI.gm.filter(function(m){return m.nuevo}).length:0;bd.textContent=nn;bd.hidden=!nn}
+}
+
+/* ---------- clima (Open-Meteo, sin clave; ubicación solo si usted la autoriza) ---------- */
+function climaCfg(){return store('clima')||{lat:-2.19,lon:-79.89,lug:'Guayaquil',auto:false}}
+function cargaClima(force){
+ var c=climaCfg(),cache=store('climaw');
+ if(!force&&cache&&cache.t>Date.now()-30*60000&&cache.lat===c.lat&&cache.lon===c.lon){INI.clima=cache;pintaClima();return}
+ if(!force&&INI.climaT&&Date.now()-INI.climaT<5*60000){pintaClima();return}INI.climaT=Date.now();
+ if(!navigator.onLine){INI.climaErr='Sin conexión';pintaClima();return}
+ fetch('https://api.open-meteo.com/v1/forecast?latitude='+c.lat+'&longitude='+c.lon+'&current=temperature_2m,apparent_temperature,relative_humidity_2m,weather_code,wind_speed_10m&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max&forecast_days=1&timezone=auto')
+ .then(function(r){if(!r.ok)throw new Error('clima '+r.status);return r.json()}).then(function(j){
+  var w={t:Date.now(),lat:c.lat,lon:c.lon,temp:j.current.temperature_2m,sens:j.current.apparent_temperature,hum:j.current.relative_humidity_2m,cod:j.current.weather_code,vto:j.current.wind_speed_10m,max:j.daily.temperature_2m_max[0],min:j.daily.temperature_2m_min[0],llu:j.daily.precipitation_probability_max[0]};
+  store('climaw',w);INI.clima=w;INI.climaErr='';pintaClima();
+ }).catch(function(){INI.climaErr='Clima no disponible';pintaClima()});
+}
+function usarUbicacion(){
+ if(!navigator.geolocation){toast('Este dispositivo no permite obtener la ubicación.',1);return}
+ $('#i-cl').innerHTML='<span class="hint" style="color:#C9C6BA">Obteniendo ubicación…</span>';
+ navigator.geolocation.getCurrentPosition(function(p){
+  var lat=Math.round(p.coords.latitude*100)/100,lon=Math.round(p.coords.longitude*100)/100,c={lat:lat,lon:lon,lug:'Mi ubicación',auto:true};store('clima',c);
+  fetch('https://api.bigdatacloud.net/data/reverse-geocode-client?latitude='+lat+'&longitude='+lon+'&localityLanguage=es').then(function(r){return r.json()}).then(function(j){c.lug=j.city||j.locality||j.principalSubdivision||'Mi ubicación';store('clima',c);pintaClima()}).catch(function(){});
+  cargaClima(true);
+ },function(){toast('No se autorizó la ubicación; se mantiene Guayaquil.',1);pintaClima()},{enableHighAccuracy:false,timeout:10000,maximumAge:600000});
+}
+function pintaClima(){
+ var b=$('#i-cl');if(!b)return;var c=climaCfg(),w=INI.clima;
+ if(!w){b.innerHTML='<span class="hint" style="color:#C9C6BA">'+(INI.climaErr||'Cargando clima…')+'</span>';return}
+ var d=WMO[w.cod]||['—','🌡️'];
+ b.innerHTML='<div class="cl-i">'+d[1]+'</div><div><div class="cl-t">'+Math.round(w.temp)+'°C <small>'+esc(d[0])+'</small></div><div class="cl-s">'+esc(c.lug)+' · Máx '+Math.round(w.max)+'° / Mín '+Math.round(w.min)+'° · Lluvia '+(w.llu==null?'—':w.llu+'%')+' · Hum. '+w.hum+'%</div>'+
+  '<button type="button" class="lnk" id="i-ubi">'+(c.auto?'Actualizar ubicación':'Usar mi ubicación')+'</button>'+(c.auto?' <button type="button" class="lnk" id="i-gye">Volver a Guayaquil</button>':'')+'</div>';
+ $('#i-ubi').onclick=usarUbicacion;
+ if($('#i-gye'))$('#i-gye').onclick=function(){store('clima',null);try{localStorage.removeItem('msc:clima')}catch(e){}cargaClima(true)};
+}
+
+/* ---------- formulario del casillero ---------- */
+function formCasj(pre){
+ var b=$('#i-cjf');if(!b)return;pre=pre||{};
+ var x=pre.id?casj().filter(function(y){return y.id===pre.id})[0]||pre:pre;
+ b.hidden=false;
+ b.innerHTML='<div class="grid" style="margin-top:4px">'+
+  '<div><label for="j_f">Fecha de notificación</label><input id="j_f" type="date" value="'+esc(x.f||hoyISO())+'"></div>'+
+  '<div><label for="j_c">Nº de causa</label><input id="j_c" value="'+esc(x.causa||'')+'" placeholder="09332-2026-01234"></div>'+
+  '<div class="full"><label for="j_d">Providencia o actuación pendiente</label><input id="j_d" value="'+esc(x.det||'')+'" placeholder="Ej.: Completar demanda, contestar, presentar prueba"></div>'+
+  '<div><label for="j_n">Días</label><input id="j_n" type="number" inputmode="numeric" min="0" step="1" value="'+(x.n==null?3:x.n)+'"></div>'+
+  '<div><label for="j_t">Cómputo</label><select id="j_t"><option value="t"'+(x.tipo!=='p'?' selected':'')+'>Término (días hábiles)</option><option value="p"'+(x.tipo==='p'?' selected':'')+'>Plazo (días calendario)</option></select></div>'+
+  '<div class="full chips" id="j_q">'+[[3,'t'],[5,'t'],[10,'t'],[15,'t'],[30,'t']].map(function(q){return '<button type="button" data-q="'+q[0]+'">'+q[0]+' días término</button>'}).join('')+'</div>'+
+  '<div class="full res" id="j_v" style="margin:0;padding:10px 12px"></div>'+
+  '</div><div class="row" style="margin-top:10px"><button type="button" class="btn" id="j_ok">'+(x.id?'Guardar cambios':'Agregar pendiente')+'</button><button type="button" class="btn sec" id="j_x">Cancelar</button></div><div class="msg" id="j_m"></div>';
+ function prev(){var v=vencCasj(val('j_f'),Math.max(0,parseInt(val('j_n'),10)||0),val('j_t')),k=casoPorCausa(val('j_c')),cl=k?cliById(k.cli):null;
+  $('#j_v').className='full res '+(v?'ok':'');$('#j_v').innerHTML=v?'<b>Vence: '+fechaLarga(parseD(v))+'</b>'+(diasEntre(hoyISO(),v)<0?' · <span style="color:var(--mal)">ya vencido</span>':'')+'<div class="hint" style="margin:2px 0 0">Cómputo desde el día siguiente a la notificación, con feriados nacionales y locales cargados.'+(cl?' Caso vinculado: '+esc(cl.nom||'')+'.':'')+'</div>':'Indique fecha y días.'}
+ $$('#i-cjf input,#i-cjf select').forEach(function(e){e.addEventListener('input',prev);e.addEventListener('change',prev)});
+ $$('#j_q [data-q]').forEach(function(q){q.onclick=function(){$('#j_n').value=q.dataset.q;$('#j_t').value='t';prev()}});
+ prev();
+ $('#j_x').onclick=function(){b.hidden=true;b.innerHTML=''};
+ $('#j_ok').onclick=function(){
+  if(!regDisponible()){$('#j_m').className='msg e';$('#j_m').textContent='Desbloquee el registro para guardar.';return}
+  if(!val('j_d')&&!val('j_c')){$('#j_m').className='msg e';$('#j_m').textContent='Escriba la causa o la actuación pendiente.';return}
+  var n=Math.max(0,parseInt(val('j_n'),10)||0),o={id:x.id||uid(),f:val('j_f'),causa:val('j_c'),det:val('j_d'),n:n,tipo:val('j_t'),venc:vencCasj(val('j_f'),n,val('j_t')),est:x.est||'pend',gid:x.gid||pre.gid||'',origen:x.origen||pre.origen||'Manual',upd:Date.now()};
+  var L=R.data.casj||(R.data.casj=[]),i=L.findIndex(function(y){return y.id===o.id});if(i>-1)L[i]=o;else L.push(o);
+  if(o.gid&&INI.gm){var v=(R.data.gm&&R.data.gm.vistos)||[];if(v.indexOf(o.gid)<0)v.unshift(o.gid);R.data.gm=Object.assign({},R.data.gm||{},{vistos:v,upd:Date.now()});INI.gm.forEach(function(m){if(m.id===o.gid)m.nuevo=false})}
+  guardarCambio();toast(i>-1?'Pendiente actualizado.':'Pendiente agregado al casillero.');renderIni();
+ };
+ try{$('#j_d').focus({preventScroll:true})}catch(e){}
+}
+function pintaCasj(){
+ var b=$('#i-cjl');if(!b)return;
+ if(!regDisponible()){b.innerHTML='<p class="hint" style="margin:0">'+(PWA?'Desbloquee el registro para ver el casillero.':'El casillero se guarda cifrado en el registro: abra la pestaña Clientes y desbloquéelo.')+'</p>';$('#i-cjn').disabled=true;return}
+ $('#i-cjn').disabled=false;
+ var f=INI.cjf||'pend',L=casj().filter(function(x){return f==='todos'||(f==='pend'?x.est!=='ok':x.est==='ok')}).sort(function(a,b){return a.est===b.est?(a.venc||'9').localeCompare(b.venc||'9'):a.est==='ok'?1:-1});
+ b.innerHTML=L.length?L.map(function(x){var s=semCasj(x),k=casoPorCausa(x.causa),cl=k?cliById(k.cli):null;
+  return '<div class="cj-it s-'+s[0]+'"><div class="cj-bar"></div><div style="min-width:0;flex:1"><div class="cj-t">'+esc(x.det||'Actuación pendiente')+'</div><div class="hint" style="margin:2px 0 0">'+(x.causa?'Causa '+esc(x.causa)+' · ':'')+(cl?esc(cl.nom)+' · ':'')+'Notificado '+fCorta(x.f)+(x.n?' · '+x.n+' días '+(x.tipo==='p'?'plazo':'término'):'')+(x.origen&&x.origen!=='Manual'?' · vía '+esc(x.origen):'')+'</div>'+
+   '<div class="row" style="margin-top:6px;gap:6px"><span class="sem">'+s[1]+(x.venc&&x.est!=='ok'?' · '+fCorta(x.venc):'')+'</span>'+
+   (x.est!=='ok'?'<button type="button" class="btn mini" data-jok="'+x.id+'">✓ Atendido</button>':'<button type="button" class="btn sec mini" data-jre="'+x.id+'">Reabrir</button>')+
+   '<button type="button" class="btn sec mini" data-jed="'+x.id+'">Editar</button>'+(x.causa?'<button type="button" class="btn sec mini" data-jsa="'+esc(x.causa)+'">e-SATJE</button>':'')+'<button type="button" class="btn sec mini" data-jdel="'+x.id+'" aria-label="Eliminar">×</button></div></div></div>'}).join('')
+  :'<p class="hint" style="margin:0">'+(f==='pend'?'Sin pendientes. Agregue uno o tráigalo desde los correos judiciales.':'Nada que mostrar.')+'</p>';
+ function upd(id,fn){var x=(R.data.casj||[]).filter(function(y){return y.id===id})[0];if(!x)return;fn(x);x.upd=Date.now();guardarCambio();renderIni()}
+ $$('#i-cjl [data-jok]').forEach(function(e){e.onclick=function(){upd(e.dataset.jok,function(x){x.est='ok'});toast('Marcado como atendido.')}});
+ $$('#i-cjl [data-jre]').forEach(function(e){e.onclick=function(){upd(e.dataset.jre,function(x){x.est='pend'})}});
+ $$('#i-cjl [data-jed]').forEach(function(e){e.onclick=function(){formCasj({id:e.dataset.jed});$('#i-cjf').scrollIntoView({behavior:'smooth',block:'nearest'})}});
+ $$('#i-cjl [data-jdel]').forEach(function(e){e.onclick=function(){if(confirm('¿Eliminar este pendiente del casillero?')){upd(e.dataset.jdel,function(x){x.del=true});toast('Pendiente eliminado.')}}});
+ $$('#i-cjl [data-jsa]').forEach(function(e){e.onclick=function(){copiar(e.dataset.jsa,'Nº de causa copiado: péguelo en e-SATJE.');window.open('https://procesosjudiciales.funcionjudicial.gob.ec/busqueda','_blank','noopener')}});
+}
+
+/* ---------- pantalla ---------- */
+var HERR=[['nuevo-cli','Nuevo cliente','M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm-7 8a7 7 0 0 1 14 0M19 8v6M16 11h6'],['nueva-aud','Nueva audiencia','M7 3v3M17 3v3M4 8h16M5 5h14a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Zm7 7v5M9.5 14.5h5'],['prf','Proforma','M7 3h7l5 5v13H7zM14 3v5h5M10 13h6M10 17h6'],['hon','Honorarios','M12 3v18M16 7.5c0-1.4-1.8-2.5-4-2.5s-4 1.1-4 2.5S9.8 10 12 10s4 1.1 4 2.5S14.2 15 12 15s-4-1.1-4-2.5M8 17c.6 1.2 2.1 2 4 2s3.4-.8 4-2'],['cons','Consulta','M4 5h16v11H8l-4 4zM8 9h8M8 12h5'],['calc-pla','Plazos y términos','M12 7v5l3 2M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18Z'],['calc-pen','Pensiones','M4 20h16M6 20V10M10 20V10M14 20V10M18 20V10M3 10l9-6 9 6'],['calc-tra','Tránsito','M5 16l1.5-6h11L19 16M5 16h14v3H5zM7.5 19v1.5M16.5 19v1.5M8 13h.01M16 13h.01'],['doc','Plantillas','M6 3h9l3 3v15H6zM9 9h6M9 13h6M9 17h4'],['cat','Catálogo','M4 6h16M4 12h16M4 18h10']];
+function irA(k){
+ if(k==='nuevo-cli'){if(!regDisponible()){show('cli');return}R.view='cli';R.sel='nuevo';show('cli');vista();return}
+ if(k==='nueva-aud'){if(!regDisponible()){show('cli');toast('Desbloquee el registro para agendar audiencias.',1);return}A.edit='nuevo';show('aud');return}
+ if(k==='cons'){show('hon');var b=document.querySelector('#h-mod [data-x="cons"]');if(b)b.click();return}
+ show(k)}
+function renderIni(){
+ var v=$('#v-ini');if(!v)return;var now=new Date(),reg=regDisponible(),nom=nombreSaludo();
+ var hoy=hoyISO(),en7=iso(new Date(now.getFullYear(),now.getMonth(),now.getDate()+7));
+ var A7=reg?auds().filter(function(a){return a.est==='prog'&&a.f>=hoy&&a.f<=en7}).sort(cmpAud):[];
+ var K=reg?casos():[],act=K.filter(function(k){return k.est==='activo'}),conc=K.filter(function(k){return k.est==='concretar'});
+ var LL=reg?R.data.clientes.filter(function(c){return !c.del&&llamPend(c)}):[];
+ var CJ=reg?casj().filter(function(x){return x.est!=='ok'}):[],CJu=CJ.filter(function(x){return x.venc&&diasEntre(hoy,x.venc)<=2});
+ var mes=hoy.slice(0,7),H=getHist().filter(function(x){return (x.f||'').slice(0,7)===mes}),totM=H.reduce(function(s,x){return s+(+x.tot||0)},0);
+ var pact=act.reduce(function(s,k){return s+num(k.hon)},0);
+ var foco=[];
+ CJu.forEach(function(x){var s=semCasj(x);foco.push(['mal','⚖️',s[1]+': '+(x.det||'actuación')+(x.causa?' ('+x.causa+')':''),'cj'])});
+ A7.filter(function(a){return a.f===hoy}).forEach(function(a){var c=cliById(a.cli)||{};foco.push(['avi','🏛️','Audiencia hoy '+(a.h||'')+' · '+(a.tipo||'')+(c.nom?' · '+c.nom:''),'aud'])});
+ if(LL.length)foco.push(['avi','📞',LL.length+' llamada'+(LL.length===1?'':'s')+' pendiente'+(LL.length===1?'':'s')+' a clientes','llam']);
+ v.innerHTML='<div class="hero"><div class="hero-l"><div class="hero-s" id="i-sal">'+saludo()+(nom?', '+esc(nom):'')+'</div><div class="hero-h" id="i-hr">'+horaTxt(now)+'</div><div class="hero-f" id="i-fe">'+fechaLarga(now)+'</div></div><div class="hero-c" id="i-cl"></div></div>'+
+  (foco.length?'<div class="foco">'+foco.slice(0,4).map(function(f){return '<button type="button" class="foco-it f-'+f[0]+'" data-fg="'+f[3]+'"><span>'+f[1]+'</span><span>'+esc(f[2])+'</span><span class="fl">›</span></button>'}).join('')+'</div>':(reg?'<div class="foco"><div class="foco-it f-ok"><span>✅</span><span>Sin urgencias para hoy. Buen momento para captar clientes o avanzar escritos.</span></div></div>':''))+
+  '<div class="kpis ini-k">'+
+   '<button type="button" class="kpi" data-fg="cli"><div class="l">Casos activos</div><div class="n" data-c="'+act.length+'">0</div></button>'+
+   '<button type="button" class="kpi" data-fg="mes"><div class="l">Por concretar</div><div class="n" data-c="'+conc.length+'">0</div></button>'+
+   '<button type="button" class="kpi" data-fg="aud"><div class="l">Audiencias 7 días</div><div class="n" data-c="'+A7.length+'">0</div></button>'+
+   '<button type="button" class="kpi" data-fg="cj"><div class="l">Casillero pend.</div><div class="n'+(CJu.length?' rojo':'')+'" data-c="'+CJ.length+'">0</div></button>'+
+   '<button type="button" class="kpi" data-fg="prf"><div class="l">Proformas del mes</div><div class="n" data-m="'+r2(totM)+'">$0,00</div><div class="hint" style="margin:0">'+H.length+' emitida'+(H.length===1?'':'s')+'</div></button>'+
+   '<button type="button" class="kpi" data-fg="cli"><div class="l">Honorarios pactados</div><div class="n" data-m="'+r2(pact)+'">$0,00</div><div class="hint" style="margin:0">casos activos</div></button>'+
+  '</div>'+
+  (reg?'':'<div class="card aviso"><b>Registro bloqueado.</b> El resumen de casos, audiencias y casillero aparece al desbloquear. <button type="button" class="btn sec mini" data-fg="cli">Desbloquear</button></div>')+
+  '<h3 class="ini-h">Herramientas a la mano</h3><div class="herr">'+HERR.map(function(h){return '<button type="button" class="herr-b" data-go="'+h[0]+'"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="'+h[2]+'"/></svg><span>'+h[1]+'</span></button>'}).join('')+'</div>'+
+  '<div class="ini-2"><div class="card" id="i-cj"><div class="row" style="justify-content:space-between;align-items:center"><h3 style="margin:0">Casillero judicial · pendientes</h3><button type="button" class="btn mini" id="i-cjn">+ Pendiente</button></div>'+
+   '<div class="seg" id="i-cjfv" style="margin:10px 0"><button type="button" data-f="pend">Pendientes</button><button type="button" data-f="ok">Atendidos</button><button type="button" data-f="todos">Todos</button></div>'+
+   '<div id="i-cjf" hidden></div><div id="i-cjl"></div></div>'+
+  '<div class="card" id="i-gmc"><div class="row" style="justify-content:space-between;align-items:center"><h3 style="margin:0">Correos judiciales <span class="badge" id="i-gmbadge" hidden>0</span></h3></div><div id="i-gm" style="margin-top:8px"></div></div></div>'+
+  '<div class="card"><h3 style="margin:0 0 8px">Próximas audiencias</h3>'+(reg?(A7.length?A7.slice(0,5).map(function(a){var c=cliById(a.cli)||{},d=diasEntre(hoy,a.f);return '<button type="button" class="ag-it" data-fg="aud"><div class="ag-d"><b>'+parseD(a.f).getDate()+'</b><small>'+MESES[parseD(a.f).getMonth()].slice(0,3)+'</small></div><div style="flex:1;min-width:0;text-align:left"><div style="font-weight:700">'+esc(a.tipo||'Audiencia')+' · '+esc(a.h||'')+'</div><div class="hint" style="margin:2px 0 0">'+esc(c.nom||'')+(a.causa?' · '+esc(a.causa):'')+'</div></div><span class="sem">'+(d===0?'Hoy':d===1?'Mañana':'En '+d+' días')+'</span></button>'}).join(''):'<p class="hint" style="margin:0">Sin audiencias en los próximos 7 días.</p>'):'<p class="hint" style="margin:0">Desbloquee el registro para ver la agenda.</p>')+'</div>'+
+  '<div class="card"><h3 style="margin:0 0 8px">Enlaces judiciales</h3><div class="row" style="gap:6px">'+LINKS_J.map(function(l){return '<a class="btn sec mini" href="'+l[0]+'" target="_blank" rel="noopener">'+esc(l[1])+' ↗</a>'}).join('')+'</div></div>';
+ $$('#v-ini [data-c]').forEach(function(e){cuenta(e,+e.dataset.c)});
+ $$('#v-ini [data-m]').forEach(function(e){cuenta(e,+e.dataset.m,usd)});
+ $$('#v-ini [data-go]').forEach(function(b){b.onclick=function(){irA(b.dataset.go)}});
+ $$('#v-ini [data-fg]').forEach(function(b){b.onclick=function(){var g=b.dataset.fg;if(g==='cj'){var c=$('#i-cj');c.scrollIntoView({behavior:'smooth',block:'start'});c.classList.add('pulso');setTimeout(function(){c.classList.remove('pulso')},1200);return}
+  if(g==='llam'||g==='mes'){show('cli');var x=document.querySelector('#r-vw [data-v="'+g+'"]');if(x)x.click();return}show(g)}});
+ $$('#i-cjfv button').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.f===(INI.cjf||'pend'));b.onclick=function(){INI.cjf=b.dataset.f;renderIni()}});
+ $('#i-cjn').onclick=function(){formCasj({})};
+ pintaCasj();pintaClima();cargaClima(false);pintaGm();
+ if(PWA&&reg&&!INI.gm&&!INI.gmCarga&&gmOn())revisarGmail(false);
+ clearInterval(INI.reloj);INI.reloj=setInterval(function(){var h=$('#i-hr');if(!h||$('#v-ini').hidden)return;var d=new Date();h.innerHTML=horaTxt(d);if(d.getSeconds()===0){$('#i-fe').textContent=fechaLarga(d);$('#i-sal').textContent=saludo()+(nom?', '+nom:'')}},1000);
+}
+
+function rerender(){var t=store('tab');renderHon();renderCat();renderPrf();renderPen();renderPla();renderTra();renderAud();renderConf();if(t)show(t);else renderIni()}
 function toast(t,err){var d=$('#toast');if(!d){d=document.createElement('div');d.id='toast';document.body.appendChild(d)}d.className=err?'e':'';d.textContent=t;d.hidden=false;clearTimeout(d._t);d._t=setTimeout(function(){d.hidden=true},3500)}
 function appDesbloqueada(){
  if(!PWA){pintaRegistro();sincroAuto();return}
@@ -1006,7 +1246,7 @@ function appDesbloqueada(){
  if(migrar){R.data.cfg=pickCfg();R.data.cfgUpd=Date.now();R.data.prfSeq=store('prfseq')||{};R.data.prfHist=store('prfhist')||[]}
  aplicaCfg();
  var fin=function(){try{['msc:data','msc:prfseq','msc:prfhist'].forEach(function(k){localStorage.removeItem(k)})}catch(e){}
-  document.body.classList.remove('locked');rerender();pintaRegistro();var t=store('tab');show(t&&t!=='cli'?t:'cat');sincroAuto()};
+  document.body.classList.remove('locked');rerender();pintaRegistro();var t=store('tab');show(t&&t!=='cli'?t:'ini');sincroAuto()};
  if(migrar)sellar().then(fin);else fin();
 }
 /* ---------- guardar + sincronizar ---------- */
@@ -1041,7 +1281,7 @@ function dActualizar(id,obj){return gapi(UAPI+'/'+id+'?uploadType=media&fields=i
 function dBorrar(id){return gapi(DAPI+'/'+id,{method:'DELETE'})}
 function fusionar(a,b){var out=fusionar0(a,b);var nb=(b.cfgUpd||0)>(a.cfgUpd||0);out.cfg=nb?b.cfg:a.cfg;out.cfgUpd=Math.max(a.cfgUpd||0,b.cfgUpd||0)||undefined;var ps={};[a.prfSeq||{},b.prfSeq||{}].forEach(function(o){Object.keys(o).forEach(function(k){ps[k]=Math.max(ps[k]||0,o[k])})});out.prfSeq=ps;var hm={};(a.prfHist||[]).concat(b.prfHist||[]).forEach(function(x){hm[x.num]=hm[x.num]||x});out.prfHist=Object.keys(hm).map(function(k){return hm[k]}).sort(function(x,y){return y.num.localeCompare(x.num)});return out}
 function fusionar0(a,b){function mm(x,y){var m={};(x||[]).concat(y||[]).forEach(function(r){var c=m[r.id];if(!c||(r.upd||0)>(c.upd||0))m[r.id]=r});return Object.keys(m).map(function(k){return m[k]})}
- var s={};[a.seq||{},b.seq||{}].forEach(function(o){Object.keys(o).forEach(function(k){s[k]=Math.max(s[k]||0,o[k])})});var gc=((a.gcal||{}).upd||0)>=((b.gcal||{}).upd||0)?a.gcal:b.gcal;var pr=((a.pres||{}).upd||0)>=((b.pres||{}).upd||0)?a.pres:b.pres;return {clientes:mm(a.clientes,b.clientes),casos:mm(a.casos,b.casos),aud:mm(a.aud,b.aud),docs:mm(a.docs,b.docs),gcal:gc,pres:pr,seq:s}}
+ var s={};[a.seq||{},b.seq||{}].forEach(function(o){Object.keys(o).forEach(function(k){s[k]=Math.max(s[k]||0,o[k])})});var gc=((a.gcal||{}).upd||0)>=((b.gcal||{}).upd||0)?a.gcal:b.gcal;var pr=((a.pres||{}).upd||0)>=((b.pres||{}).upd||0)?a.pres:b.pres;var gm=((a.gm||{}).upd||0)>=((b.gm||{}).upd||0)?a.gm:b.gm;return {clientes:mm(a.clientes,b.clientes),casos:mm(a.casos,b.casos),aud:mm(a.aud,b.aud),docs:mm(a.docs,b.docs),casj:mm(a.casj,b.casj),gm:gm,gcal:gc,pres:pr,seq:s}}
 function paraSubir(){var v=JSON.parse(JSON.stringify(R.vault));delete v.ls;delete v.fid;return v}
 function sincroAuto(){if(!syncDisponible()||!navigator.onLine||!R.key)return;tokenG(false).then(function(){sincronizar(false)},function(){estadoSync()})}
 var SYNC_RUN=false;
@@ -1211,6 +1451,9 @@ function renderConf(){
  '<div class="card"><h3>Google Calendar (audiencias)</h3><label class="chk"><input type="checkbox" id="g-cal"'+(calOn()?' checked':'')+'> Agendar cada audiencia automáticamente al guardarla</label><p class="hint">Crea el evento en su calendario principal con dos recordatorios: 1 semana y 3 días antes. Si cambia la fecha, la hora o el estado, el evento se actualiza; si la elimina o la suspende, se quita del calendario.</p>'+
   '<div class="row"><button class="btn sec" id="g-calc" type="button">Conectar y sincronizar audiencias</button></div><p class="hint" id="g-calst">'+(R.data.gcal&&R.data.gcal.ls?'Última sincronización: '+new Date(R.data.gcal.ls).toLocaleString('es-EC',{dateStyle:'medium',timeStyle:'short'}):'Pendientes: '+calPendientes().length)+'</p>'+
   '<details><summary>Requisito único en Google Cloud</summary><ol style="font-size:13.5px;padding-left:18px;margin:6px 0"><li>console.cloud.google.com › su proyecto › APIs y servicios › Biblioteca › "Google Calendar API" › Habilitar.</li><li>Google Auth Platform › Acceso a los datos › Agregar o quitar permisos › marque <b>.../auth/calendar.events</b> › Actualizar › Guardar.</li><li>Vuelva aquí y toque "Conectar y sincronizar audiencias". En la ventana de Google marque el permiso de Calendar.</li></ol></details></div>'+
+ '<div class="card"><h3>Correos judiciales (Gmail)</h3><p class="hint" style="margin-top:0">El Inicio revisa, solo con lectura, los correos de la Función Judicial (e-SATJE) y de Fiscalía de los últimos 30 días y permite pasarlos al casillero de pendientes. La app guarda únicamente el identificador del correo para marcarlo como revisado; no guarda asuntos ni contenido.</p>'+
+  '<label for="g-gmq">Búsqueda en Gmail</label><input id="g-gmq" value="'+esc((R.data&&R.data.gm&&R.data.gm.q)||GMQ_DEF)+'"><div class="row" style="margin-top:8px"><button class="btn sec" id="g-gmsv" type="button">Guardar búsqueda</button><button class="btn sec" id="g-gmrs" type="button">Restablecer</button><button class="btn sec" id="g-gmoff" type="button">Desconectar Gmail</button></div><div class="msg" id="g-gmm"></div>'+
+  '<details><summary>Requisito único en Google Cloud</summary><ol style="font-size:13.5px;padding-left:18px;margin:6px 0"><li>console.cloud.google.com › su proyecto › APIs y servicios › Biblioteca › "Gmail API" › Habilitar.</li><li>Google Auth Platform › Acceso a los datos › Agregar o quitar permisos › marque <b>.../auth/gmail.readonly</b> › Actualizar › Guardar. Su cuenta debe seguir como usuario de prueba.</li><li>En Inicio toque "Revisar Gmail" y marque el permiso de Gmail en la ventana de Google.</li></ol></details></div>'+
  '<div class="card"><h3>Presupuesto mensual (privado)</h3><p class="hint" style="margin-top:0">Define su meta mensual. Se usa solo como referencia en la calculadora de Honorarios; no aparece en proformas, documentos ni mensajes. Se guarda cifrado.</p><div class="grid">'+PRES_K.map(function(k){return inp('g-p'+k[0],k[1]+' (USD)',(R.data.pres||{})[k[0]]||'','number')}).join('')+inp('g-pres','Reserva o ahorro (%)',(R.data.pres||{}).res||10,'number')+inp('g-phf','Horas facturables al mes',(R.data.pres||{}).hf||120,'number')+'</div><p style="margin:8px 0 0">Meta mensual: <b id="g-pmeta">'+usd(presMeta())+'</b></p><div class="row" style="margin-top:8px"><button class="btn sec" id="g-psv" type="button">Guardar presupuesto</button></div></div>'+
  '<div class="card"><h3>Seguridad</h3><div class="grid">'+inp('g-pa','Contraseña actual','','password')+inp('g-pn','Nueva contraseña','','password')+'</div><div class="row" style="margin-top:8px"><button class="btn sec" id="g-cpw" type="button">Cambiar contraseña</button></div>'+
   '<label class="chk" style="margin-top:8px"><input type="checkbox" id="g-rem"'+(R.remember?' checked':'')+'> Mantener desbloqueado en este equipo (7 días)</label><div class="row" style="margin-top:6px"><button class="btn sec" id="g-lock" type="button">Bloquear ahora</button></div><p class="hint">Al cambiar la contraseña recibirá una clave de recuperación nueva.</p></div>'+
@@ -1247,6 +1490,9 @@ function renderConf(){
  $$('#v-conf [id^=g-p]').forEach(function(i){i.addEventListener('input',function(){var o=R.data.pres;R.data.pres=leePres();$('#g-pmeta').textContent=usd(presMeta());R.data.pres=o})});
  $('#g-psv').onclick=function(){R.data.pres=leePres();guardarCambio().then(function(){gm('Presupuesto guardado. Meta mensual: '+usd(presMeta())+'.',1)})};
  $('#g-cal').onchange=function(){R.data.gcal=Object.assign(R.data.gcal||{},{on:this.checked,upd:Date.now()});guardarCambio();gm(this.checked?'Las audiencias nuevas o editadas se agendarán en Google Calendar.':'Sincronización con Calendar desactivada.',1)};
+ if($('#g-gmsv')){$('#g-gmsv').onclick=function(){var q=val('g-gmq')||GMQ_DEF;R.data.gm=Object.assign({},R.data.gm||{},{q:q,upd:Date.now()});guardarCambio();INI.gm=null;$('#g-gmm').className='msg o';$('#g-gmm').textContent='Búsqueda guardada. Se aplicará en la próxima revisión.'};
+ $('#g-gmrs').onclick=function(){$('#g-gmq').value=GMQ_DEF;R.data.gm=Object.assign({},R.data.gm||{},{q:GMQ_DEF,upd:Date.now()});guardarCambio();$('#g-gmm').className='msg o';$('#g-gmm').textContent='Búsqueda restablecida.'};
+ $('#g-gmoff').onclick=function(){var t=R.gtok;R.gtok=null;try{sessionStorage.removeItem('msc:gtok')}catch(e){}if(t)fetch('https://oauth2.googleapis.com/revoke?token='+encodeURIComponent(t),{method:'POST'}).catch(function(){});R.data.gm=Object.assign({},R.data.gm||{},{on:false,upd:Date.now()});INI.gm=null;guardarCambio();$('#g-gmm').className='msg o';$('#g-gmm').textContent='Gmail desconectado y permiso revocado en este dispositivo.'}}
  $('#g-calc').onclick=function(){var st=$('#g-calst');st.textContent='Conectando…';tokenCal(true).then(function(){st.textContent='Sincronizando…';return calSyncTodas(true)}).then(function(n){R.data.gcal=Object.assign(R.data.gcal||{},{ls:Date.now()});return guardarCambio().then(function(){st.textContent=n?n+' audiencia(s) sincronizadas con Google Calendar.':'Todo al día en Google Calendar.'})}).catch(function(e){st.textContent=e.message;st.style.color='var(--mal)'})};
  $('#g-rdr').onclick=function(){if(!confirmarBtn(this))return;R.key=null;R.data=null;localStorage.removeItem('msc:vault');olvidar();if(PWA){location.reload();return}show('cli');restaurarDrive()};
  $('#g-rdp').onclick=function(){if(!confirmarBtn(this))return;gm('Subiendo…',1);dLista(true).then(function(f){var m=f.filter(function(x){return x.name===VFILE})[0];return m?dActualizar(m.id,paraSubir()):dCrear(VFILE,paraSubir())}).then(function(){R.vault.ls=Date.now();R.dirty=false;guardaLocal();estadoSync();gm('Drive reemplazado con los datos de este equipo.',1)}).catch(function(e){gm(e.message)})};
@@ -1614,7 +1860,7 @@ function renderDoc(){
   var k=DOC.cas&&R.data?(R.data.casos||[]).filter(function(x){return x.id===DOC.cas})[0]:null;$('#d-fn').value=(plById(DOC.pl).n.split(' (')[0]+(k?' '+k.cod:'')).replace(/[^\wÁÉÍÓÚÑáéíóúñ -]/g,'').trim().replace(/\s+/g,'_')};
  $('#d-pl').onchange=function(){DOC.pl=this.value;ini()};
  $('#d-cas').onchange=function(){DOC.cas=this.value;DOC.secs=DOC.secs.map(function(s){return [s[0],s[1]]});ini()};
- $('#d-rst').onclick=ini;
+ $('#d-rst').onclick=function(){if(!confirm('¿Restablecer la plantilla? Se perderán los cambios hechos en el texto.'))return;ini();toast('Plantilla restablecida.')};
  $('#d-docx').onclick=function(){var m=$('#d-msg');m.className='msg';m.textContent='Generando…';docxEscrito(DOC.secs.map(function(s){return [s[0],llenaPl(s[1])]})).then(function(b){bajar(b,($('#d-fn').value||'escrito')+'.docx',m,true)}).catch(function(e){m.className='msg e';m.textContent='No se pudo generar: '+(e.message||e)})};
  if($('#d-gcas'))$('#d-gcas').onclick=function(){var m=$('#d-msg');if(!DOC.cas){m.className='msg e';m.textContent='Elija primero el caso.';return}docxEscrito(DOC.secs.map(function(s){return [s[0],llenaPl(s[1])]})).then(function(b){return guardaDocCaso(DOC.cas,($('#d-fn').value||'escrito')+'.docx',b)}).then(function(){m.className='msg o';m.textContent='Guardado en los documentos del caso.';DOC.dcas=DOC.cas;renderDoc()}).catch(function(e){m.className='msg e';m.textContent=e.message||e})};
  if(un){$('#d-dcas').onchange=function(){DOC.dcas=this.value;listaDocs()};
@@ -2027,7 +2273,7 @@ function calcTra(){
 
 /* ---------- arranque ---------- */
 aplicaTema();renderCli();renderHon();renderCat();renderPrf();renderPen();renderPla();renderTra();renderAud();renderConf();
-if(PWA){document.body.classList.add('locked');show('cli')}else show(location.hash.slice(1)||store('tab')||'cat');
+if(PWA){document.body.classList.add('locked');show('cli')}else show(location.hash.slice(1)||'ini');
 refreshSave();
 })();
 </script><script>if("serviceWorker" in navigator){window.addEventListener("load",function(){navigator.serviceWorker.register("sw.js").catch(function(){})})}</script></body></html>

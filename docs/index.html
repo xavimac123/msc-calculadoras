@@ -63,6 +63,8 @@ details{margin-top:8px}summary{cursor:pointer;font-weight:600;font-size:13.5px;c
 .msg.e{color:var(--mal)}.msg.o{color:var(--ok)}
 footer{max-width:760px;margin:0 auto;padding:0 14px 28px;font-size:11.5px;color:var(--gris)}
 [hidden]{display:none!important}
+.monw{position:relative;display:block}.monw::before{content:'$';position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--gris);font-weight:700;font-size:14px;pointer-events:none}.monw input.mon{padding-left:24px;text-align:right;font-variant-numeric:tabular-nums}
+.tabla-ed .monw::before{left:6px}
 body.dark{--marfil:#0F1216;--linea:#2A3038;--gris:#9AA1AA;--card:#171B21;--okf:#14261A;--malf:#2B1714;--avif:#2A2212;--olivo:#C9BC82;background:#0F1216;color:#E7E4DA}
 body.dark .res,body.dark .kpi,body.dark input,body.dark select,body.dark textarea,body.dark .seg button,body.dark .btn.sec{background:#171B21;color:#E7E4DA;border-color:#323A45}
 body.dark input:disabled{background:#12161B;color:#9AA1AA}
@@ -97,7 +99,14 @@ try{if(window.claude&&claude.use){claude.use('artifact').then(function(a){ART=a;
 function $(s,c){return (c||document).querySelector(s)}
 function $$(s,c){return Array.prototype.slice.call((c||document).querySelectorAll(s))}
 function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
-function num(v){var n=parseFloat(String(v).replace(',','.'));return isFinite(n)?n:0}
+/* Lee montos escritos al estilo de Ecuador (1.500,25), anglosajón (1,500.25) o del sistema (1500.25). */
+function num(v){if(typeof v==='number')return isFinite(v)?v:0;var s=String(v==null?'':v).trim();if(!s)return 0;var neg=/^\(.*\)$|^-|^\$\s*-/.test(s);s=s.replace(/[^\d.,]/g,'');if(!s)return 0;
+ var c=s.lastIndexOf(','),d=s.lastIndexOf('.');
+ if(c>-1&&d>-1){s=c>d?s.replace(/\./g,'').replace(',','.'):s.replace(/,/g,'')}
+ else if(c>-1){s=s.split(',').length>2?s.replace(/,/g,''):s.replace(',','.')}
+ else if(d>-1&&(s.split('.').length>2||/^[1-9]\d{0,2}\.\d{3}$/.test(s)))s=s.replace(/\./g,'');
+ var n=parseFloat(s);return isFinite(n)?(neg?-n:n):0}
+function fmtMon(n){return (+n||0).toLocaleString('es-EC',{minimumFractionDigits:2,maximumFractionDigits:2})}
 function usd(n){return (n<0?'-':'')+'$'+Math.abs(n).toLocaleString('es-EC',{minimumFractionDigits:2,maximumFractionDigits:2})}
 function pct(n){return n.toLocaleString('es-EC',{maximumFractionDigits:2})+'%'}
 function r2(n){return Math.round(n*100)/100}
@@ -108,6 +117,18 @@ var MESES=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','se
 function largo(d){return DIAS[d.getDay()]+' '+d.getDate()+' de '+MESES[d.getMonth()]+' de '+d.getFullYear()}
 function largoH(d){return largo(d)+', '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')}
 function store(k,v){try{if(v===undefined)return JSON.parse(localStorage.getItem('msc:'+k));localStorage.setItem('msc:'+k,JSON.stringify(v))}catch(e){return null}}
+
+/* ---------- campos de dinero: USD con centavos (se aplica solo a todo campo «USD») ---------- */
+var VSET=Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value');
+function monLabel(i){var l=i.id?document.querySelector('label[for="'+i.id+'"]'):null;if(!l&&i.parentNode){l=i.parentNode.querySelector('label');if(!l&&i.parentNode.parentNode)l=i.parentNode.parentNode.querySelector('label')}return l?l.textContent:''}
+function esMon(i){if(i.__mon||i.disabled)return false;if(i.dataset.money)return true;if(i.type!=='number'||i.closest('.tabla-ed'))return false;var k=i.dataset.k||i.dataset.gk;if(k==='valor'||k==='exito')return true;return /\bUSD\b|\$/.test(monLabel(i))}
+function monetiza(root){$$('input',root||document).forEach(function(i){if(!esMon(i))return;i.__mon=1;var raw=VSET.get.call(i);i.type='text';i.setAttribute('inputmode','decimal');i.setAttribute('autocomplete','off');i.classList.add('mon');
+ Object.defineProperty(i,'value',{configurable:true,get:function(){return VSET.get.call(i)},set:function(v){VSET.set.call(i,(v===''||v==null)?'':fmtMon(typeof v==='number'?v:(/^-?\d+(\.\d+)?$/.test(String(v))?+v:num(v))))}});
+ VSET.set.call(i,raw===''?'':fmtMon(/^-?\d+(\.\d+)?$/.test(raw)?+raw:num(raw)));
+ if(!i.parentNode.classList.contains('monw')){var w=document.createElement('span');w.className='monw';i.parentNode.insertBefore(w,i);w.appendChild(i)}
+ if(!i.placeholder)i.placeholder='0,00';i.addEventListener('focus',function(){if(num(VSET.get.call(i))===0)VSET.set.call(i,'')});
+ i.addEventListener('blur',function(){var x=VSET.get.call(i).trim();if(x!=='')VSET.set.call(i,fmtMon(num(x)))})})}
+new MutationObserver(function(ms){ms.forEach(function(m){m.addedNodes.forEach(function(n){if(n.nodeType===1)monetiza(n.tagName==='INPUT'?n.parentNode:n)})})}).observe(document.getElementById('root'),{childList:true,subtree:true});
 
 /* ---------- publicar estado (guardar cambios en la app) ---------- */
 function buildDoc(){
@@ -163,10 +184,11 @@ function renderHon(){
   '<div class="full"><label for="h-mat">Materia</label><select id="h-mat">'+DATA.materias.map(function(m){return '<option value="'+m.id+'">'+esc(m.n.replace(/^Tránsito/,'Penal-Tránsito'))+'</option>'}).join('')+'</select></div>'+
   '<div class="full"><label for="h-op">Honorarios operativos (USD)</label><input id="h-op" type="number" inputmode="decimal" min="0" step="0.01"></div>'+
   '<div class="full"><label>Cuantía</label><div class="seg" id="h-cuan"><button type="button" data-c="det">Determinada</button><button type="button" data-c="ind">Indeterminada</button><button type="button" data-c="bien">Bienes o servicios</button></div></div>'+
+  '<div class="full" id="h-wpm"><label>Cómo se calcula la prima de éxito</label><div class="seg" id="h-pm"><button type="button" data-m="pct">% del valor estimado</button><button type="button" data-m="fijo">Monto fijo</button></div></div>'+
   '<div id="h-wcua"><label for="h-cua" id="h-lcua">Monto de la cuantía (USD)</label><input id="h-cua" type="number" inputmode="decimal" min="0" step="0.01" value="0"></div>'+
   '<div id="h-wpct"><label for="h-pct">% de prima de éxito</label><input id="h-pct" type="number" inputmode="decimal" min="0" max="50" step="0.5"></div>'+
   '<div id="h-wfij" class="full"><label for="h-fij" id="h-lfij">Prima de éxito (monto fijo, USD)</label><input id="h-fij" type="number" inputmode="decimal" min="0" step="0.01"></div>'+
-  '<p class="hint full" id="h-ref"></p>'+
+  '<div class="full res" id="h-pform" style="margin:0;padding:10px 12px"></div><p class="hint full" id="h-ref"></p>'+
   '<div><label for="h-par">Éxito parcial (% de la prima)</label><input id="h-par" type="number" inputmode="decimal" min="0" max="100" step="5" value="50"></div>'+
  '</div></div>'+
  '<div class="card"><h3>2 · Forma de pago</h3>'+
@@ -204,11 +226,12 @@ function renderHon(){
  '</tbody></table></div><p class="nota">En Ecuador defina en el contrato qué es "éxito parcial" y "éxito total" de forma objetiva (sentencia ejecutoriada, monto recuperado, acuerdo homologado): la Corte Nacional ha interpretado de forma restrictiva el "resultado favorable" en contratos de cuota litis. Como usted ya cobra honorarios operativos, su prima debe estar en la parte baja de los rangos de cuota litis pura. Los rangos internacionales son estimaciones de mercado, no normas.</p></div>'+
  '<div class="card"><h3>Valores sugeridos</h3><p class="hint" style="margin-top:0">Guarde el honorario y la prima de esta materia como sugeridos por defecto.</p><div class="row" style="margin-top:8px"><button class="btn sec" id="h-save" data-needs="art" type="button">Guardar como sugeridos</button></div><div class="msg" id="h-msg"></div></div></div><div id="h-cons" hidden></div>';
  var st=store('hon')||{};
- H.pago=st.pago||'total';H.esc=st.esc!=null?st.esc:1;if(H.esc===0.5)H.esc='p';H.cuan=st.cuan||'det';
+ H.pago=st.pago||'total';H.pm=st.pm||null;H.esc=st.esc!=null?st.esc:1;if(H.esc===0.5)H.esc='p';H.cuan=st.cuan||'det';
  $('#h-mat').value=st.mat&&DATA.materias.some(function(m){return m.id===st.mat})?st.mat:DATA.materias[0].id;
  loadMat(st.mat===$('#h-mat').value?st:null);
  $('#h-mat').onchange=function(){loadMat(null);calcHon()};
- $$('#h-cuan button').forEach(function(b){b.onclick=function(){H.cuan=b.dataset.c;calcHon()}});
+ $$('#h-cuan button').forEach(function(b){b.onclick=function(){H.cuan=b.dataset.c;if(H.cuan==='bien'&&!H.pmUser)H.pm='fijo';calcHon()}});
+ $$('#h-pm button').forEach(function(b){b.onclick=function(){H.pm=b.dataset.m;H.pmUser=1;calcHon();var f=H.pm==='pct'?$('#h-cua'):$('#h-fij');if(f){f.focus()}}});
  $$('#h-pago button').forEach(function(b){b.onclick=function(){H.pago=b.dataset.p;calcHon()}});
  $$('#h-esc button').forEach(function(b){b.onclick=function(){H.esc=b.dataset.e==='p'?'p':+b.dataset.e;calcHon()}});
  $('#h-cuo1').onclick=function(){$('#h-cuo').value=Math.max(2,num($('#h-cuo').value))+1;calcHon()};
@@ -224,13 +247,14 @@ function loadMat(st){
  $('#h-op').value=st&&st.op!=null?st.op:m.op;
  $('#h-pct').value=st&&st.pct!=null?st.pct:(m.pct||15);
  $('#h-fij').value=st&&st.fijo!=null?st.fijo:m.fijo;
- if(!st)H.cuan=m.modo==='pct'?'det':'ind';
+ if(!st){H.cuan=m.modo==='pct'?'det':'ind';H.pm=m.modo==='pct'?'pct':'fijo';H.pmUser=0}
+ if(!H.pm)H.pm=m.modo==='pct'?'pct':'fijo';
  if(st){['cua','ofe','iva','ir','rir','riva','cos','hrs','gas','des','par','cuo','nc','nm'].forEach(function(k){if(st[k]!=null&&$('#h-'+k))$('#h-'+k).value=st[k]});$('#h-age').checked=!!st.age;if(st.not)$('#h-not').value=st.not}
  var rk=Object.keys(RIND).filter(function(k){return m.id.indexOf(k)===0})[0];
  $('#h-ref').innerHTML='Sugerido para esta materia: operativos '+usd(m.op)+' · prima '+(m.modo==='pct'?pct(m.pct)+' de la cuantía':usd(m.fijo)+' fija')+'. <span class="tag">criterio propio</span>'+(rk?'<br><b>Cuantía indeterminada:</b> '+esc(RIND[rk]):'');
 }
 function calcEsc(s,I){
- var prima=(I.cuan==='bien'?I.fijo:I.cuan==='ind'&&I.modoInd==='fijo'?I.fijo:I.cua*I.pct/100)*s;
+ var prima=(I.pm==='pct'?I.cua*I.pct/100:I.fijo)*s;
  var descPct=Math.min((I.pago==='total'?I.des:0)+I.ofe,100);
  var desc=I.op*descPct/100;
  var base=I.op-desc+prima;
@@ -242,13 +266,14 @@ function calcEsc(s,I){
 }
 function calcHon(){
  var m=matById($('#h-mat').value);
- var I={op:num($('#h-op').value),cua:num($('#h-cua').value),pct:num($('#h-pct').value),fijo:num($('#h-fij').value),cuan:H.cuan,modoInd:m.modo==='pct'?'pct':'fijo',pago:H.pago,des:num($('#h-des').value),ofe:num($('#h-ofe').value),iva:num($('#h-iva').value),ir:num($('#h-ir').value),age:$('#h-age').checked,rir:num($('#h-rir').value),riva:num($('#h-riva').value),cos:num($('#h-cos').value),hrs:num($('#h-hrs').value),gas:num($('#h-gas').value),par:Math.min(100,Math.max(0,num($('#h-par').value))),cuo:Math.max(2,Math.round(num($('#h-cuo').value))||3)};
+ var I={op:num($('#h-op').value),cua:num($('#h-cua').value),pct:num($('#h-pct').value),fijo:num($('#h-fij').value),cuan:H.cuan,pm:H.cuan==='det'?'pct':(H.pm||'fijo'),pago:H.pago,des:num($('#h-des').value),ofe:num($('#h-ofe').value),iva:num($('#h-iva').value),ir:num($('#h-ir').value),age:$('#h-age').checked,rir:num($('#h-rir').value),riva:num($('#h-riva').value),cos:num($('#h-cos').value),hrs:num($('#h-hrs').value),gas:num($('#h-gas').value),par:Math.min(100,Math.max(0,num($('#h-par').value))),cuo:Math.max(2,Math.round(num($('#h-cuo').value))||3)};
  $$('#h-cuan button').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.c===H.cuan)});
  $$('#h-pago button').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.p===H.pago)});
  $$('#h-esc button').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.e)===String(H.esc))});
- var usaPct=H.cuan==='det'||(H.cuan==='ind'&&I.modoInd==='pct');
+ var usaPct=I.pm==='pct';
+ $('#h-wpm').hidden=H.cuan==='det';$$('#h-pm button').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.m===I.pm)});
  $('#h-wcua').hidden=$('#h-wpct').hidden=!usaPct;$('#h-wfij').hidden=usaPct;
- $('#h-lcua').textContent=H.cuan==='ind'?'Valor estimado del resultado (USD)':'Monto de la cuantía (USD)';
+ $('#h-lcua').textContent=H.cuan==='det'?'Monto de la cuantía (USD)':H.cuan==='bien'?'Valor estimado de los bienes o servicios (USD)':'Valor estimado del resultado (USD)';
  $('#h-lfij').textContent=H.cuan==='bien'?'Prima de éxito por la disputa sobre bienes o servicios (monto fijo, USD)':'Prima de éxito (monto fijo, USD)';
  $('#h-wdes').hidden=H.pago!=='total';$('#h-wcuo').hidden=H.pago!=='cuotas';$('#h-wret').hidden=!I.age;
  if(I.pct>50){$('#h-pct').value=50;I.pct=50}
@@ -258,6 +283,9 @@ function calcHon(){
  $('#h-gnote').innerHTML=(nt?'Tasa notarial: '+usd(tasa)+' + IVA = <b>'+usd(r2(tasa*1.15))+'</b> (la factura la notaría). ':'')+'Total de gastos operativos: <b>'+usd(gtot)+'</b>. No se suman a los honorarios: los paga el cliente aparte.';
  var S=[0,I.par/100,1],E=S.map(function(s){return calcEsc(s,I)});
  var si=H.esc==='p'?1:H.esc===1?2:0,sel=E[si];
+ var pf=$('#h-pform'),pt=E[2].prima,pp=E[1].prima;
+ if(usaPct&&!I.cua){pf.className='full res mal';pf.innerHTML='<b>Ingrese el '+(H.cuan==='det'?'monto de la cuantía':'valor estimado')+'.</b> Sin ese valor la prima de éxito es '+usd(0)+'.'}
+ else{pf.className='full res ok';pf.innerHTML='<div class="estado">Prima de éxito</div><div style="font-size:15px;margin-top:4px">'+(usaPct?pct(I.pct)+' × '+usd(I.cua)+' = <b>'+usd(r2(pt))+'</b>':'Monto fijo: <b>'+usd(r2(pt))+'</b>')+'</div><div class="hint" style="margin:2px 0 0">Éxito parcial ('+pct(I.par)+' de la prima): '+usd(r2(pp))+' · se factura aparte, al cumplirse la condición.</div>'}
  var lbl=['SIN ÉXITO','ÉXITO PARCIAL ('+pct(I.par)+')','ÉXITO TOTAL'];
  var th='<thead><tr><th>Concepto</th>'+lbl.map(function(l,i){return '<th'+(i===si?' style="color:var(--carbon);background:#F3EED9"':'')+'>'+l+'</th>'}).join('')+'</tr></thead>';
  var fila=function(r){return '<tr class="'+(r[2]||'')+'"><td>'+r[0]+'</td>'+E.map(function(e,i){var x=r[1](e);return '<td'+(i===si?' style="background:#FBF9F1"':'')+'>'+(r[3]?pct(r2(x)):usd(r2(x)))+'</td>'}).join('')+'</tr>'};
@@ -293,7 +321,7 @@ function calcHon(){
  else{var et=etapasDe(PMAT[m.id]||'gestion'),sm=et.reduce(function(a,x){return a+x[1]},0)||100;plan='<table><thead><tr><th>Etapa</th><th>%</th><th>Valor</th></tr></thead><tbody>'+et.map(function(x){return '<tr><td>'+esc(x[0])+'</td><td>'+pct(x[1])+'</td><td>'+usd(r2(opIva*x[1]/sm))+'</td></tr>'}).join('')+'</tbody></table><p class="hint">Etapas de '+esc((PROCS[PMAT[m.id]||'gestion']||{}).n||'')+'. Porcentajes de criterio propio.</p>'}
  if(sel.prima>0)plan+='<p class="hint">La prima de éxito ('+usd(r2(sel.prima))+' + IVA = '+usd(r2(sel.prima*(1+I.iva/100)))+') se factura aparte, cuando se cumple la condición pactada.</p>';
  $('#h-plan').innerHTML='<h3>Forma de pago de los honorarios operativos</h3>'+plan;
- var st={mat:$('#h-mat').value,cuan:H.cuan,pago:H.pago,esc:H.esc,age:I.age,not:$('#h-not').value};['op','cua','pct','fijo','des','ofe','iva','ir','rir','riva','cos','hrs','gas','par','cuo'].forEach(function(k){st[k]=I[k]});st.nc=num($('#h-nc').value);st.nm=num($('#h-nm').value);store('hon',st);
+ var st={mat:$('#h-mat').value,cuan:H.cuan,pm:H.pm,pago:H.pago,esc:H.esc,age:I.age,not:$('#h-not').value};['op','cua','pct','fijo','des','ofe','iva','ir','rir','riva','cos','hrs','gas','par','cuo'].forEach(function(k){st[k]=I[k]});st.nc=num($('#h-nc').value);st.nm=num($('#h-nm').value);store('hon',st);
 }
 
 /* =========================================================

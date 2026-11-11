@@ -37,4 +37,4 @@ Hallazgos:
 - Gmail: remitentes reales `sender.satje@funcionjudicial.gob.ec`, `satje.guayas@funcionjudicial.gob.ec`; excluir `Escuela.Judicial@`. Fiscalía: dominio `fiscalia.gob.ec`.
 - `fusionar0` descarta claves no listadas: toda colección nueva del registro debe agregarse allí.
 Herramientas de prueba en la sesión: /home/claude/tools (audit_*.py).
-Estado: [ ] moneda [ ] tasa de éxito [ ] inicio [ ] Gmail/casillero [ ] retroalimentación botones [ ] diseño [ ] LICENSE
+Estado: [x] moneda [x] tasa de éxito [ ] inicio [ ] Gmail/casillero [ ] retroalimentación botones [ ] diseño [ ] LICENSE

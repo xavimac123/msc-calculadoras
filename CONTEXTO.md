@@ -45,6 +45,13 @@ Editar `fuente/index.html` › `python build_pwa.py` › probar en 390 px y 1200
 - **Interfaz:** ficha de cliente con encabezado y accesos (ver casos, nuevo caso, proforma, WhatsApp); buscador de cliente de la proforma a ancho completo; barra fija en Honorarios con «cliente paga» y «ganancia neta».
 - Pendiente de verificar fuera del proyecto: Ley de Inquilinato (no está en los documentos); COIP apelación y archivo marcados «verificar» por el cómputo de días.
 
-## 8. Siguiente
+## 8. Calculadora laboral (2026-11-11) · Calculadoras › Laboral (`#calc-lab`, `renderLab`)
+- Liquidación por 14 modos de terminación y 10 tipos de contrato: sueldo pendiente, horas (art. 55), décimos proporcionales (111, 113; Costa 1-mar / Sierra 1-ago; d13 desde 1-dic), vacaciones proporcionales y no gozadas con antigüedad y recargo del art. 74, fondos de reserva (196), utilidades; indemnización 188 (mín. 3, máx. 25 meses, fracción = año), bonificación 185 (25 % proporcional), ineficaz y discriminación +12 meses (195.3), discapacidad +18 meses (LOD, marcar verificar), abandono −15 días (190), cierre (193), visto bueno del trabajador (191). Deducciones: IESS 9,45 % sobre haberes pendientes y anticipos.
+- Validaciones por contrato: prueba >90 días (15 en hogar) = despido; eventual >180; ocasional >30; recargo 35 %; aprendiz 80 % y plazo; temporada; sueldo < SBU; jubilación patronal 20-25 y 25+ años.
+- Plazos: pago y acta en SUT 15 días, consignación hasta día 30 (AM MDT-2023-140 reformado por AM MDT-2025-053, días calendario); desde el día 16 denuncia MDT; desde el día 31 demanda sumaria; ineficaz 30 días (195.2); prescripción 3 años (635/637).
+- Visto bueno: notificación 24 h, contestación 2 días, resolución al tercer día (621), suspensión con consignación de un mes (622), prescripción de un mes para el empleador (636).
+- Comparativa de neto por modo y botón de resumen / WhatsApp.
+
+## 9. Siguiente
 1. Habilitar Gmail API y permiso gmail.readonly; probar «Revisar Gmail» en la app instalada.
 2. Traslado a Cloudflare Pages con Access; volver privado el repositorio.

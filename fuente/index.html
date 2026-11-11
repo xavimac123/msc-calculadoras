@@ -74,7 +74,7 @@ footer{max-width:760px;margin:0 auto;padding:0 14px 28px;font-size:11.5px;color:
 .ini-h{margin:14px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.05em;color:var(--gris)}
 .herr{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:12px}.herr-b{display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 4px;border-radius:12px;border:1px solid var(--linea);background:var(--card);color:inherit;font:inherit;font-size:11.5px;font-weight:700;cursor:pointer;transition:transform .15s,border-color .15s,box-shadow .15s;text-align:center;line-height:1.2}
 .herr-b svg{width:26px;height:26px;fill:none;stroke:var(--olivo);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;background:rgba(160,144,70,.12);border-radius:10px;padding:6px;box-sizing:content-box}.herr-b:hover{transform:translateY(-2px);border-color:var(--oro);box-shadow:0 6px 16px rgba(20,24,30,.08)}
-.ini-2{display:grid;grid-template-columns:1fr;gap:0}@media(min-width:900px){.ini-2{grid-template-columns:1.2fr 1fr;gap:12px}.ini-k{grid-template-columns:repeat(6,1fr)}.herr{grid-template-columns:repeat(10,1fr)}}
+.ini-2{display:grid;grid-template-columns:1fr;gap:0}@media(min-width:900px){.ini-2{grid-template-columns:1.2fr 1fr;gap:12px}.ini-k{grid-template-columns:repeat(6,1fr)}.herr{grid-template-columns:repeat(11,1fr)}}
 @media(max-width:420px){.herr{grid-template-columns:repeat(4,1fr)}.hero-h{font-size:34px}.hero-c{justify-content:flex-start}}
 .btn.mini{min-height:32px;padding:4px 10px;font-size:12.5px}.badge{display:inline-block;background:var(--mal);color:#fff;border-radius:99px;font-size:11px;padding:1px 7px;vertical-align:middle}
 .cj-it{display:flex;gap:10px;padding:10px 0;border-bottom:1px solid var(--linea)}.cj-bar{width:4px;border-radius:4px;flex:none;background:var(--gris)}.s-mal .cj-bar{background:var(--mal)}.s-avi .cj-bar{background:#D39B23}.s-ok .cj-bar{background:var(--ok)}.cj-t{font-weight:700}
@@ -181,11 +181,11 @@ function refreshSave(){$$('[data-needs=art]').forEach(function(b){b.disabled=!AR
 var ISOURL='data:image/png;base64,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';
 var ISO='<img class="iso" src="'+ISOURL+'" alt="">';
 var TABS=[['ini','Inicio'],['cat','Catálogo'],['cli','Clientes'],['aud','Audiencias'],['prf','Proforma'],['hon','Honorarios'],['doc','Plantillas'],['calc','Calculadoras'],['conf','Configuración']];
-var SUBS=[['pen','Pensiones alimenticias'],['pla','Plazos y términos'],['tra','Tránsito']];
+var SUBS=[['pen','Pensiones alimenticias'],['pla','Plazos y términos'],['lab','Laboral'],['tra','Tránsito']];
 document.getElementById('root').innerHTML=
  '<header><div class="marca">'+(DATA.logo?'<img src="'+DATA.logo+'" alt="Macías Sánchez Consultores" style="height:42px;width:auto;max-width:62%;display:block"><div class="wm" style="border-left:1px solid #3A3F47;padding-left:10px"><small style="margin:0;line-height:1.5">GESTOR<br>LEGAL</small></div>':ISO+'<div class="wm">MACÍAS SÁNCHEZ CONSULTORES<small>GESTOR LEGAL · USO INTERNO</small></div>')+'</div>'+
  (PWA?'<button id="hdr-lock" type="button">Bloquear</button>':'')+'<nav role="tablist">'+TABS.map(function(t){return '<button role="tab" data-t="'+t[0]+'" aria-selected="false">'+t[1]+'</button>'}).join('')+'</nav></header>'+
- '<main><section id="v-ini"></section><section id="v-cat" hidden></section><section id="v-cli" hidden></section><section id="v-aud" hidden></section><section id="v-prf" hidden></section><section id="v-hon" hidden></section><section id="v-doc" hidden></section><section id="v-calc" hidden><div class="seg" id="calc-nav" style="margin:4px 0 12px">'+SUBS.map(function(s){return '<button type="button" data-s="'+s[0]+'">'+s[1]+'</button>'}).join('')+'</div><section id="v-pen"></section><section id="v-pla" hidden></section><section id="v-tra" hidden></section></section><section id="v-conf" hidden></section></main>'+
+ '<main><section id="v-ini"></section><section id="v-cat" hidden></section><section id="v-cli" hidden></section><section id="v-aud" hidden></section><section id="v-prf" hidden></section><section id="v-hon" hidden></section><section id="v-doc" hidden></section><section id="v-calc" hidden><div class="seg" id="calc-nav" style="margin:4px 0 12px">'+SUBS.map(function(s){return '<button type="button" data-s="'+s[0]+'">'+s[1]+'</button>'}).join('')+'</div><section id="v-pen"></section><section id="v-pla" hidden></section><section id="v-lab" hidden></section><section id="v-tra" hidden></section></section><section id="v-conf" hidden></section></main>'+
  '<footer>Herramienta de uso interno de Macías Sánchez Consultores. Resultados referenciales: verifique la norma vigente y el caso concreto antes de actuar. Abg. Mariano X. Macías Sánchez · Mat. 09-2022-736.<br>© 2026 Mariano Xavier Macías Sánchez · Macías Sánchez Consultores. Todos los derechos reservados. Uso privativo: <a href="#conf" style="color:inherit">ver licencia</a>.</footer>';
 function show(t){var sub=null;if(SUBS.some(function(s){return s[0]===t})){sub=t;t='calc'}else if(t&&t.indexOf('calc-')===0){sub=t.slice(5);t='calc'}
  if(!TABS.some(function(x){return x[0]===t}))t='ini';
@@ -1241,7 +1241,7 @@ function pintaCasj(){
 }
 
 /* ---------- pantalla ---------- */
-var HERR=[['nuevo-cli','Nuevo cliente','M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm-7 8a7 7 0 0 1 14 0M19 8v6M16 11h6'],['nueva-aud','Nueva audiencia','M7 3v3M17 3v3M4 8h16M5 5h14a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Zm7 7v5M9.5 14.5h5'],['prf','Proforma','M7 3h7l5 5v13H7zM14 3v5h5M10 13h6M10 17h6'],['hon','Honorarios','M12 3v18M16 7.5c0-1.4-1.8-2.5-4-2.5s-4 1.1-4 2.5S9.8 10 12 10s4 1.1 4 2.5S14.2 15 12 15s-4-1.1-4-2.5M8 17c.6 1.2 2.1 2 4 2s3.4-.8 4-2'],['cons','Consulta','M4 5h16v11H8l-4 4zM8 9h8M8 12h5'],['calc-pla','Plazos y términos','M12 7v5l3 2M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18Z'],['calc-pen','Pensiones','M4 20h16M6 20V10M10 20V10M14 20V10M18 20V10M3 10l9-6 9 6'],['calc-tra','Tránsito','M5 16l1.5-6h11L19 16M5 16h14v3H5zM7.5 19v1.5M16.5 19v1.5M8 13h.01M16 13h.01'],['doc','Plantillas','M6 3h9l3 3v15H6zM9 9h6M9 13h6M9 17h4'],['cat','Catálogo','M4 6h16M4 12h16M4 18h10']];
+var HERR=[['nuevo-cli','Nuevo cliente','M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm-7 8a7 7 0 0 1 14 0M19 8v6M16 11h6'],['nueva-aud','Nueva audiencia','M7 3v3M17 3v3M4 8h16M5 5h14a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Zm7 7v5M9.5 14.5h5'],['prf','Proforma','M7 3h7l5 5v13H7zM14 3v5h5M10 13h6M10 17h6'],['hon','Honorarios','M12 3v18M16 7.5c0-1.4-1.8-2.5-4-2.5s-4 1.1-4 2.5S9.8 10 12 10s4 1.1 4 2.5S14.2 15 12 15s-4-1.1-4-2.5M8 17c.6 1.2 2.1 2 4 2s3.4-.8 4-2'],['cons','Consulta','M4 5h16v11H8l-4 4zM8 9h8M8 12h5'],['calc-pla','Plazos y términos','M12 7v5l3 2M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18Z'],['calc-pen','Pensiones','M4 20h16M6 20V10M10 20V10M14 20V10M18 20V10M3 10l9-6 9 6'],['calc-lab','Laboral','M4 8h16v11H4zM9 8V5h6v3M4 13h16'],['calc-tra','Tránsito','M5 16l1.5-6h11L19 16M5 16h14v3H5zM7.5 19v1.5M16.5 19v1.5M8 13h.01M16 13h.01'],['doc','Plantillas','M6 3h9l3 3v15H6zM9 9h6M9 13h6M9 17h4'],['cat','Catálogo','M4 6h16M4 12h16M4 18h10']];
 function irA(k){
  if(k==='nuevo-cli'){if(!regDisponible()){show('cli');return}R.view='cli';R.sel='nuevo';show('cli');vista();return}
  if(k==='nueva-aud'){if(!regDisponible()){show('cli');toast('Desbloquee el registro para agendar audiencias.',1);return}A.edit='nuevo';show('aud');return}
@@ -1290,7 +1290,189 @@ function renderIni(){
  clearInterval(INI.reloj);INI.reloj=setInterval(function(){var h=$('#i-hr');if(!h||$('#v-ini').hidden)return;var d=new Date();h.innerHTML=horaTxt(d);if(d.getSeconds()===0){$('#i-fe').textContent=fechaLarga(d);$('#i-sal').textContent=saludo()+(nom?', '+nom:'')}},1000);
 }
 
-function rerender(){var t=store('tab');renderHon();renderCat();renderPrf();renderPen();renderPla();renderTra();renderAud();renderConf();if(t)show(t);else renderIni()}
+/* ==========================================================================
+   CALCULADORA LABORAL · liquidación por modo de terminación y tipo de contrato,
+   beneficios sociales, plazos de pago (AM MDT-2025-053), visto bueno y alertas.
+   Normas verificadas con el Código del Trabajo del proyecto (nov-2026).
+   ========================================================================== */
+var LB={};
+var LB_CONT=[
+ ['indef','Indefinido (art. 14)'],['prueba','Indefinido en período de prueba (art. 15)'],['obra','Obra cierta (art. 16)'],
+ ['giro','Obra o servicio dentro del giro del negocio (art. 16.1)'],['event','Eventual (art. 17)'],['ocas','Ocasional (art. 17)'],
+ ['temp','De temporada (art. 17)'],['apre','Aprendizaje (art. 168)'],['dom','Trabajo remunerado del hogar'],['parcial','Jornada parcial permanente (art. 82)']];
+var LB_MODO=[
+ ['despido','Despido intempestivo (art. 188)'],
+ ['ineficaz','Despido ineficaz: embarazada, lactancia o dirigente sindical (arts. 195.1-195.3)'],
+ ['discrim','Despido discriminatorio (art. 195.3, inc. 4)'],
+ ['discap','Despido de persona con discapacidad o sustituto (art. 195.3, inc. 5 · LOD)'],
+ ['desahucio','Renuncia voluntaria con desahucio (arts. 184-185)'],
+ ['abandono','Renuncia sin aviso o abandono (art. 190)'],
+ ['mutuo','Acuerdo de las partes (arts. 169.2 y 185)'],
+ ['vbEmp','Visto bueno a favor del empleador (art. 172)'],
+ ['vbTrab','Visto bueno a favor del trabajador (arts. 173 y 191)'],
+ ['conclusion','Conclusión de la obra, período o temporada (arts. 169.3 y 170)'],
+ ['prueba','Terminación en el período de prueba (art. 15)'],
+ ['cierre','Liquidación o cierre del negocio (art. 193)'],
+ ['muerte','Muerte o incapacidad del trabajador (art. 169.5)'],
+ ['fuerza','Caso fortuito o fuerza mayor (art. 169.6)']];
+var LB_REG={costa:'Costa e Insular (décimo cuarto: 1 de marzo a fin de febrero)',sierra:'Sierra y Amazonía (décimo cuarto: 1 de agosto a 31 de julio)'};
+function lbSBU(y){var t=(DATA.tablas||{})[String(y)]||(DATA.tablas||{})[String(DATA.anioPensiones)];return t&&t.sbu?+t.sbu:482}
+function lbDias(a,b){return Math.round((parseD(b)-parseD(a))/864e5)+1}
+function lbIniPeriodo(salida,mes,dia){var d=parseD(salida),y=d.getFullYear(),s=new Date(y,mes,dia);if(s>d)s=new Date(y-1,mes,dia);return iso(s)}
+function lbMax(a,b){return a>b?a:b}
+function lbCalc(I,modoOverride){
+ var modo=modoOverride||I.modo,R={rub:[],ded:[],alert:[],nota:[]},S=I.sueldo,sbu=lbSBU(parseD(I.salida).getFullYear());
+ var dias=lbDias(I.ingreso,I.salida),anios=dias/365.25,aniosEnteros=Math.floor(anios),aniosArr=Math.ceil(anios-1e-9);
+ R.anios=anios;R.dias=dias;R.sbu=sbu;
+ var fj=I.cont==='parcial'?Math.min(1,Math.max(0.05,(I.horas||40)/40)):1;
+ function add(n,v,art,tip){v=r2(v);if(Math.abs(v)>=0.005)R.rub.push([n,v,art,tip||''])}
+ /* 1. Haberes pendientes */
+ add('Sueldo pendiente ('+I.diasPend+' días)',S/30*I.diasPend,'Arts. 80 y 83');
+ var vh=S/240;
+ if(I.hSup)add('Horas suplementarias pendientes ('+I.hSup+' h × 1,5)',vh*1.5*I.hSup,'Art. 55');
+ if(I.hExt)add('Horas extraordinarias pendientes ('+I.hExt+' h × 2)',vh*2*I.hExt,'Art. 55');
+ if(I.otros)add('Otros valores adeudados (comisiones, bonos)',I.otros,'Art. 95');
+ /* 2. Décimos */
+ if(!I.d13Mens){var i13=lbMax(lbIniPeriodo(I.salida,11,1),I.ingreso),d13=lbDias(i13,I.salida);
+  add('Décimo tercero proporcional ('+d13+' días desde '+fCorta(i13)+')',S*d13/365+((I.hSup?vh*1.5*I.hSup:0)+(I.hExt?vh*2*I.hExt:0)+I.otros)/12,'Art. 111','1/12 de lo percibido en el período (1 de diciembre al 30 de noviembre).')}
+ if(!I.d14Mens){var i14=lbMax(I.region==='sierra'?lbIniPeriodo(I.salida,7,1):lbIniPeriodo(I.salida,2,1),I.ingreso),d14=lbDias(i14,I.salida);
+  add('Décimo cuarto proporcional ('+d14+' días desde '+fCorta(i14)+')',sbu*fj*d14/365,'Art. 113','Base: SBU '+usd(sbu)+(fj<1?' × jornada parcial '+pct(r2(fj*100)):'')+'.')}
+ /* 3. Vacaciones */
+ var ant=Math.min(15,Math.max(0,aniosEnteros-5)),diasVacAnio=15+ant,aniv=parseD(I.ingreso);aniv.setFullYear(parseD(I.salida).getFullYear());if(aniv>parseD(I.salida))aniv.setFullYear(aniv.getFullYear()-1);if(aniv<parseD(I.ingreso))aniv=parseD(I.ingreso);
+ var dPer=lbDias(iso(aniv),I.salida),vacProp=diasVacAnio*dPer/365;
+ add('Vacaciones proporcionales ('+vacProp.toFixed(2).replace('.',',')+' días)',S/30*vacProp,'Arts. 69 y 71',ant?'Incluye '+ant+' día(s) adicional(es) por antigüedad.':'');
+ if(I.vacPend)add('Vacaciones no gozadas de períodos anteriores ('+I.vacPend+' días)',S/30*I.vacPend*(I.vacPost?2:1),I.vacPost?'Arts. 74 y 76 (postergadas por el empleador: 100 % de recargo)':'Art. 76');
+ /* 4. Fondos de reserva */
+ if(I.frPend)add('Fondos de reserva impagos ('+I.frPend+' meses)',S*0.0833*I.frPend,'Art. 196','8,33 % mensual a partir del segundo año.');
+ if(anios<1)R.nota.push('Menos de un año de servicio: aún no genera fondo de reserva (art. 197).');
+ if(I.util)add('Utilidades pendientes',I.util,'Art. 97');
+ /* 5. Indemnizaciones y bonificaciones según el modo */
+ var bon=S*0.25*anios,ind188=Math.min(25,Math.max(3,aniosArr))*S;
+ var limP=I.cont==='dom'?15:90,prueba=(I.cont==='prueba'||modo==='prueba')&&dias<=limP;if(modo==='prueba'&&dias>limP){modo='despido';R.alert.push(['mal','Se excedió el período de prueba: la terminación se calcula como despido intempestivo.'])}
+ if(prueba&&['despido','discrim'].indexOf(modo)>-1){R.alert.push(['avi','En período de prueba cualquiera de las partes puede terminar libremente (art. 15): no hay indemnización por despido. Verifique que no se haya excedido de 90 días (15 en trabajo del hogar) ni sea un segundo período de prueba.'])}
+ else if(modo==='despido'||modo==='ineficaz'||modo==='discrim'||modo==='discap'||modo==='vbTrab'||modo==='cierre'){
+  add('Indemnización por despido intempestivo ('+(aniosArr<=3?'mínimo 3 meses':aniosArr+' meses')+')',ind188,modo==='cierre'?'Arts. 193 y 188':modo==='vbTrab'?'Arts. 191 y 188':'Art. 188','Hasta 3 años: 3 meses; más de 3: un mes por año (fracción = año completo), máximo 25. Base: última mejor remuneración (CNJ, Res. 2-2025).');
+  add('Bonificación por desahucio (25 % × '+anios.toFixed(2).replace('.',',')+' años)',bon,'Arts. 185 y 188');
+  if(modo==='ineficaz')add('Indemnización adicional por despido ineficaz (12 meses)',S*12,'Art. 195.3','Solo si la persona decide no reintegrarse; si se reintegra, recibe las remuneraciones pendientes con 10 % de recargo.');
+  if(modo==='discrim')add('Indemnización adicional por discriminación (12 meses)',S*12,'Art. 195.3, inc. 4','Sin derecho a reintegro.');
+  if(modo==='discap')add('Indemnización especial por discapacidad (18 meses de la mejor remuneración)',S*18,'Art. 195.3, inc. 5 · Ley Orgánica de Discapacidades','Estimación: verifique el texto vigente de la LOD (no está en los documentos del proyecto).');
+  if(modo==='vbTrab'&&I.injDisc)add('Indemnización adicional por injurias discriminatorias (12 meses)',S*12,'Arts. 173.1 y 195.3');
+  if(anios>=20&&anios<25)R.alert.push(['avi','Tiene entre 20 y 25 años de servicio: además corresponde la parte proporcional de la jubilación patronal (art. 188). Requiere cálculo actuarial.']);
+ }
+ else if(modo==='desahucio'||modo==='mutuo')add('Bonificación por desahucio (25 % × '+anios.toFixed(2).replace('.',',')+' años)',bon,modo==='mutuo'?'Art. 185, inc. 2':'Art. 185');
+ else if(modo==='abandono')R.ded.push(['Indemnización al empleador por falta de desahucio (15 días)',r2(S/2),'Art. 190']);
+ else if(modo==='conclusion'&&I.cont==='giro')R.alert.push(['avi','Contrato por obra o servicio dentro del giro: revise si el art. 16.1 y el Acuerdo Ministerial 242-2015 reconocen bonificación al concluir. No se incluyó en el total.']);
+ if(anios>=25)R.alert.push(['mal','Tiene 25 años o más de servicio: tiene derecho a jubilación patronal (art. 216), aparte de esta liquidación.']);
+ /* 6. Deducciones */
+ var gravable=S/30*I.diasPend+(I.hSup?vh*1.5*I.hSup:0)+(I.hExt?vh*2*I.hExt:0)+I.otros;
+ if(gravable>0)R.ded.push(['Aporte personal IESS 9,45 % sobre haberes pendientes',r2(gravable*0.0945),'Ley de Seguridad Social']);
+ if(I.antic)R.ded.push(['Anticipos o préstamos del empleador',r2(I.antic),'Documentados']);
+ R.bruto=r2(R.rub.reduce(function(s,x){return s+x[1]},0));R.desc=r2(R.ded.reduce(function(s,x){return s+x[1]},0));R.neto=r2(R.bruto-R.desc);
+ return R;
+}
+function lbValidar(I){
+ var A=[],d=lbDias(I.ingreso,I.salida),sbu=lbSBU(parseD(I.salida).getFullYear());
+ if(I.salida<I.ingreso)return [['mal','La fecha de salida es anterior a la de ingreso.']];
+ if(I.cont==='prueba'&&d>90)A.push(['mal','El período de prueba excede 90 días: el contrato ya es indefinido y la terminación se trata como despido (art. 15).']);
+ if(I.cont==='dom'&&I.modo==='prueba'&&d>15)A.push(['mal','En trabajo remunerado del hogar el período de prueba es de hasta 15 días (art. 15).']);
+ if(I.cont==='event'&&d>180)A.push(['avi','Un eventual por mayor demanda no puede exceder 180 días en 365 (art. 17); si se repite más de dos períodos se convierte en contrato de temporada.']);
+ if(I.cont==='ocas'&&d>30)A.push(['mal','El contrato ocasional no puede exceder 30 días en el año (art. 17).']);
+ if((I.cont==='event'||I.cont==='ocas'))A.push(['ok','Eventual u ocasional: la remuneración debe incluir el 35 % del valor hora del salario básico del sector (art. 17). Verifique que se haya pagado.']);
+ if(I.cont==='apre'&&d>183)A.push(['avi','Aprendizaje: máximo 6 meses (2 años si es artesanal); si continúa se convierte en indefinido (art. 168).']);
+ if(I.cont==='temp'&&I.modo==='conclusion')A.push(['ok','Temporada: el trabajador conserva el derecho a ser llamado en la siguiente temporada; si no lo llaman, se configura despido intempestivo (art. 17).']);
+ if(I.sueldo>0&&I.cont!=='parcial'&&I.cont!=='apre'&&I.sueldo<sbu)A.push(['mal','La remuneración ('+usd(I.sueldo)+') es menor al SBU '+usd(sbu)+'. Si se demanda, procede la diferencia y el recargo del art. 94.']);
+ if(I.cont==='apre'&&I.sueldo<sbu*0.8)A.push(['mal','El aprendiz no puede ganar menos del 80 % de la remuneración del puesto (art. 168).']);
+ if(['despido','ineficaz','discrim','discap'].indexOf(I.modo)>-1&&I.escrito)A.push(['ok','Despido por escrito: si el empleador lo ratifica ante el inspector, debe depositar la indemnización en 48 horas (art. 188).']);
+ return A;
+}
+function lbPlazos(I){
+ var T=I.salida,F=feriadosSet(),add=function(n,u){var d=parseD(T);d.setDate(d.getDate()+n);return iso(d)};
+ var p=[];
+ p.push({f:add(15),t:'Pago directo y registro del acta de finiquito en el SUT',d:'Plazo máximo de 15 días desde la terminación, con el comprobante de pago (AM MDT-2023-140, arts. 19 y 20, reformado por AM MDT-2025-053).',q:'emp'});
+ p.push({f:add(30),t:'Límite para consignar en línea en el Ministerio del Trabajo',d:'Si el trabajador no acude a cobrar o rechaza la liquidación, el empleador consigna dentro de 15 días adicionales.',q:'emp'});
+ p.push({f:add(16),t:'Desde aquí: requerir por escrito y denunciar en el MDT',d:'Si al día 16 no hay pago ni consignación, presente la denuncia en el SUT (sut.trabajo.gob.ec) o en la inspección. Conserve la notificación de terminación y los roles.',q:'trab'});
+ p.push({f:add(31),t:'Sin pago ni consignación: iniciar la demanda',d:'Procedimiento sumario ante el juez del trabajo (COGEP art. 332.1). Si se demanda remuneraciones impagas, procede el triple del último trimestre adeudado (art. 94).',q:'trab'});
+ if(I.modo==='ineficaz')p.push({f:add(30),t:'Último día para demandar el despido ineficaz',d:'Plazo máximo de 30 días desde el despido (art. 195.2). Es el plazo más corto: priorícelo.',q:'urg'});
+ var pr=parseD(T);pr.setFullYear(pr.getFullYear()+3);p.push({f:iso(pr),t:'Prescripción de las acciones laborales',d:'Tres años desde la terminación (art. 635); con suspensión o interrupción, nunca más de cinco años desde que la obligación fue exigible (art. 637).',q:'pres'});
+ return p.sort(function(a,b){return a.f.localeCompare(b.f)});
+}
+function lbVB(){
+ var f=$('#lb-vbf').value;if(!f){$('#lb-vbr').innerHTML='<p class="hint" style="margin:0">Indique la fecha de presentación.</p>';return}
+ var F=feriadosSet(),P=parseD(f),n1=computar(P,1,'t',F).fin,c=computar(n1,2,'t',F).fin,r=computar(c,3,'t',F).fin,h=$('#lb-vbh').value,pres='';
+ if(h){var m=parseD(h);m.setMonth(m.getMonth()+1);pres='<tr><td>Prescripción para que el empleador pida el visto bueno</td><td>'+largo(m)+'</td><td>Art. 636 b (un mes desde el hecho)</td></tr>'}
+ $('#lb-vbr').innerHTML='<table><thead><tr><th>Actuación</th><th>Fecha estimada</th><th>Base</th></tr></thead><tbody>'+pres+
+  '<tr><td>Presentación de la solicitud</td><td>'+largo(P)+'</td><td>Arts. 183 y 621</td></tr>'+
+  '<tr><td>Notificación a la otra parte (24 horas)</td><td>'+largo(n1)+'</td><td>Art. 621</td></tr>'+
+  '<tr class="hi"><td>Vence el término para contestar (2 días)</td><td>'+largo(c)+'</td><td>Art. 621</td></tr>'+
+  '<tr><td>Resolución del inspector (dentro del tercer día tras la investigación)</td><td>'+largo(r)+'</td><td>Art. 621</td></tr></tbody></table>'+
+  '<p class="hint">Fechas estimadas en días hábiles con los feriados cargados; la notificación real puede variar. El empleador puede pedir la suspensión inmediata consignando un mes de remuneración, que se entrega al trabajador si se niega el visto bueno (art. 622). La resolución del inspector es solo un informe: puede discutirse ante el juez del trabajo (art. 183).</p>';
+}
+function lbLeer(){var g=function(id){return $('#'+id)};return {cont:g('lb-cont').value,modo:g('lb-modo').value,region:g('lb-reg').value,ingreso:g('lb-in').value,salida:g('lb-out').value,sueldo:num(g('lb-s').value),horas:num(g('lb-h').value)||40,diasPend:num(g('lb-dp').value),hSup:num(g('lb-hs').value),hExt:num(g('lb-he').value),otros:num(g('lb-ot').value),vacPend:num(g('lb-vp').value),vacPost:g('lb-vpost').checked,frPend:num(g('lb-fr').value),util:num(g('lb-ut').value),antic:num(g('lb-an').value),d13Mens:g('lb-d13').checked,d14Mens:g('lb-d14').checked,escrito:g('lb-esc').checked,injDisc:g('lb-inj').checked}}
+function calcLab(){
+ var I=lbLeer();store('lab',Object.assign(store('lab')||{},I));
+ $('#lb-wh').hidden=I.cont!=='parcial';$('#lb-winj').hidden=I.modo!=='vbTrab';$('#lb-wesc').hidden=['despido','ineficaz','discrim','discap'].indexOf(I.modo)<0;
+ var out=$('#lb-res');
+ if(!I.ingreso||!I.salida||!I.sueldo){out.innerHTML='<div class="res"><p style="margin:0">Indique fecha de ingreso, fecha de salida y la última remuneración mensual.</p></div>';$('#lb-plz').innerHTML='';$('#lb-cmp').innerHTML='';return}
+ var V=lbValidar(I);if(V.length&&V[0][1].indexOf('anterior')>-1){out.innerHTML='<div class="res mal"><b>'+V[0][1]+'</b></div>';return}
+ var R=lbCalc(I);LB.R=R;LB.I=I;
+ var al=V.concat(R.alert);
+ out.innerHTML='<div class="kpis"><div class="kpi"><div class="l">Tiempo de servicio</div><div class="n">'+R.anios.toFixed(2).replace('.',',')+' años</div></div><div class="kpi"><div class="l">Total bruto</div><div class="n">'+usd(R.bruto)+'</div></div><div class="kpi sel"><div class="l">Neto estimado</div><div class="n">'+usd(R.neto)+'</div></div></div>'+
+  (al.length?'<div class="foco">'+al.map(function(a){return '<div class="foco-it f-'+a[0]+'" style="cursor:default"><span>'+(a[0]==='mal'?'⚠️':a[0]==='avi'?'⚖️':'ℹ️')+'</span><span>'+esc(a[1])+'</span></div>'}).join('')+'</div>':'')+
+  '<div class="card"><h3>Liquidación estimada · '+esc((LB_MODO.filter(function(m){return m[0]===I.modo})[0]||[])[1]||'')+'</h3><div class="scroll"><table><thead><tr><th>Rubro</th><th>Base legal</th><th>Valor</th></tr></thead><tbody>'+
+  R.rub.map(function(x){return '<tr><td>'+esc(x[0])+(x[3]?'<div class="hint" style="margin:2px 0 0">'+esc(x[3])+'</div>':'')+'</td><td class="hint" style="white-space:nowrap">'+esc(x[2])+'</td><td>'+usd(x[1])+'</td></tr>'}).join('')+
+  '<tr class="hi"><td>Total bruto</td><td></td><td>'+usd(R.bruto)+'</td></tr>'+
+  R.ded.map(function(x){return '<tr><td>(−) '+esc(x[0])+'</td><td class="hint">'+esc(x[2])+'</td><td>'+usd(-x[1])+'</td></tr>'}).join('')+
+  '<tr class="tot"><td>NETO A RECIBIR (estimado)</td><td></td><td>'+usd(R.neto)+'</td></tr></tbody></table></div>'+
+  (R.nota.length?'<p class="hint">'+R.nota.map(esc).join(' ')+'</p>':'')+
+  '<p class="hint">Estimación referencial: confirme la última mejor remuneración, los valores ya pagados mensualmente y el contrato. Base de indemnizaciones según art. 95 (sin décimos, utilidades ni fondos de reserva).</p>'+
+  '<div class="row"><button type="button" class="btn sec mini" id="lb-cp">Copiar resumen</button><button type="button" class="btn sec mini" id="lb-wa">Enviar por WhatsApp</button></div></div>';
+ /* plazos */
+ var P=lbPlazos(I),hoy=hoyISO();
+ $('#lb-plz').innerHTML='<div class="card"><h3>Plazos de pago y acciones</h3>'+P.map(function(p){var d=diasEntre(hoy,p.f),cls=p.q==='urg'?'s-mal':d<0?'s-ok':d<=3?'s-avi':'';var who=p.q==='emp'?'Empleador':p.q==='trab'?'Trabajador':p.q==='urg'?'Urgente':'Límite';
+  return '<div class="cj-it '+cls+'"><div class="cj-bar"></div><div style="flex:1"><div class="cj-t">'+esc(p.t)+'</div><div class="hint" style="margin:2px 0 0">'+esc(p.d)+'</div><div class="row" style="margin-top:6px;gap:6px"><span class="sem">'+who+' · '+largo(parseD(p.f))+'</span><span class="sem">'+(d<0?'ya transcurrió ('+(-d)+' días)':d===0?'hoy':'faltan '+d+' días')+'</span></div></div></div>'}).join('')+
+  '<p class="hint">Plazos del Acuerdo MDT en días calendario. Verifique reformas posteriores en trabajo.gob.ec. El acta firmada que no se suscribió ante el inspector puede impugnarse (art. 595) y el juez revisa de oficio errores u omisiones del finiquito (CNJ, Res. 18-2024).</p></div>';
+ /* comparativa */
+ var C=['despido','desahucio','mutuo','vbEmp','vbTrab'].map(function(m){return [m,lbCalc(I,m)]});
+ $('#lb-cmp').innerHTML='<div class="card"><h3>Comparativa por modo de terminación</h3><div class="scroll"><table><thead><tr><th>Modo</th><th>Neto estimado</th></tr></thead><tbody>'+C.map(function(c){return '<tr'+(c[0]===I.modo?' class="hi"':'')+'><td>'+esc(LB_MODO.filter(function(m){return m[0]===c[0]})[0][1])+'</td><td>'+usd(c[1].neto)+'</td></tr>'}).join('')+'</tbody></table></div><p class="hint">Útil para negociar: muestra cuánto cambia la liquidación según cómo se termine la relación, con los mismos datos.</p></div>';
+ var txt=function(){return '*Liquidación laboral estimada*\n'+(LB_MODO.filter(function(m){return m[0]===I.modo})[0]||[])[1]+'\nServicio: '+fCorta(I.ingreso)+' '+I.ingreso.slice(0,4)+' a '+fCorta(I.salida)+' '+I.salida.slice(0,4)+' ('+R.anios.toFixed(2).replace('.',',')+' años)\nRemuneración: '+usd(I.sueldo)+'\n\n'+R.rub.map(function(x){return '• '+x[0]+': '+usd(x[1])}).join('\n')+(R.ded.length?'\n'+R.ded.map(function(x){return '(−) '+x[0]+': '+usd(x[1])}).join('\n'):'')+'\n\n*Neto estimado: '+usd(R.neto)+'*\nPago máximo: '+largo(parseD(P.filter(function(p){return p.q==='emp'})[0].f))+' (AM MDT-2025-053).\n\nCálculo referencial · Macías Sánchez Consultores'};
+ $('#lb-cp').onclick=function(){copiar(txt(),'Resumen copiado.')};
+ $('#lb-wa').onclick=function(){window.open('https://wa.me/?text='+encodeURIComponent(txt()),'_blank','noopener')};
+}
+function renderLab(){
+ var v=$('#v-lab');if(!v)return;var st=store('lab')||{},hoy=hoyISO();
+ v.innerHTML='<h2>Laboral: liquidación, plazos y visto bueno</h2><p class="sub">Calcula la liquidación según el modo de terminación y el tipo de contrato, los beneficios sociales proporcionales, los plazos del Ministerio del Trabajo para pagar o consignar y desde cuándo actuar. <span class="tag">Código del Trabajo verificado nov-2026</span></p>'+
+ '<div class="card"><h3>1 · Relación laboral</h3><div class="grid">'+
+  sel('lb-cont','Tipo de contrato',st.cont||'indef',LB_CONT,true)+
+  sel('lb-modo','Modo de terminación',st.modo||'despido',LB_MODO,true)+
+  inp('lb-in','Fecha de ingreso',st.ingreso||'','date')+inp('lb-out','Fecha de salida',st.salida||hoy,'date')+
+  inp('lb-s','Última mejor remuneración mensual (USD)',st.sueldo||'','number',{full:1,attr:'inputmode="decimal"'})+
+  '<div class="full" id="lb-wh">'+'<label for="lb-h">Horas semanales de la jornada parcial</label><input id="lb-h" type="number" inputmode="decimal" value="'+(st.horas||20)+'"></div>'+
+  sel('lb-reg','Región (décimo cuarto)',st.region||'costa',[['costa',LB_REG.costa],['sierra',LB_REG.sierra]],true)+
+  '<label class="chk full"><input type="checkbox" id="lb-d13"'+(st.d13Mens?' checked':'')+'> El décimo tercero se pagaba mensualmente</label>'+
+  '<label class="chk full"><input type="checkbox" id="lb-d14"'+(st.d14Mens?' checked':'')+'> El décimo cuarto se pagaba mensualmente</label>'+
+  '<label class="chk full" id="lb-wesc"><input type="checkbox" id="lb-esc"'+(st.escrito?' checked':'')+'> El despido consta por escrito</label>'+
+  '<label class="chk full" id="lb-winj"><input type="checkbox" id="lb-inj"'+(st.injDisc?' checked':'')+'> El visto bueno se funda en injurias discriminatorias</label>'+
+ '</div></div>'+
+ '<div class="card"><h3>2 · Valores pendientes</h3><div class="grid">'+
+  inp('lb-dp','Días trabajados del último mes sin pagar',st.diasPend||0,'number',{attr:'inputmode="numeric"'})+inp('lb-vp','Días de vacaciones no gozadas (años anteriores)',st.vacPend||0,'number',{attr:'inputmode="numeric"'})+
+  '<label class="chk full"><input type="checkbox" id="lb-vpost"'+(st.vacPost?' checked':'')+'> Las vacaciones fueron postergadas por el empleador (art. 74: 100 % de recargo)</label>'+
+  inp('lb-hs','Horas suplementarias impagas',st.hSup||0,'number',{attr:'inputmode="decimal"'})+inp('lb-he','Horas extraordinarias impagas',st.hExt||0,'number',{attr:'inputmode="decimal"'})+
+  inp('lb-fr','Meses de fondo de reserva impagos',st.frPend||0,'number',{attr:'inputmode="numeric"'})+inp('lb-ot','Otros valores adeudados (USD)',st.otros||0,'number',{attr:'inputmode="decimal"'})+
+  inp('lb-ut','Utilidades pendientes (USD)',st.util||0,'number',{attr:'inputmode="decimal"'})+inp('lb-an','Anticipos o préstamos a descontar (USD)',st.antic||0,'number',{attr:'inputmode="decimal"'})+
+ '</div></div>'+
+ '<div id="lb-res"></div><div id="lb-plz"></div><div id="lb-cmp"></div>'+
+ '<div class="card"><h3>Términos del visto bueno</h3><div class="grid">'+inp('lb-vbh','Fecha del hecho que motiva el visto bueno',st.vbh||'','date')+inp('lb-vbf','Fecha de presentación de la solicitud',st.vbf||hoy,'date')+'</div><div id="lb-vbr" style="margin-top:10px"></div></div>'+
+ '<div class="card"><h3>Recordatorios útiles</h3><ul style="margin:0;padding-left:18px;font-size:13.5px;line-height:1.5">'+
+  '<li>El décimo tercero no forma parte de la base de indemnizaciones ni de vacaciones (art. 112); la base es la del art. 95.</li>'+
+  '<li>Ningún contrato termina sin que el trabajador goce o cobre sus vacaciones (arts. 72 y 76); pueden acumularse hasta tres años (art. 75).</li>'+
+  '<li>Renuncia: el desahucio se avisa por escrito con al menos 15 días y el empleador liquida en 15 días (arts. 184, 185 y 624).</li>'+
+  '<li>Trabajador que se trasladó de su residencia: tiene derecho al dinero para el regreso, salvo el caso del art. 172.4 (art. 182).</li>'+
+  '<li>Indemnizaciones mejorables solo por acuerdo de las partes (art. 188).</li></ul></div>';
+ $$('#v-lab input,#v-lab select').forEach(function(e){e.addEventListener('input',function(){if(e.id.indexOf('lb-vb')===0){var s=store('lab')||{};s[e.id==='lb-vbf'?'vbf':'vbh']=e.value;store('lab',s);lbVB()}else calcLab()});e.addEventListener('change',function(){if(e.id.indexOf('lb-vb')===0)lbVB();else calcLab()})});
+ calcLab();lbVB();
+}
+
+function rerender(){var t=store('tab');renderHon();renderCat();renderPrf();renderPen();renderPla();renderLab();renderTra();renderAud();renderConf();if(t)show(t);else renderIni()}
 function toast(t,err){var d=$('#toast');if(!d){d=document.createElement('div');d.id='toast';document.body.appendChild(d)}d.className=err?'e':'';d.textContent=t;d.hidden=false;clearTimeout(d._t);d._t=setTimeout(function(){d.hidden=true},3500)}
 function appDesbloqueada(){
  if(!PWA){pintaRegistro();sincroAuto();return}
@@ -2370,7 +2552,7 @@ function calcTra(){
 }
 
 /* ---------- arranque ---------- */
-aplicaTema();renderCli();renderHon();renderCat();renderPrf();renderPen();renderPla();renderTra();renderAud();renderConf();
+aplicaTema();renderCli();renderHon();renderCat();renderPrf();renderPen();renderPla();renderLab();renderTra();renderAud();renderConf();
 if(PWA){document.body.classList.add('locked');show('cli')}else show(location.hash.slice(1)||'ini');
 refreshSave();
 })();

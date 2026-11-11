@@ -1,6 +1,6 @@
 # ARCHIVO MAESTRO DE CONTEXTO · MSC Gestor Legal
 
-Actualizado: 2026-11-10.
+Actualizado: 2026-11-11.
 
 ## 1. Identidad y propósito
 - **Qué es:** app instalable (PWA) de gestión del despacho Macías Sánchez Consultores: calculadoras legales, honorarios, proforma, registro de clientes y casos, y agenda de audiencias.
@@ -22,19 +22,23 @@ Actualizado: 2026-11-10.
 - La versión publicada como página en claude.ai no tiene el último cambio de la proforma.
 
 ## 4. Backlog (orden de prioridad)
-1. Aviso «Todos los derechos reservados» y archivo LICENSE.
-2. Traslado a Cloudflare Pages con Access; volver privado el repositorio; agregar el dominio nuevo al cliente OAuth de Google.
-3. Tras el traslado, actualizar en MSC PD la dirección de Gestor Legal (Ajustes).
+1. Traslado a Cloudflare Pages con Access; volver privado el repositorio; agregar el dominio nuevo al cliente OAuth de Google.
+2. Tras el traslado, actualizar en MSC PD la dirección de Gestor Legal (Ajustes).
 
 ## 5. Flujo de trabajo
 Editar `fuente/index.html` › `python build_pwa.py` › probar en 390 px y 1200 px › commit en español en `main` (GitHub Pages publica `/docs`).
 
-## 6. Sesión en curso (2026-11-11) · retomar desde aquí
-Pedido: (1) Inicio interactivo: saludo, fecha/hora, clima con ubicación, resumen, herramientas a la mano, casillero judicial de pendientes, detección de correos de Función Judicial/Fiscalía vía Gmail; (2) reparar botones sin acción; (3) formato USD con centavos en todo valor de dinero; (4) corregir tasa de éxito (valor estimado no se contabiliza) y verificar rubros; (5) actualizar interfaz y diseño; licencia.
-Hallazgos:
-- Auditoría automática (Playwright, 390 px): todos los botones tienen manejador. Los «sin acción» son de retroalimentación invisible (mensaje fuera de pantalla, p. ej. Restablecer plantilla, Guardar audiencia con validación).
-- Tasa de éxito: los campos `type=number` leen «10.000» como 10 (punto de miles) → prima casi cero. Además, con cuantía indeterminada en materias de prima fija se oculta el valor estimado.
-- Gmail: remitentes reales `sender.satje@funcionjudicial.gob.ec`, `satje.guayas@funcionjudicial.gob.ec`; excluir `Escuela.Judicial@`. Fiscalía: dominio `fiscalia.gob.ec`.
-- `fusionar0` descarta claves no listadas: toda colección nueva del registro debe agregarse allí.
-Herramientas de prueba en la sesión: /home/claude/tools (audit_*.py).
-Estado: [x] moneda [x] tasa de éxito [x] inicio [x] Gmail/casillero [x] retroalimentación botones [ ] diseño [ ] LICENSE
+## 6. Cambios del 2026-11-11 (completados)
+- **Inicio** (pestaña por defecto): saludo, reloj en vivo, clima Open-Meteo (Guayaquil o ubicación autorizada, redondeada a 2 decimales y guardada solo en el dispositivo), foco del día, indicadores con montos USD, herramientas a la mano, próximas audiencias y enlaces (e-SATJE, Fiscalía SIAF).
+- **Casillero judicial** (`R.data.casj`, cifrado y en `fusionar0`): fecha de notificación, causa, actuación, días de término/plazo, vencimiento con `computar()` y feriados, semáforo, vínculo automático al caso por Nº de causa.
+- **Gmail** (`gmail.readonly`, token propio `tokenGm`): búsqueda configurable en Configuración; por defecto `sender.satje@` y `satje.guayas@funcionjudicial.gob.ec` y `fiscalia.gob.ec`, excluye la Escuela Judicial. Solo se guardan los ID revisados (`R.data.gm.vistos`). **Requisito pendiente del usuario:** habilitar Gmail API y agregar el permiso gmail.readonly en Google Cloud.
+- **Montos USD:** todo campo cuyo rótulo dice «USD» (o `data-k` valor/exito) se convierte en campo de dinero con `$` y centavos (`monetiza`); `num()` entiende 1.500,25 / 1,500.25 / 1500.25.
+- **Prima de éxito:** corregido el error del punto de miles; con cuantía indeterminada o de bienes se elige «% del valor estimado» o «monto fijo»; se muestra la fórmula.
+- **Botones:** auditoría automática sin manejadores faltantes; los mensajes se llevan a la vista y se resaltan; «Restablecer plantilla» pide confirmación y avisa.
+- **Licencia:** archivo `LICENSE` (uso privativo, todos los derechos reservados, COESCCI) y texto en Configuración y pie de página.
+- Verificado: SBU 2026 = $482; IVA 15 %.
+
+## 7. Siguiente
+1. Habilitar Gmail API y permiso gmail.readonly; probar «Revisar Gmail» en la app instalada.
+2. Traslado a Cloudflare Pages con Access; volver privado el repositorio.
+3. Revisión de artículos citados en Plazos (COGEP/COIP) contra los textos del proyecto.

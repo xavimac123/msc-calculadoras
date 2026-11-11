@@ -28,3 +28,13 @@ Actualizado: 2026-11-10.
 
 ## 5. Flujo de trabajo
 Editar `fuente/index.html` › `python build_pwa.py` › probar en 390 px y 1200 px › commit en español en `main` (GitHub Pages publica `/docs`).
+
+## 6. Sesión en curso (2026-11-11) · retomar desde aquí
+Pedido: (1) Inicio interactivo: saludo, fecha/hora, clima con ubicación, resumen, herramientas a la mano, casillero judicial de pendientes, detección de correos de Función Judicial/Fiscalía vía Gmail; (2) reparar botones sin acción; (3) formato USD con centavos en todo valor de dinero; (4) corregir tasa de éxito (valor estimado no se contabiliza) y verificar rubros; (5) actualizar interfaz y diseño; licencia.
+Hallazgos:
+- Auditoría automática (Playwright, 390 px): todos los botones tienen manejador. Los «sin acción» son de retroalimentación invisible (mensaje fuera de pantalla, p. ej. Restablecer plantilla, Guardar audiencia con validación).
+- Tasa de éxito: los campos `type=number` leen «10.000» como 10 (punto de miles) → prima casi cero. Además, con cuantía indeterminada en materias de prima fija se oculta el valor estimado.
+- Gmail: remitentes reales `sender.satje@funcionjudicial.gob.ec`, `satje.guayas@funcionjudicial.gob.ec`; excluir `Escuela.Judicial@`. Fiscalía: dominio `fiscalia.gob.ec`.
+- `fusionar0` descarta claves no listadas: toda colección nueva del registro debe agregarse allí.
+Herramientas de prueba en la sesión: /home/claude/tools (audit_*.py).
+Estado: [ ] moneda [ ] tasa de éxito [ ] inicio [ ] Gmail/casillero [ ] retroalimentación botones [ ] diseño [ ] LICENSE

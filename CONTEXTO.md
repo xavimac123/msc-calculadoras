@@ -17,7 +17,7 @@ Actualizado: 2026-11-11.
 
 ## 3. Bugs y bloqueos activos
 - Sin errores conocidos en la app publicada.
-- Repositorio público y sin licencia: contenido y tarifas a la vista.
+- Repositorio público (ya con licencia de uso privativo): contenido y tarifas siguen a la vista hasta volverlo privado.
 - Los datos no migran solos al cambiar de dirección web (restaurar desde Drive).
 - La versión publicada como página en claude.ai no tiene el último cambio de la proforma.
 

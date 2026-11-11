@@ -38,7 +38,13 @@ Editar `fuente/index.html` › `python build_pwa.py` › probar en 390 px y 1200
 - **Licencia:** archivo `LICENSE` (uso privativo, todos los derechos reservados, COESCCI) y texto en Configuración y pie de página.
 - Verificado: SBU 2026 = $482; IVA 15 %.
 
-## 7. Siguiente
+## 7. Revisión normativa (2026-11-11, con los textos del proyecto)
+- **Plazos (`PRE`):** corregido completar demanda a 5 días (COGEP 146). Agregados: niñez 10 días (333.3), audiencia niñez 20 días desde citación (333.4), prueba nueva (151), subsanar defecto (295.2), audiencia de juicio (297), apelación niñez 5 (257), contestar apelación (258), recurso de hecho 3 (280), contestar casación (270), COIP apelación 3 (654), casación 5 hábiles (657), archivo (587), investigación previa 1–2 años (585), LOGJCC apelación 3 (24) y AEP 20 (60), CT prescripción 3 años (635), 1 mes (636), cambio de ocupación 60 días (192). Cada grupo tiene `c` (código) para la etiqueta «Base».
+- **Plantillas:** demanda con RUC opcional, sección de documentos (art. 143) y procedimiento con su artículo; fundamentos actualizados (alimentos CONA innumerados + COGEP 332.3; divorcio CC 110/124 + 332.4; reivindicación 933 + 289 + inscripción 146; prescripción 2392/2398/2410/2411 + precedente CNJ 7-2025; monitorio 356-358; laboral CT 188/185/635 + 332.1); contestación con arts. 151-153. Nuevas: apelación (256-258) e impugnación de boleta (COIP 644).
+- **Tipos de causa (`CAUSAS`):** 34 causas de familia, civil, cartera, laboral, penal, tránsito y constitucional con su fundamento; selector «Tipo de causa» en el caso (campo `tc`), recuadro de fundamento y nombre en la lista de casos.
+- **Interfaz:** ficha de cliente con encabezado y accesos (ver casos, nuevo caso, proforma, WhatsApp); buscador de cliente de la proforma a ancho completo; barra fija en Honorarios con «cliente paga» y «ganancia neta».
+- Pendiente de verificar fuera del proyecto: Ley de Inquilinato (no está en los documentos); COIP apelación y archivo marcados «verificar» por el cómputo de días.
+
+## 8. Siguiente
 1. Habilitar Gmail API y permiso gmail.readonly; probar «Revisar Gmail» en la app instalada.
 2. Traslado a Cloudflare Pages con Access; volver privado el repositorio.
-3. Revisión de artículos citados en Plazos (COGEP/COIP) contra los textos del proyecto.

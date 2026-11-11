@@ -90,6 +90,9 @@ footer{max-width:760px;margin:0 auto;padding:0 14px 28px;font-size:11.5px;color:
 .msg.flash{animation:fl 1s}@keyframes fl{0%{background:rgba(160,144,70,.25)}100%{background:transparent}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 body.dark .res{background:#171B21}body.dark .herr-b,body.dark .foco-it{background:#171B21}
+.stk{position:fixed;left:50%;transform:translateX(-50%);bottom:12px;z-index:30;width:min(560px,calc(100% - 24px));display:flex;gap:14px;align-items:center;justify-content:space-between;background:#14181E;color:#fff;border:1px solid #3A3F47;border-radius:14px;padding:10px 14px;font:inherit;box-shadow:0 10px 30px rgba(0,0,0,.25);cursor:pointer;transition:opacity .2s,transform .2s}.stk small{display:block;font-size:10.5px;color:#B9B6AA;text-transform:uppercase;letter-spacing:.04em}.stk b{font-size:16px;font-variant-numeric:tabular-nums}.stk .fl{font-size:12px;color:var(--oroc);font-weight:700}.stk.oculto{opacity:0;pointer-events:none;transform:translateX(-50%) translateY(20px)}#v-hon[hidden] .stk,#h-casos[hidden]~.stk{display:none}
+.cli-top{background:var(--card);border:1px solid var(--linea);border-left:4px solid var(--oro);border-radius:10px;padding:12px 14px;margin:0 0 12px}.cli-n{font-size:18px;font-weight:800}
+.fund{border:1px solid var(--linea);border-left:4px solid var(--oro);border-radius:8px;padding:10px 12px;background:var(--marfil);font-size:13px;line-height:1.45}.fund .estado{font-size:11px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--olivo);margin-bottom:3px}
 .monw{position:relative;display:block}.monw::before{content:'$';position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--gris);font-weight:700;font-size:14px;pointer-events:none}.monw input.mon{padding-left:24px;text-align:right;font-variant-numeric:tabular-nums}
 .tabla-ed .monw::before{left:6px}
 body.dark{--marfil:#0F1216;--linea:#2A3038;--gris:#9AA1AA;--card:#171B21;--okf:#14261A;--malf:#2B1714;--avif:#2A2212;--olivo:#C9BC82;background:#0F1216;color:#E7E4DA}
@@ -319,6 +322,9 @@ function calcHon(){
  var lbl=['SIN ÉXITO','ÉXITO PARCIAL ('+pct(I.par)+')','ÉXITO TOTAL'];
  var th='<thead><tr><th>Concepto</th>'+lbl.map(function(l,i){return '<th'+(i===si?' style="color:var(--carbon);background:#F3EED9"':'')+'>'+l+'</th>'}).join('')+'</tr></thead>';
  var fila=function(r){return '<tr class="'+(r[2]||'')+'"><td>'+r[0]+'</td>'+E.map(function(e,i){var x=r[1](e);return '<td'+(i===si?' style="background:#FBF9F1"':'')+'>'+(r[3]?pct(r2(x)):usd(r2(x)))+'</td>'}).join('')+'</tr>'};
+ (function(){var st=$('#h-stk');if(!st){st=document.createElement('button');st.type='button';st.id='h-stk';st.className='stk';$('#v-hon').appendChild(st);st.onclick=function(){$('#h-kpi').scrollIntoView({behavior:'smooth',block:'center'})};
+  if(window.IntersectionObserver){var io=new IntersectionObserver(function(es){es.forEach(function(e){st.classList.toggle('oculto',e.isIntersecting)})});io.observe($('#h-kpi'))}}
+  st.innerHTML='<span><small>'+(H.esc==='p'?'Éxito parcial':H.esc===1?'Éxito total':'Sin éxito')+' · cliente paga</small><b>'+usd(r2(sel.total))+'</b></span><span><small>Ganancia neta</small><b>'+usd(r2(sel.neta))+'</b></span><span class="fl">Ver detalle ›</span>'})();
  $('#h-kpi').innerHTML=[['Cliente paga',sel.total],['Usted recibe',sel.recibe],['Ganancia neta',sel.neta]].map(function(k,i){return '<div class="kpi'+(i===2?' sel':'')+'"><div class="l">'+k[0]+'</div><div class="n">'+usd(r2(k[1]))+'</div></div>'}).join('');
  $('#h-tab').innerHTML='<h3>Lo que paga el cliente</h3><table>'+th+'<tbody>'+[
   ['Honorarios operativos',function(e){return e.op}],
@@ -838,6 +844,7 @@ function fichaCliente(id){
  if(!nuevo&&c.mailN==null&&c.mail)c.mailN=c.mail;
  var tit=function(t){return '<div class="full" style="margin-top:6px"><h3 style="margin:0">'+t+'</h3></div>'};
  b.innerHTML='<button class="btn sec" id="r-back" type="button" style="min-height:34px;padding:4px 12px;margin-bottom:10px">← Clientes</button>'+
+ (nuevo?'':'<div class="cli-top"><div class="cli-n">'+esc(c.nom||'')+'</div><div class="hint" style="margin:0 0 8px">'+esc(c.cod)+' · '+esc(c.mat||'')+' · '+casos(c.id).length+' caso'+(casos(c.id).length===1?'':'s')+'</div><div class="row" style="gap:6px"><button type="button" class="btn mini" data-q="cas">Ver casos ('+casos(c.id).length+')</button><button type="button" class="btn sec mini" data-q="ncas">+ Nuevo caso</button><button type="button" class="btn sec mini" data-q="prf">Proforma</button>'+(c.tel?'<a class="btn sec mini" href="https://wa.me/'+telWa(c.tel)+'" target="_blank" rel="noopener">WhatsApp</a>':'')+'</div></div>')+
  '<div class="card"><div class="row" style="justify-content:space-between"><b>'+(nuevo?'Nuevo cliente':esc(c.cod))+'</b>'+(nuevo?'':chip(EST_CLI[estCli(c)][0],EST_CLI[estCli(c)][1],EST_CLI[estCli(c)][2]))+'</div><div class="grid" style="margin-top:6px">'+
   tit('Datos personales')+
   sel('c_tp','Tipo de cliente',c.tp||'natural',[['natural','Persona natural'],['juridica','Persona jurídica']])+inp('c_ced','Cédula, RUC o pasaporte',c.ced,null,{attr:'inputmode="numeric"'})+
@@ -867,6 +874,7 @@ function fichaCliente(id){
  '<div class="msg" id="c_msg"></div>'+
  (nuevo?'':'<div class="card" style="margin-top:14px"><div class="row" style="justify-content:space-between"><h3 style="margin:0">Casos</h3><button class="btn" id="c_ncas" type="button" style="min-height:36px;padding:6px 12px">Nuevo caso</button></div><div id="c_cas" style="margin-top:8px"></div></div>')+
  (nuevo||!(c.tel)?'':'<div class="row" style="margin-top:10px"><a class="btn sec" href="tel:'+esc(c.tel)+'">Llamar '+esc(c.tel)+'</a><a class="btn sec" target="_blank" rel="noopener" href="https://wa.me/'+telWa(c.tel)+'">WhatsApp</a></div>');
+ $$('#r-body [data-q]').forEach(function(x){x.onclick=function(){var q=x.dataset.q;if(q==='cas'){var e=$('#c_cas');if(e)e.closest('.card').scrollIntoView({behavior:'smooth',block:'start'})}else if(q==='ncas'){if($('#c_ncas'))$('#c_ncas').click()}else if(q==='prf'){if($('#c_prf'))$('#c_prf').click()}}});
  $('#r-back').onclick=function(){R.sel=null;vista()};
  var tpSync=function(){$('#c_rep').closest('div').hidden=$('#c_tp').value!=='juridica'};$('#c_tp').onchange=tpSync;tpSync();
  $('#c_priv').onchange=function(){if(this.checked&&!$('#c_privF').value)$('#c_privF').value=hoyISO()};
@@ -894,16 +902,56 @@ function fichaCliente(id){
 function msgC(t,ok){var m=$('#c_msg');if(m){m.className='msg '+(ok?'o':'e');m.textContent=t}}
 function listaCasos(c){
  var box=$('#c_cas');if(!box)return;var L=casos(c.id).sort(function(a,b){return (b.fi||'').localeCompare(a.fi||'')});
- box.innerHTML=(R.cas?'<div id="c_form"></div>':'')+(L.length?L.map(function(k){var pa=proxAud(k.id);return '<div data-k="'+k.id+'" style="padding:10px 0;border-bottom:1px solid var(--linea);cursor:pointer"><div class="row" style="justify-content:space-between;flex-wrap:nowrap"><div style="min-width:0"><b>'+esc(k.cod)+'</b>'+(k.causa?' · '+esc(k.causa):'')+'<div class="hint" style="margin:2px 0 0">'+esc(k.mat||'')+(k.proc?' · '+esc(k.proc):'')+' · '+esc(k.rol||'')+(depTxt(k)?' · '+esc(depTxt(k)):'')+' · inicio '+esc(k.fi||'—')+(k.fc?' · cierre '+esc(k.fc):'')+'</div>'+(pa?'<div style="font-size:13px;font-weight:700;color:var(--olivo)">Próxima audiencia: '+fmtFH(pa.f+'T'+(pa.h||'00:00'))+' · '+esc(pa.tipo||'')+'</div>':'')+'</div><div style="flex:none">'+chip(EST_CAS[k.est]||k.est,k.est==='activo'?'#2F6B3A':'#5B6068',k.est==='activo'?'#E5F0E4':'#ECEAE2')+'</div></div></div>'}).join(''):(R.cas?'':'<p class="hint">Sin casos registrados.</p>'));
+ box.innerHTML=(R.cas?'<div id="c_form"></div>':'')+(L.length?L.map(function(k){var pa=proxAud(k.id);return '<div data-k="'+k.id+'" style="padding:10px 0;border-bottom:1px solid var(--linea);cursor:pointer"><div class="row" style="justify-content:space-between;flex-wrap:nowrap"><div style="min-width:0"><b>'+esc(k.cod)+'</b>'+(k.causa?' · '+esc(k.causa):'')+(causaPorK(k.tc)?'<div style="font-size:13px;font-weight:600;margin-top:2px">'+esc(causaPorK(k.tc).n)+'</div>':'')+'<div class="hint" style="margin:2px 0 0">'+esc(k.mat||'')+(k.proc?' · '+esc(k.proc):'')+' · '+esc(k.rol||'')+(depTxt(k)?' · '+esc(depTxt(k)):'')+' · inicio '+esc(k.fi||'—')+(k.fc?' · cierre '+esc(k.fc):'')+'</div>'+(pa?'<div style="font-size:13px;font-weight:700;color:var(--olivo)">Próxima audiencia: '+fmtFH(pa.f+'T'+(pa.h||'00:00'))+' · '+esc(pa.tipo||'')+'</div>':'')+'</div><div style="flex:none">'+chip(EST_CAS[k.est]||k.est,k.est==='activo'?'#2F6B3A':'#5B6068',k.est==='activo'?'#E5F0E4':'#ECEAE2')+'</div></div></div>'}).join(''):(R.cas?'':'<p class="hint">Sin casos registrados.</p>'));
  $$('#c_cas [data-k]').forEach(function(d){d.onclick=function(){R.cas=d.dataset.k;listaCasos(c);$('#c_form').scrollIntoView({behavior:'smooth'})}});
  if(R.cas)formCaso(c,R.cas);
 }
+/* ---------- tipos de causa con su fundamento normativo (verificado con los códigos del proyecto, nov-2026) ---------- */
+var CAUSAS=[
+ {k:'ali',mat:'Familia',n:'Alimentos (fijación, aumento o reducción)',proc:'Sumario',f:'CONA Libro II, Título V reformado: arts. innumerados 2, 4, 5, 8, 9 y 15 (pensión provisional y Tabla de Pensiones Mínimas) · Constitución arts. 44, 45, 69 · COGEP art. 332.3 (sumario; sin patrocinio obligatorio) y 333.3 (10 días para contestar)'},
+ {k:'pat',mat:'Familia',n:'Alimentos con investigación de paternidad (ADN)',proc:'Sumario',f:'CONA Título V reformado: arts. innumerados 9, 10 y 11 (ADN y presunción por negativa) · COGEP art. 332.3'},
+ {k:'ten',mat:'Familia',n:'Tenencia',proc:'Sumario',f:'CONA arts. 106 (reglas), 118 (procedencia), 119 (no causa ejecutoria) y 120 (ejecución inmediata) · COGEP arts. 332.3 y 333'},
+ {k:'vis',mat:'Familia',n:'Régimen de visitas',proc:'Sumario',f:'CONA arts. 122 y 123 · COGEP arts. 332.3 y 333'},
+ {k:'ppot',mat:'Familia',n:'Suspensión o privación de la patria potestad',proc:'Sumario',f:'CONA arts. 105, 112 y 113 (sustituido, RO 347-S de 14-ago-2026) · Código Civil arts. 303 y 304 · COGEP art. 332.3'},
+ {k:'divc',mat:'Familia',n:'Divorcio contencioso',proc:'Sumario',f:'Código Civil art. 110 (nueve causales) y art. 124 (prescripción de un año) · COGEP art. 332.4 (resolver antes alimentos, tenencia y visitas)'},
+ {k:'divm',mat:'Familia',n:'Divorcio o terminación de unión de hecho por mutuo consentimiento',proc:'Voluntario o notarial',f:'Código Civil arts. 106 y 107 · COGEP arts. 334.3 y 340 (vía judicial si hay hijos dependientes sin situación resuelta); si no, trámite notarial'},
+ {k:'uh',mat:'Familia',n:'Reconocimiento de unión de hecho',proc:'Ordinario',f:'Código Civil arts. 222 y 223 (presunción a los dos años) · COGEP art. 289'},
+ {k:'part',mat:'Civil',n:'Partición de bienes',proc:'Sumario',f:'Código Civil arts. 1338 y ss.; 200 (sociedad conyugal) y 2213 (comunidad) · COGEP art. 332.10 (partición no voluntaria)'},
+ {k:'rei',mat:'Civil',n:'Reivindicación',proc:'Ordinario',f:'Código Civil art. 933 y ss. · COGEP arts. 289 y 146 (inscripción de la demanda)'},
+ {k:'pres',mat:'Civil',n:'Prescripción extraordinaria adquisitiva de dominio',proc:'Ordinario',f:'Código Civil arts. 2392, 2398, 2410 y 2411 (quince años) · COGEP arts. 289 y 146 (inscripción de la demanda)'},
+ {k:'pos',mat:'Civil',n:'Acciones posesorias, linderos, despojo',proc:'Sumario',f:'Código Civil arts. 960 y ss. (acciones posesorias) · COGEP art. 332.2'},
+ {k:'res',mat:'Civil',n:'Resolución o cumplimiento de contrato con daños',proc:'Ordinario',f:'Código Civil art. 1505 (condición resolutoria tácita) · COGEP art. 289'},
+ {k:'nul',mat:'Civil',n:'Nulidad de contrato',proc:'Ordinario',f:'Código Civil arts. 1698, 1699 (absoluta) y 1700 (relativa) · COGEP art. 289'},
+ {k:'dan',mat:'Civil',n:'Daños y perjuicios, daño moral',proc:'Ordinario',f:'Código Civil arts. 2214, 2229, 2232 y 2235 (prescripción de cuatro años) · COGEP art. 289'},
+ {k:'inq',mat:'Civil',n:'Inquilinato: terminación, desalojo y cobro de cánones',proc:'Sumario',f:'Ley de Inquilinato (causales de terminación) · COGEP arts. 332.1 y 356.4 (monitorio por cánones vencidos)'},
+ {k:'mon',mat:'Cartera',n:'Cobro de deuda hasta 50 SBU (monitorio)',proc:'Monitorio',f:'COGEP arts. 356 a 361 (sin abogado hasta 3 SBU, art. 357; 15 días para pagar u oponerse, art. 358) · Código Civil arts. 2414 y 2415 (prescripción)'},
+ {k:'eje',mat:'Cartera',n:'Cobro con título ejecutivo (pagaré, letra, cheque)',proc:'Ejecutivo',f:'COGEP arts. 347 a 355 (15 días para contestar, art. 351; excepciones taxativas, art. 353) · Código Civil art. 2415'},
+ {k:'hon',mat:'Cartera',n:'Cobro de honorarios profesionales',proc:'Sumario',f:'COGEP art. 332.6 · Código Civil art. 2421 (prescriben en tres años)'},
+ {k:'desp',mat:'Laboral',n:'Despido intempestivo y liquidación',proc:'Sumario',f:'Código del Trabajo arts. 188 (indemnización), 185 (bonificación por desahucio) y 635 (prescripción de tres años) · COGEP art. 332.1'},
+ {k:'inef',mat:'Laboral',n:'Despido ineficaz (embarazada, lactancia o dirigente sindical)',proc:'Sumario',f:'Código del Trabajo arts. 187 y 195.1 a 195.3 · COGEP arts. 332.8 y 333.3 (10 días para contestar; audiencia en 20 días)'},
+ {k:'vb',mat:'Laboral',n:'Visto bueno o su impugnación',proc:'Administrativo / sumario',f:'Código del Trabajo arts. 172 y 173 (causales), 183 (calificación por el inspector) y 636 (prescripción de un mes para el empleador)'},
+ {k:'des',mat:'Laboral',n:'Desahucio',proc:'Administrativo',f:'Código del Trabajo arts. 184 (aviso con quince días) y 185 (25 % por año de servicio)'},
+ {k:'est',mat:'Penal',n:'Estafa',proc:'Ordinario penal',f:'COIP art. 186 · COIP arts. 580 y ss. (investigación previa; plazos del art. 585)'},
+ {k:'abc',mat:'Penal',n:'Abuso de confianza',proc:'Ordinario penal',f:'COIP art. 187'},
+ {k:'rob',mat:'Penal',n:'Robo',proc:'Ordinario o directo',f:'COIP art. 189 (sustituido, RO 279-S de 29-mar-2023)'},
+ {k:'hur',mat:'Penal',n:'Hurto',proc:'Ordinario o directo',f:'COIP art. 196'},
+ {k:'vio',mat:'Penal',n:'Violencia física o psicológica contra la mujer o el núcleo familiar',proc:'Ordinario penal',f:'COIP arts. 155, 156 y 157 · COFJ art. 232 (jueces especializados)'},
+ {k:'viocv',mat:'Penal',n:'Contravención de violencia intrafamiliar',proc:'Expedito',f:'COIP art. 159 · COFJ art. 232'},
+ {k:'trm',mat:'Penal-Tránsito',n:'Muerte culposa en accidente de tránsito',proc:'Ordinario penal',f:'COIP arts. 376 (embriaguez) y 377'},
+ {k:'trl',mat:'Penal-Tránsito',n:'Lesiones en accidente de tránsito',proc:'Ordinario o directo',f:'COIP art. 379 (remite al art. 152, reducción de un cuarto)'},
+ {k:'trc',mat:'Penal-Tránsito',n:'Impugnación de boleta (contravención de tránsito)',proc:'Expedito',f:'COIP art. 644 (tres días desde la citación)'},
+ {k:'ap',mat:'Otra',n:'Acción de protección',proc:'Garantía jurisdiccional',f:'Constitución art. 88 · LOGJCC arts. 39, 40 y 41 · apelación en 3 días (art. 24)'},
+ {k:'aep',mat:'Otra',n:'Acción extraordinaria de protección',proc:'Corte Constitucional',f:'Constitución arts. 94 y 437 · LOGJCC arts. 58 a 60 (20 días desde la notificación)'}
+];
+function causaPorK(k){return CAUSAS.filter(function(c){return c.k===k})[0]||null}
+function causasDe(mat){var m=(mat||'').toLowerCase();return CAUSAS.filter(function(c){var x=c.mat.toLowerCase();return !m||x===m||(m==='civil'&&x==='cartera')||(m==='deudas'&&x==='cartera')||(m==='penal'&&x==='penal-tránsito')||(m==='penal-tránsito'&&x==='penal')||(m==='fiscalía'&&x.indexOf('penal')===0)})}
+function fundBox(c){return c?'<div class="fund"><div class="estado">Fundamento normativo · '+esc(c.proc)+'</div><div>'+esc(c.f)+'</div><div class="hint" style="margin:4px 0 0">Verifique la vigencia antes de citar. Revisado con los textos del proyecto en noviembre de 2026.</div></div>':''}
 function formCaso(c,kid){
  var nuevo=kid==='nuevo',k=nuevo?{id:uid(),cli:c.id,mat:c.mat,est:'activo',pat:c.vin==='consulta'?'total':c.vin,fi:hoyISO(),rol:'Actor',dj:''}:R.data.casos.filter(function(x){return x.id===kid})[0];
  migraDep(k);
  var f=$('#c_form');
  f.innerHTML='<div class="card" style="border-color:var(--oro);margin:6px 0 10px"><h3>'+(nuevo?'Nuevo caso':esc(k.cod))+'</h3><div class="grid">'+
-  inp('k_causa','Número de causa / proceso',k.causa,null,{full:1,attr:'placeholder="Ej.: 09209-2026-01234"'})+sel('k_mat','Materia',k.mat,MATERIAS)+inp('k_proc','Tipo de proceso o trámite',k.proc,null,{attr:'placeholder="Ordinario, sumario, versión…"'})+
+  inp('k_causa','Número de causa / proceso',k.causa,null,{full:1,attr:'placeholder="Ej.: 09209-2026-01234"'})+sel('k_mat','Materia',k.mat,MATERIAS)+'<div><label for="k_tc">Tipo de causa</label><select id="k_tc"></select></div><div class="full" id="k_fund"></div>'+inp('k_proc','Tipo de proceso o trámite',k.proc,null,{attr:'placeholder="Ordinario, sumario, versión…"'})+
   sel('k_rol','Calidad del cliente',k.rol,ROL)+inp('k_contra','Contraparte',k.contra)+
   sel('k_dj','Dependencia judicial o fiscal',k.dj||'',[['','—']].concat(DEPS))+inp('k_djO','Otra dependencia (especifique; suele estar fuera de la ciudad)',k.djO)+
   inp('k_juez','Juez o fiscal',k.juez)+inp('k_sec','Secretario',k.sec)+
@@ -915,13 +963,16 @@ function formCaso(c,kid){
  '</div><div class="row" style="margin-top:8px"><button class="btn" id="k_save" type="button">Guardar caso</button><button class="btn sec" id="k_x" type="button">Cancelar</button>'+(nuevo?'':'<button class="btn sec" id="k_aud" type="button">Registrar audiencia</button><button class="btn sec" id="k_del" type="button" style="color:var(--mal);border-color:var(--mal)">Eliminar</button>')+'</div><div class="msg" id="k_msg"></div></div>';
  var m=function(t,ok){$('#k_msg').className='msg '+(ok?'o':'e');$('#k_msg').textContent=t};
  var djs=function(){$('#k_djO').closest('div').hidden=$('#k_dj').value!=='Otro'};$('#k_dj').onchange=djs;djs();
+ var tcs=function(keep){var L=causasDe(val('k_mat')),cur=keep?k.tc:val('k_tc');$('#k_tc').innerHTML='<option value="">— Elija para ver su fundamento —</option>'+L.map(function(x){return '<option value="'+x.k+'"'+(x.k===cur?' selected':'')+'>'+esc(x.n)+'</option>'}).join('');$('#k_fund').innerHTML=fundBox(causaPorK(val('k_tc')))};
+ $('#k_mat').addEventListener('change',function(){tcs(false)});
+ $('#k_tc').onchange=function(){var c=causaPorK(this.value);$('#k_fund').innerHTML=fundBox(c);if(c&&!val('k_proc'))$('#k_proc').value=c.proc};tcs(true);
  $('#k_x').onclick=function(){R.cas=null;listaCasos(c)};
  $('#k_save').onclick=function(){
   if(!val('k_fi'))return m('La fecha de inicio es obligatoria.');
   if(val('k_est')==='cerrado'&&!val('k_fc'))$('#k_fc').value=hoyISO();
   if(val('k_fc')&&val('k_fc')<val('k_fi'))return m('La fecha de cierre no puede ser anterior a la de inicio.');
   var o=nuevo?{id:k.id,cli:c.id,cod:sigCod('CAS')}:k;
-  ['causa','mat','proc','rol','contra','dj','djO','juez','sec','dep','pat','est','fi','fc','hon','prf','res','notas'].forEach(function(x){o[x]=val('k_'+x)});delete o.unidad;delete o.unidadO;delete o.fis;o.upd=Date.now();
+  ['causa','mat','tc','proc','rol','contra','dj','djO','juez','sec','dep','pat','est','fi','fc','hon','prf','res','notas'].forEach(function(x){o[x]=val('k_'+x)});delete o.unidad;delete o.unidadO;delete o.fis;o.upd=Date.now();
   if(nuevo)R.data.casos.push(o);
   if(o.est==='activo'&&c.est!=='activo'){c.est='activo';c.upd=Date.now()}
   guardarCambio().then(function(){R.cas=null;vista();msgC('Caso '+o.cod+' guardado.',1)});
@@ -1665,7 +1716,7 @@ function cajaCliente(){
  if(c){var fac=c.fNom||c.fId;b.innerHTML='<div style="border:1px solid var(--linea);border-radius:8px;padding:10px"><div class="row" style="justify-content:space-between;flex-wrap:nowrap"><div style="min-width:0"><b>'+esc(c.nom)+'</b> <span class="hint">'+esc(c.cod)+'</span><div class="hint" style="margin:2px 0 0">'+[c.ced&&('C.I./RUC '+c.ced),c.tel,c.mailN||c.mail,c.dir].filter(Boolean).map(esc).join(' · ')+'</div>'+(fac?'<div class="hint" style="margin:2px 0 0">Factura a: '+esc(c.fNom||c.nom)+' · '+esc(c.fId||c.ced||'')+'</div>':'')+'</div><button class="btn sec" id="f-chg" type="button" style="min-height:32px;padding:4px 10px;font-size:12.5px;flex:none">Cambiar</button></div></div>'+
   '<label class="chk" style="margin-top:6px"><input type="checkbox" id="f-age"'+((PF.age!=null?PF.age:c.fAge)?' checked':'')+'> Es agente de retención (para el cálculo de retenciones)</label>';
   $('#f-chg').onclick=function(){PF.cid=null;PF.age=null;cajaCliente();calcPrf(true)};$('#f-age').onchange=function(){PF.age=this.checked;calcPrf(true)};return}
- b.innerHTML='<div class="row" style="flex-wrap:nowrap"><input id="f-bus" placeholder="Buscar por nombre, cédula o código" style="flex:1;min-width:0" autocomplete="off"><button class="btn sec" id="f-ver" type="button" style="flex:none">'+(PF.verLista?'Ocultar':'Visualizar')+'</button><button class="btn sec" id="f-ncli" type="button" style="flex:none">Nuevo</button></div><div id="f-res-cli" style="margin-top:6px"></div><p class="hint">Formato: Código – NOMBRES APELLIDOS – CÉDULA – CONTACTO – CORREO</p>';
+ b.innerHTML='<input id="f-bus" type="search" placeholder="🔎 Buscar cliente por nombre, cédula o código" autocomplete="off"><div class="row" style="margin-top:8px;gap:6px"><button class="btn sec mini" id="f-ver" type="button">'+(PF.verLista?'Ocultar lista':'Ver todos los clientes')+'</button><button class="btn sec mini" id="f-ncli" type="button">+ Nuevo cliente</button></div><div id="f-res-cli" style="margin-top:6px"></div><p class="hint">Formato: Código – NOMBRES APELLIDOS – CÉDULA – CONTACTO – CORREO</p>';
  var pinta=function(){var q=($('#f-bus').value||'').toLowerCase();
   if(!q&&!PF.verLista){$('#f-res-cli').innerHTML='';return}
   var L=clientes().filter(function(x){return !q||(x.nom+' '+(x.ced||'')+' '+x.cod).toLowerCase().indexOf(q)>-1}).sort(function(a,b){return (a.cod||'').localeCompare(b.cod||'')});
@@ -1799,38 +1850,57 @@ function PH_(t){return '['+t+']'}
 function demanda(o){
  return [
   ['', o.juez||'SEÑOR(A) JUEZ(A) DE LA UNIDAD JUDICIAL '+PH_('ESPECIALIDAD')+' CON SEDE EN EL CANTÓN GUAYAQUIL:'],
-  ['', '{actor}, de nacionalidad '+PH_('ecuatoriana')+', con cédula de ciudadanía No. {ced}, de estado civil '+PH_('ESTADO CIVIL')+', de '+PH_('EDAD')+' años de edad, de profesión u ocupación '+PH_('OCUPACIÓN')+', domiciliado(a) en {dir}, con correo electrónico {mail}, por mis propios y personales derechos'+(o.calidad||'')+', ante usted comparezco y presento la siguiente demanda'+(o.tipo?' de '+o.tipo:'')+':'],
+  ['', '{actor}, de nacionalidad '+PH_('ecuatoriana')+', con cédula de ciudadanía No. {ced}, de estado civil '+PH_('ESTADO CIVIL')+', de '+PH_('EDAD')+' años de edad, de profesión u ocupación '+PH_('OCUPACIÓN')+', domiciliado(a) en {dir}, con correo electrónico {mail}'+(o.ruc?', RUC No. '+PH_('RUC'):'')+', por mis propios y personales derechos'+(o.calidad||'')+', ante usted comparezco y presento la siguiente demanda'+(o.tipo?' de '+o.tipo:'')+':'],
   ['PRIMERO.- DEL DEMANDADO Y LUGAR DE CITACIÓN', 'El nombre completo del demandado es '+PH_('NOMBRES Y APELLIDOS DEL DEMANDADO')+', con cédula de ciudadanía No. '+PH_('CÉDULA')+', a quien se citará en '+PH_('DIRECCIÓN EXACTA, REFERENCIAS Y CANTÓN')+'. Correo electrónico conocido: '+PH_('CORREO, SI SE CONOCE')+'.'+(o.dem||'')],
   ['SEGUNDO.- LOS HECHOS', o.hechos||'1. '+PH_('HECHO 1: narración detallada y pormenorizada')+'\n2. '+PH_('HECHO 2')+'\n3. '+PH_('HECHO 3')],
   ['TERCERO.- FUNDAMENTOS DE DERECHO', (o.derecho||'Fundamento la presente demanda en '+PH_('NORMAS APLICABLES'))+'. '+PH_('Verifique y complete la cita de las normas.')],
   ['CUARTO.- ANUNCIO DE LOS MEDIOS DE PRUEBA', (o.prueba||'Documental: '+PH_('detalle de documentos que se adjuntan')+'.\nTestimonial: '+PH_('nombres de los testigos y hechos sobre los que declararán')+'.\nPericial: '+PH_('si aplica')+'.')+'\nAcceso judicial a la prueba: '+PH_('solicite fundadamente, si es del caso, la prueba que no está a su alcance')+'.'],
   ['QUINTO.- PRETENSIÓN', o.pretension||'Con los antecedentes expuestos, solicito que en sentencia se disponga: '+PH_('PRETENSIÓN CLARA Y PRECISA')+'.'],
   ['SEXTO.- CUANTÍA', o.cuantia||'La cuantía de la presente causa es de '+PH_('USD 0,00 / INDETERMINADA')+'.'],
-  ['SÉPTIMO.- PROCEDIMIENTO', 'La presente causa deberá sustanciarse mediante procedimiento '+(o.proc||PH_('ORDINARIO / SUMARIO / EJECUTIVO / MONITORIO'))+', conforme al Código Orgánico General de Procesos.'],
-  ['OCTAVO.- NOTIFICACIONES Y AUTORIZACIÓN', 'Las notificaciones que me correspondan las recibiré en el casillero judicial electrónico '+PH_('CASILLERO')+' y en el correo electrónico {abmail} de mi abogado defensor, {abogado}, a quien autorizo para que suscriba cuanto escrito sea necesario en defensa de mis intereses.'],
+  ['SÉPTIMO.- PROCEDIMIENTO', 'La presente causa deberá sustanciarse mediante procedimiento '+(o.proc||PH_('ORDINARIO / SUMARIO / EJECUTIVO / MONITORIO'))+', conforme '+(o.procArt||'al Código Orgánico General de Procesos')+'.'],
+  ['OCTAVO.- DOCUMENTOS QUE SE ACOMPAÑAN (COGEP art. 143)', (o.docs||'1. Copia de la cédula de ciudadanía del actor.\n2. '+PH_('Habilitantes o poder, si actúa por otra persona')+'.\n3. '+PH_('Prueba documental anunciada')+'.')],
+  ['NOVENO.- NOTIFICACIONES Y AUTORIZACIÓN', 'Las notificaciones que me correspondan las recibiré en el casillero judicial electrónico '+PH_('CASILLERO')+' y en el correo electrónico {abmail} de mi abogado defensor, {abogado}, a quien autorizo para que suscriba cuanto escrito sea necesario en defensa de mis intereses.'],
   ['', 'Firmo con mi abogado defensor.'],
   ['FIRMAS', '{actor}\nC.C. {ced}\n\n\n{abogado}\n{matricula}']
  ];
 }
 var PLANT=[
  {id:'dem',mat:'General',n:'Demanda (COGEP art. 142)',f:function(){return demanda({})}},
- {id:'ali',mat:'Familia',n:'Demanda de alimentos',f:function(){return demanda({tipo:'fijación de pensión alimenticia',calidad:' y por los que represento de mi(s) hijo(s) '+PH_('NOMBRES Y EDADES'),hechos:'1. Fruto de la relación con el demandado procreamos a '+PH_('NOMBRES, FECHAS DE NACIMIENTO')+'.\n2. El demandado no ha cumplido con su obligación de alimentos desde '+PH_('FECHA')+'.\n3. El demandado percibe ingresos aproximados de '+PH_('USD')+' mensuales como '+PH_('OCUPACIÓN Y LUGAR DE TRABAJO')+'.',derecho:'Fundamento la demanda en los arts. 44, 45 y 69 de la Constitución de la República, en las normas del Título V del Libro Segundo del Código de la Niñez y Adolescencia sobre el derecho de alimentos, y en las normas del procedimiento sumario del COGEP',prueba:'Documental: partidas de nacimiento, certificado de ingresos o mecanizado del IESS del demandado, comprobantes de gastos del alimentado.\nTestimonial: '+PH_('si aplica')+'.',pretension:'Solicito que se fije una pensión alimenticia a favor de '+PH_('NOMBRES')+' de '+PH_('USD')+' mensuales, conforme a la Tabla de Pensiones Alimenticias Mínimas vigente, y que se disponga el pago de pensiones provisionales desde la presentación de la demanda.',cuantia:'Por su naturaleza, la cuantía es indeterminada.',proc:'SUMARIO'})}},
- {id:'div',mat:'Familia',n:'Divorcio contencioso',f:function(){return demanda({tipo:'divorcio',hechos:'1. Contraje matrimonio con el demandado el '+PH_('FECHA')+' en '+PH_('LUGAR')+'.\n2. '+PH_('HECHOS QUE CONFIGURAN LA CAUSAL')+'.\n3. Hijos menores: '+PH_('NOMBRES Y EDADES O "NO EXISTEN"')+'.',derecho:'Fundamento la demanda en la causal '+PH_('NÚMERO')+' del art. 110 del Código Civil y en las normas del procedimiento sumario del COGEP',prueba:'Documental: inscripción de matrimonio, partidas de nacimiento de los hijos.\nTestimonial: '+PH_('testigos de la causal')+'.',pretension:'Solicito que en sentencia se declare disuelto el vínculo matrimonial y se resuelva la situación de los hijos menores (tenencia, alimentos y régimen de visitas).',cuantia:'La cuantía es indeterminada.',proc:'SUMARIO'})}},
- {id:'des',mat:'Civil',n:'Inquilinato: terminación y desalojo',f:function(){return demanda({tipo:'terminación de contrato de arrendamiento y desalojo',hechos:'1. Mediante contrato de '+PH_('FECHA')+' di en arrendamiento al demandado el inmueble ubicado en '+PH_('DIRECCIÓN')+' por un canon mensual de '+PH_('USD')+'.\n2. El demandado adeuda '+PH_('NÚMERO')+' cánones / '+PH_('OTRA CAUSAL')+'.\n3. '+PH_('HECHO 3')+'.',derecho:'Fundamento la demanda en la Ley de Inquilinato, en especial en la causal de terminación '+PH_('ARTÍCULO Y LITERAL')+', y en las normas del procedimiento sumario del COGEP',prueba:'Documental: contrato de arrendamiento, registro en la Oficina de Inquilinato '+PH_('si aplica')+', comprobantes de pago o requerimientos.',pretension:'Solicito que se declare terminado el contrato de arrendamiento, se ordene el desalojo del inmueble y se condene al pago de los cánones adeudados de '+PH_('USD')+'.',cuantia:'La cuantía es de '+PH_('USD')+' (cánones adeudados).',proc:'SUMARIO'})}},
- {id:'rei',mat:'Civil',n:'Reivindicación',f:function(){return demanda({tipo:'reivindicación',hechos:'1. Soy propietario del inmueble ubicado en '+PH_('DIRECCIÓN, LINDEROS Y CLAVE CATASTRAL')+', según escritura inscrita el '+PH_('FECHA')+'.\n2. El demandado está en posesión del inmueble desde '+PH_('FECHA')+' sin título alguno.\n3. '+PH_('HECHO 3')+'.',derecho:'Fundamento la demanda en el art. 933 y siguientes del Código Civil (acción reivindicatoria) y en las normas del procedimiento ordinario del COGEP',prueba:'Documental: escritura inscrita, certificado de gravámenes del Registro de la Propiedad, certificado catastral.\nInspección judicial del inmueble.\nTestimonial y pericial: '+PH_('si aplica')+'.',pretension:'Solicito que se declare que soy propietario del inmueble y se ordene al demandado restituirlo en el plazo que usted fije, con frutos y costas.',cuantia:'La cuantía es de '+PH_('USD (avalúo del inmueble)')+'.',proc:'ORDINARIO'})}},
- {id:'pre',mat:'Civil',n:'Prescripción adquisitiva de dominio',f:function(){return demanda({tipo:'prescripción extraordinaria adquisitiva de dominio',hechos:'1. Desde el '+PH_('FECHA')+' poseo de forma pública, pacífica, ininterrumpida y con ánimo de señor y dueño el inmueble ubicado en '+PH_('DIRECCIÓN, LINDEROS Y SUPERFICIE')+'.\n2. El inmueble consta inscrito a nombre de '+PH_('TITULAR REGISTRAL')+'.\n3. '+PH_('ACTOS DE POSESIÓN')+'.',derecho:'Fundamento la demanda en los arts. 2392, 2398, 2410 y 2411 del Código Civil y en las normas del procedimiento ordinario del COGEP',prueba:'Documental: certificado del Registro de la Propiedad, pagos de impuestos prediales, planos.\nTestimonial: '+PH_('vecinos')+'.\nInspección judicial.',pretension:'Solicito que en sentencia se declare que he adquirido por prescripción extraordinaria el dominio del inmueble y se ordene su inscripción en el Registro de la Propiedad.',cuantia:'La cuantía es de '+PH_('USD (avalúo catastral)')+'.',proc:'ORDINARIO',dem:' Se contará además con quienes se crean con derecho, mediante citación por la prensa.'})}},
- {id:'mon',mat:'Civil / Cartera',n:'Procedimiento monitorio (cobro)',f:function(){return demanda({tipo:'procedimiento monitorio',hechos:'1. El demandado me adeuda la cantidad de '+PH_('USD')+' por concepto de '+PH_('ORIGEN DE LA DEUDA')+', según '+PH_('DOCUMENTO')+'.\n2. La deuda es líquida, exigible y de plazo vencido desde '+PH_('FECHA')+'.',derecho:'Fundamento la petición en las normas del procedimiento monitorio del COGEP (art. 356 y siguientes)',prueba:'Documental: '+PH_('documento que prueba la deuda')+'.',pretension:'Solicito que se requiera al demandado el pago de '+PH_('USD')+', más intereses y costas.',cuantia:'La cuantía es de '+PH_('USD')+'.',proc:'MONITORIO'})}},
- {id:'lab',mat:'Laboral',n:'Demanda laboral',f:function(){return demanda({tipo:'reclamación laboral',hechos:'1. Trabajé para el demandado desde el '+PH_('FECHA')+' hasta el '+PH_('FECHA')+' como '+PH_('CARGO')+', con una remuneración mensual de '+PH_('USD')+'.\n2. La relación terminó por '+PH_('DESPIDO INTEMPESTIVO / OTRA CAUSA')+'.\n3. No se me han pagado '+PH_('RUBROS')+'.',derecho:'Fundamento la demanda en el Código del Trabajo, en especial en '+PH_('ARTÍCULOS')+', y en las normas del procedimiento sumario del COGEP',prueba:'Documental: contrato, roles de pago, historial de aportes del IESS, acta de finiquito '+PH_('si existe')+'.\nTestimonial: '+PH_('compañeros de trabajo')+'.',pretension:'Solicito el pago de los siguientes rubros: '+PH_('DETALLE Y VALORES')+', más intereses y costas.',cuantia:'La cuantía es de '+PH_('USD')+'.',proc:'SUMARIO'})}},
+ {id:'ali',mat:'Familia',n:'Demanda de alimentos',f:function(){return demanda({tipo:'fijación de pensión alimenticia',calidad:' y por los que represento de mi(s) hijo(s) '+PH_('NOMBRES Y EDADES'),hechos:'1. Fruto de la relación con el demandado procreamos a '+PH_('NOMBRES, FECHAS DE NACIMIENTO')+'.\n2. El demandado no ha cumplido con su obligación de alimentos desde '+PH_('FECHA')+'.\n3. El demandado percibe ingresos aproximados de '+PH_('USD')+' mensuales como '+PH_('OCUPACIÓN Y LUGAR DE TRABAJO')+'.',derecho:'Fundamento la demanda en los arts. 44, 45 y 69 de la Constitución de la República; en los arts. innumerados 2, 4, 5, 8, 9 y 15 del Título V del Libro Segundo del Código de la Niñez y Adolescencia (reformado), que regulan el derecho de alimentos, la pensión provisional y la Tabla de Pensiones Alimenticias Mínimas; y en el art. 332 numeral 3 del COGEP',procArt:'a los arts. 332.3 y 333 del COGEP',docs:'1. Copia de la cédula de ciudadanía de la actora.\n2. Partidas de nacimiento de los alimentarios.\n3. '+PH_('Certificado de ingresos o historial del IESS del demandado, si lo tiene')+'.\nNota: para alimentos basta el formulario del Consejo de la Judicatura y no es obligatorio el patrocinio (COGEP art. 332.3).',prueba:'Documental: partidas de nacimiento, certificado de ingresos o mecanizado del IESS del demandado, comprobantes de gastos del alimentado.\nTestimonial: '+PH_('si aplica')+'.',pretension:'Solicito que se fije una pensión alimenticia a favor de '+PH_('NOMBRES')+' de '+PH_('USD')+' mensuales, conforme a la Tabla de Pensiones Alimenticias Mínimas vigente, y que se disponga el pago de pensiones provisionales desde la presentación de la demanda.',cuantia:'Por su naturaleza, la cuantía es indeterminada.',proc:'SUMARIO'})}},
+ {id:'div',mat:'Familia',n:'Divorcio contencioso',f:function(){return demanda({tipo:'divorcio',hechos:'1. Contraje matrimonio con el demandado el '+PH_('FECHA')+' en '+PH_('LUGAR')+'.\n2. '+PH_('HECHOS QUE CONFIGURAN LA CAUSAL')+'.\n3. Hijos menores: '+PH_('NOMBRES Y EDADES O "NO EXISTEN"')+'.',derecho:'Fundamento la demanda en la causal '+PH_('NÚMERO')+' del art. 110 del Código Civil; la acción se propone dentro del año previsto en el art. 124 del mismo Código; y en el art. 332 numeral 4 del COGEP, por lo que solicito que se fije la pensión provisional de alimentos y se resuelva la situación de los hijos',prueba:'Documental: inscripción de matrimonio, partidas de nacimiento de los hijos.\nTestimonial: '+PH_('testigos de la causal')+'.',pretension:'Solicito que en sentencia se declare disuelto el vínculo matrimonial y se resuelva la situación de los hijos menores (tenencia, alimentos y régimen de visitas).',cuantia:'La cuantía es indeterminada.',proc:'SUMARIO',procArt:'a los arts. 332.4 y 333 del COGEP'})}},
+ {id:'des',mat:'Civil',n:'Inquilinato: terminación y desalojo',f:function(){return demanda({tipo:'terminación de contrato de arrendamiento y desalojo',hechos:'1. Mediante contrato de '+PH_('FECHA')+' di en arrendamiento al demandado el inmueble ubicado en '+PH_('DIRECCIÓN')+' por un canon mensual de '+PH_('USD')+'.\n2. El demandado adeuda '+PH_('NÚMERO')+' cánones / '+PH_('OTRA CAUSAL')+'.\n3. '+PH_('HECHO 3')+'.',derecho:'Fundamento la demanda en la Ley de Inquilinato, en especial en la causal de terminación '+PH_('ARTÍCULO Y LITERAL')+', y en el art. 332 numeral 1 del COGEP',procArt:'a los arts. 332.1 y 333 del COGEP',prueba:'Documental: contrato de arrendamiento, registro en la Oficina de Inquilinato '+PH_('si aplica')+', comprobantes de pago o requerimientos.',pretension:'Solicito que se declare terminado el contrato de arrendamiento, se ordene el desalojo del inmueble y se condene al pago de los cánones adeudados de '+PH_('USD')+'.',cuantia:'La cuantía es de '+PH_('USD')+' (cánones adeudados).',proc:'SUMARIO'})}},
+ {id:'rei',mat:'Civil',n:'Reivindicación',f:function(){return demanda({tipo:'reivindicación',hechos:'1. Soy propietario del inmueble ubicado en '+PH_('DIRECCIÓN, LINDEROS Y CLAVE CATASTRAL')+', según escritura inscrita el '+PH_('FECHA')+'.\n2. El demandado está en posesión del inmueble desde '+PH_('FECHA')+' sin título alguno.\n3. '+PH_('HECHO 3')+'.',derecho:'Fundamento la demanda en el art. 933 y siguientes del Código Civil (acción reivindicatoria) y en el art. 289 del COGEP. Solicito la inscripción de la demanda en el Registro de la Propiedad, conforme al art. 146 del COGEP',procArt:'a los arts. 289 y 291 del COGEP',prueba:'Documental: escritura inscrita, certificado de gravámenes del Registro de la Propiedad, certificado catastral.\nInspección judicial del inmueble.\nTestimonial y pericial: '+PH_('si aplica')+'.',pretension:'Solicito que se declare que soy propietario del inmueble y se ordene al demandado restituirlo en el plazo que usted fije, con frutos y costas.',cuantia:'La cuantía es de '+PH_('USD (avalúo del inmueble)')+'.',proc:'ORDINARIO'})}},
+ {id:'pre',mat:'Civil',n:'Prescripción adquisitiva de dominio',f:function(){return demanda({tipo:'prescripción extraordinaria adquisitiva de dominio',hechos:'1. Desde el '+PH_('FECHA')+' poseo de forma pública, pacífica, ininterrumpida y con ánimo de señor y dueño el inmueble ubicado en '+PH_('DIRECCIÓN, LINDEROS Y SUPERFICIE')+'.\n2. El inmueble consta inscrito a nombre de '+PH_('TITULAR REGISTRAL')+'.\n3. '+PH_('ACTOS DE POSESIÓN')+'.',derecho:'Fundamento la demanda en los arts. 2392, 2398, 2410 y 2411 del Código Civil (posesión de quince años) y en el art. 289 del COGEP. Solicito la inscripción de la demanda en el Registro de la Propiedad, conforme al art. 146 del COGEP. El inmueble se singulariza con precisión de ubicación, cabida y linderos, según el precedente de la Corte Nacional (Resolución 7, RO 61-S de 17-jun-2025)',procArt:'a los arts. 289 y 291 del COGEP',prueba:'Documental: certificado del Registro de la Propiedad, pagos de impuestos prediales, planos.\nTestimonial: '+PH_('vecinos')+'.\nInspección judicial.',pretension:'Solicito que en sentencia se declare que he adquirido por prescripción extraordinaria el dominio del inmueble y se ordene su inscripción en el Registro de la Propiedad.',cuantia:'La cuantía es de '+PH_('USD (avalúo catastral)')+'.',proc:'ORDINARIO',dem:' Se contará además con quienes se crean con derecho, mediante citación por la prensa.'})}},
+ {id:'mon',mat:'Civil / Cartera',n:'Procedimiento monitorio (cobro)',f:function(){return demanda({tipo:'procedimiento monitorio',hechos:'1. El demandado me adeuda la cantidad de '+PH_('USD')+' por concepto de '+PH_('ORIGEN DE LA DEUDA')+', según '+PH_('DOCUMENTO')+'.\n2. La deuda es líquida, exigible y de plazo vencido desde '+PH_('FECHA')+'.',derecho:'Fundamento la petición en los arts. 356, 357 y 358 del COGEP: la deuda es determinada, líquida, exigible y de plazo vencido, no consta en título ejecutivo y no excede de cincuenta salarios básicos unificados',procArt:'a los arts. 356 a 361 del COGEP',prueba:'Documental: '+PH_('documento que prueba la deuda')+'.',pretension:'Solicito que se requiera al demandado el pago de '+PH_('USD')+', más intereses y costas.',cuantia:'La cuantía es de '+PH_('USD')+'.',proc:'MONITORIO'})}},
+ {id:'lab',mat:'Laboral',n:'Demanda laboral',f:function(){return demanda({tipo:'reclamación laboral',hechos:'1. Trabajé para el demandado desde el '+PH_('FECHA')+' hasta el '+PH_('FECHA')+' como '+PH_('CARGO')+', con una remuneración mensual de '+PH_('USD')+'.\n2. La relación terminó por '+PH_('DESPIDO INTEMPESTIVO / OTRA CAUSA')+'.\n3. No se me han pagado '+PH_('RUBROS')+'.',derecho:'Fundamento la demanda en los arts. 188 (indemnización por despido intempestivo) y 185 (bonificación por desahucio) del Código del Trabajo, y en '+PH_('OTROS ARTÍCULOS: décimos, vacaciones, utilidades')+'; la acción se presenta dentro del plazo de tres años del art. 635 del mismo Código; y en el art. 332 numeral 1 del COGEP',procArt:'a los arts. 332.1 y 333 del COGEP',prueba:'Documental: contrato, roles de pago, historial de aportes del IESS, acta de finiquito '+PH_('si existe')+'.\nTestimonial: '+PH_('compañeros de trabajo')+'.',pretension:'Solicito el pago de los siguientes rubros: '+PH_('DETALLE Y VALORES')+', más intereses y costas.',cuantia:'La cuantía es de '+PH_('USD')+'.',proc:'SUMARIO'})}},
  {id:'con',mat:'General',n:'Contestación a la demanda',f:function(){return [
   ['', 'SEÑOR(A) JUEZ(A) DE LA UNIDAD JUDICIAL '+PH_('ESPECIALIDAD')+' CON SEDE EN EL CANTÓN GUAYAQUIL:'],
   ['', 'Causa No. {causa}'],
   ['', '{actor}, con cédula de ciudadanía No. {ced}, en mi calidad de demandado(a) dentro de la causa indicada, dentro del término legal comparezco y contesto la demanda en los siguientes términos:'],
-  ['PRIMERO.- PRONUNCIAMIENTO SOBRE LAS PRETENSIONES', PH_('Pronunciamiento expreso sobre cada pretensión y hecho de la demanda: los que se admiten y los que se niegan.')],
-  ['SEGUNDO.- EXCEPCIONES', PH_('Excepciones previas y de fondo que se deducen.')],
+  ['PRIMERO.- PRONUNCIAMIENTO SOBRE LAS PRETENSIONES (COGEP art. 151)', PH_('Pronunciamiento expreso sobre cada pretensión, sobre la veracidad de cada hecho y sobre la autenticidad de la prueba documental: indique categóricamente lo que admite y lo que niega.')],
+  ['SEGUNDO.- EXCEPCIONES', 'Excepciones previas (art. 153): '+PH_('incompetencia, falta de capacidad o personería, litispendencia, prescripción, caducidad, cosa juzgada, transacción, defecto en la forma de proponer la demanda u otras del art. 153')+'.\nExcepciones de fondo, con su fundamento fáctico: '+PH_('detalle')+'.'],
   ['TERCERO.- HECHOS Y FUNDAMENTOS', '1. '+PH_('HECHO 1')+'\n2. '+PH_('HECHO 2')+'\nFundamentos de derecho: '+PH_('NORMAS')+'.'],
-  ['CUARTO.- ANUNCIO DE PRUEBA', 'Documental: '+PH_('detalle')+'.\nTestimonial: '+PH_('si aplica')+'.\nPericial: '+PH_('si aplica')+'.'],
+  ['CUARTO.- ANUNCIO DE PRUEBA (art. 152)', 'Documental: '+PH_('detalle')+'.\nTestimonial: '+PH_('si aplica')+'.\nPericial: '+PH_('si aplica')+'.'],
   ['QUINTO.- RECONVENCIÓN', PH_('Si procede, plantee la reconvención con los requisitos de la demanda; si no, elimine este apartado.')],
   ['SEXTO.- NOTIFICACIONES', 'Las notificaciones las recibiré en el casillero judicial electrónico '+PH_('CASILLERO')+' y en el correo {abmail} de mi abogado defensor, {abogado}, a quien autorizo para que suscriba los escritos necesarios.'],
+  ['FIRMAS', '{actor}\nC.C. {ced}\n\n\n{abogado}\n{matricula}']]}},
+ {id:'ape',mat:'General',n:'Apelación fundamentada (COGEP arts. 256-257)',f:function(){return [
+  ['', 'SEÑOR(A) JUEZ(A) DE LA UNIDAD JUDICIAL '+PH_('ESPECIALIDAD')+' CON SEDE EN EL CANTÓN GUAYAQUIL:'],
+  ['', 'Causa No. {causa}'],
+  ['', '{actor}, dentro de la causa indicada, dentro del término de diez días previsto en el art. 257 del COGEP ('+PH_('cinco días en niñez y adolescencia')+'), interpongo y fundamento recurso de apelación de la '+PH_('SENTENCIA / AUTO')+' notificada el '+PH_('FECHA')+', en los siguientes términos:'],
+  ['PRIMERO.- PROVIDENCIA IMPUGNADA', PH_('Identifique la resolución, su fecha y la parte que causa agravio.')],
+  ['SEGUNDO.- AGRAVIOS Y FUNDAMENTOS', '1. '+PH_('AGRAVIO 1: error de hecho o de derecho y norma infringida')+'\n2. '+PH_('AGRAVIO 2')],
+  ['TERCERO.- PRUEBA EN SEGUNDA INSTANCIA', PH_('Solo para hechos nuevos o prueba obtenida después de la sentencia (art. 258); si no aplica, elimine este apartado.')],
+  ['CUARTO.- PRETENSIÓN', 'Solicito que el tribunal de la Corte Provincial revoque '+PH_('total o parcialmente')+' la resolución impugnada y '+PH_('PRETENSIÓN')+'.'],
+  ['QUINTO.- NOTIFICACIONES', 'Las seguiré recibiendo en los casilleros señalados.'],
+  ['FIRMAS', '{actor}\nC.C. {ced}\n\n\n{abogado}\n{matricula}']]}},
+ {id:'tra',mat:'Tránsito',n:'Impugnación de boleta de tránsito (COIP art. 644)',f:function(){return [
+  ['', 'SEÑOR(A) JUEZ(A) DE LA UNIDAD JUDICIAL DE CONTRAVENCIONES DE TRÁNSITO CON SEDE EN EL CANTÓN GUAYAQUIL:'],
+  ['', '{actor}, con cédula de ciudadanía No. {ced}, dentro del término de tres días contados desde la citación, conforme al art. 644 del Código Orgánico Integral Penal, impugno la boleta de citación No. '+PH_('NÚMERO')+' de '+PH_('FECHA')+', emitida por '+PH_('AGENTE / ENTIDAD')+', por la presunta contravención del art. '+PH_('ARTÍCULO DEL COIP')+'.'],
+  ['PRIMERO.- FUNDAMENTOS', '1. '+PH_('Por qué la contravención no se cometió o la boleta es improcedente')+'\n2. '+PH_('Vicios de la boleta, si los hay')],
+  ['SEGUNDO.- PRUEBA', 'Acompaño copia de la boleta de citación. '+PH_('Fotografías, videos, testigos u otros')+'.'],
+  ['TERCERO.- PETICIÓN', 'Solicito que se convoque a la audiencia de juzgamiento y se ratifique mi estado de inocencia.'],
+  ['CUARTO.- NOTIFICACIONES', 'Recibiré notificaciones en el correo {abmail} de mi abogado defensor, {abogado}.'],
   ['FIRMAS', '{actor}\nC.C. {ced}\n\n\n{abogado}\n{matricula}']]}},
  {id:'esc',mat:'General',n:'Escrito simple',f:function(){return [
   ['', 'SEÑOR(A) JUEZ(A) DE LA UNIDAD JUDICIAL '+PH_('ESPECIALIDAD')+' CON SEDE EN EL CANTÓN GUAYAQUIL:'],
@@ -2152,26 +2222,52 @@ function editorTabla(niv,acu){
    3. PLAZOS Y TÉRMINOS
    ========================================================= */
 var PRE=[
- {g:'COGEP · Judicial',items:[
+ {g:'COGEP · Demanda y contestación',c:'COGEP',items:[
+  ['Completar o aclarar la demanda',5,'t','Art. 146',1],
   ['Contestar demanda · procedimiento ordinario',30,'t','Art. 291',1],
   ['Contestar reconvención · ordinario',30,'t','Art. 291',1],
-  ['Contestar demanda · sumario',15,'t','Art. 333.3',1],
-  ['Contestar demanda · sumario, institución pública',30,'t','Art. 333.3',1],
-  ['Contestar demanda · despido ineficaz',10,'t','Art. 333.3',1],
-  ['Oponerse · procedimiento ejecutivo',15,'t','Art. 351',1],
-  ['Oponerse · procedimiento monitorio',15,'t','Art. 358',0],
-  ['Audiencia sumario/monitorio (máximo, desde contestación)',30,'t','Art. 333',1],
-  ['Audiencia ejecutivo (máximo, desde fin de oposición)',20,'t','Art. 354',1],
-  ['Fundamentar apelación',10,'t','Art. 257',0],
-  ['Recurso de casación',30,'t','Art. 266',0],
-  ['Aclaración o ampliación',3,'t','Art. 255',0]]},
- {g:'COA · Administrativo',items:[
+  ['Contestar demanda o reconvención · sumario',15,'t','Art. 333.3',1],
+  ['Contestar · sumario de niñez y adolescencia (alimentos, tenencia, visitas)',10,'t','Art. 333.3',1],
+  ['Contestar · despido de mujer embarazada o en lactancia, o de dirigente sindical',10,'t','Art. 333.3',1],
+  ['Contestar · sumario contra el Estado o institución pública',30,'t','Art. 333.3 y 291',1],
+  ['Contestar u oponerse · procedimiento ejecutivo',15,'t','Art. 351',1],
+  ['Pagar u oponerse · procedimiento monitorio',15,'t','Art. 358',1],
+  ['Anunciar prueba nueva tras la contestación',10,'t','Art. 151',1],
+  ['Anunciar prueba nueva tras la contestación · niñez y adolescencia',3,'t','Art. 151',1],
+  ['Subsanar defecto en la forma de la demanda (excepción aceptada)',6,'t','Art. 295.2',1]]},
+ {g:'COGEP · Audiencias',c:'COGEP',items:[
+  ['Audiencia única sumario (máximo, desde la contestación)',30,'t','Art. 333.4',1],
+  ['Audiencia única niñez/despido ineficaz (máximo, desde la citación)',20,'t','Art. 333.4',1],
+  ['Audiencia única ejecutivo (máximo, desde fin de oposición)',20,'t','Art. 354',1],
+  ['Audiencia de juicio ordinario (máximo, desde la preliminar)',30,'t','Art. 297',1]]},
+ {g:'COGEP · Recursos',c:'COGEP',items:[
+  ['Aclaración, ampliación, revocatoria o reforma',3,'t','Art. 255',1],
+  ['Apelar o fundamentar la apelación',10,'t','Art. 257',1],
+  ['Apelar o fundamentar · niñez y adolescencia',5,'t','Art. 257',1],
+  ['Contestar o adherirse a la apelación',10,'t','Art. 258',1],
+  ['Contestar la apelación · niñez y adolescencia',5,'t','Art. 258',1],
+  ['Recurso de hecho',3,'t','Art. 280',1],
+  ['Recurso de casación (desde la ejecutoria)',30,'t','Art. 266',1],
+  ['Contestar el recurso de casación',30,'t','Art. 270',1]]},
+ {g:'COIP · Penal y tránsito',c:'COIP',items:[
+  ['Apelación penal',3,'t','Art. 654.1',0],
+  ['Casación penal (días hábiles)',5,'t','Art. 657.1',1],
+  ['Pronunciarse sobre pedido de archivo fiscal',3,'p','Art. 587.1',0],
+  ['Investigación previa · delitos con pena hasta 5 años',1,'a','Art. 585.1',1],
+  ['Investigación previa · delitos con pena mayor a 5 años',2,'a','Art. 585.2',1],
+  ['Impugnar boleta de citación de tránsito',3,'t','Art. 644',1]]},
+ {g:'LOGJCC · Garantías jurisdiccionales',c:'LOGJCC',items:[
+  ['Apelar sentencia de garantías (acción de protección, hábeas data…)',3,'t','Art. 24',1],
+  ['Acción extraordinaria de protección',20,'t','Art. 60',1]]},
+ {g:'Código del Trabajo',c:'CT',items:[
+  ['Prescripción de acciones laborales (desde la terminación)',3,'a','Art. 635',1],
+  ['Prescripciones especiales (visto bueno del empleador, reintegro)',1,'m','Art. 636',1],
+  ['Reclamar cambio de ocupación como despido',60,'p','Art. 192',1]]},
+ {g:'COA · Administrativo',c:'COA',items:[
   ['Recurso de apelación',10,'t','Art. 224',1],
   ['Silencio administrativo (respuesta a petición)',30,'t','Art. 207',1],
   ['Resolución del recurso de apelación',1,'m','Art. 230',1],
-  ['Recurso extraordinario de revisión (regla general)',1,'a','Art. 232',0]]},
- {g:'COIP · Tránsito',items:[
-  ['Impugnar boleta de citación de tránsito',3,'t','Art. 644',1]]}
+  ['Recurso extraordinario de revisión (regla general)',1,'a','Art. 232',0]]}
 ];
 var TIPO={t:'término (días hábiles)',p:'plazo (días calendario)',m:'plazo en meses',a:'plazo en años'};
 function feriadosSet(){var s={};Object.keys(DATA.feriados).forEach(function(y){DATA.feriados[y].forEach(function(f){s[f[0]]=f[1]})});(DATA.inhabilesExtra||[]).concat(store('extra')||[]).forEach(function(f){s[f[0]]=f[1]});return s}
@@ -2201,7 +2297,7 @@ function renderPla(){
  '<p class="nota">Las actuaciones marcadas "verificar" vienen de la norma pero no se contrastaron con el texto vigente en esta versión. Confirme el artículo antes de usar el resultado. Para materias especiales (niñez, laboral, constitucional) revise si la ley fija reglas propias.</p>';
  var st=store('pla')||{};
  var hoy=new Date();$('#l-fec').value=st.fec||iso(hoy);
- $('#l-pre').value=st.pre||'0-0';
+ $('#l-pre').value=st.pre||'0-1';if(!$('#l-pre').value)$('#l-pre').value='0-1';
  L.tipo=st.tipo||'t';
  if(st.pre==='custom'&&st.n)$('#l-n').value=st.n;
  $('#l-pre').onchange=function(){var p=pre();if(p){$('#l-n').value=p[1];L.tipo=p[2]}calcPla()};
@@ -2221,7 +2317,7 @@ function calcPla(){
  $$('#l-tipo button').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.k===L.tipo)});
  var n=Math.max(1,Math.round(num($('#l-n').value))),fs=$('#l-fec').value,tipo=custom?L.tipo:p[2];
  $('#l-n').disabled=!custom;
- $('#l-base').innerHTML=p?'Base: '+(p[0].indexOf('tránsito')>-1||p[3]==='Art. 644'?'COIP':(PRE[+$('#l-pre').value.split('-')[0]].g.split(' ')[0]))+' '+p[3]+' · '+TIPO[p[2]]+' '+(p[4]?'<span class="tag v">verificado</span>':'<span class="tag">verificar</span>'):'Cómputo personalizado: '+TIPO[tipo]+'.';
+ $('#l-base').innerHTML=p?'Base: '+(PRE[+$('#l-pre').value.split('-')[0]].c)+' '+p[3]+' · '+TIPO[p[2]]+' '+(p[4]?'<span class="tag v">verificado</span>':'<span class="tag">verificar</span>'):'Cómputo personalizado: '+TIPO[tipo]+'.';
  if(!fs){$('#l-res').innerHTML='<p>Indique la fecha.</p>';return}
  var desde=parseD(fs),F=feriadosSet(),r=computar(desde,n,tipo,F);
  var y=r.fin.getFullYear(),cub=aniosCub().indexOf(String(y))>-1&&aniosCub().indexOf(String(desde.getFullYear()))>-1;

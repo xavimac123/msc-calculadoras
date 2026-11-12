@@ -57,6 +57,13 @@ Editar `fuente/index.html` › `python build_pwa.py` › probar en 390 px y 1200
 - Propuesta: oculta fecha, hora, lugar y modalidad; muestra «fecha y modalidad por acordar» con dos opciones: presencial tarifa normal y virtual con descuento (ahorro). `cotiz(mod)` acepta la modalidad.
 - Mensaje de WhatsApp e imagen: el valor con IVA va grande («IVA incluido») y el valor sin IVA + IVA en letra pequeña; la propuesta muestra ambas modalidades.
 
-## 10. Siguiente
+## 10. Laboral: vacaciones, fondos, utilidades y demanda (2026-11-11)
+- Nuevos campos: meses de sueldo impagos, vacaciones gozadas no pagadas (art. 69 inc. 2), afiliación al IESS.
+- Fondos de reserva automáticos: meses con derecho = meses de servicio − 12; modos mensual / IESS / no pagados / parcial; no afiliado: 6 % anual (art. 202).
+- Utilidades del último ejercicio cerrado: 10 % / trabajadores × días/365 + 5 % × cargas/total cargas; tope 24 SBU (97.1, aviso); vencen 15-abr (105); aviso de proporcional del año en curso.
+- Bloque «Si se demanda» (`R.dem`): triple art. 94 sobre remuneraciones impagas del último trimestre (no indemnizaciones), 50 % fondos (202), 10 % reintegro ineficaz (195.3), intereses utilidades (104), diferencias SBU, falta de afiliación (COIP 243-244), jubilación; total a demandar = neto + adicionales.
+- La fuente de la calculadora está en el bloque `CALCULADORA LABORAL` de index.html (copia de trabajo en /home/claude/tools/laboral.js en la sesión).
+
+## 11. Siguiente
 1. Habilitar Gmail API y permiso gmail.readonly; probar «Revisar Gmail» en la app instalada.
 2. Traslado a Cloudflare Pages con Access; volver privado el repositorio.

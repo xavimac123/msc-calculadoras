@@ -1353,7 +1353,9 @@ function lbCalc(I,modoOverride){
  var fj=I.cont==='parcial'?Math.min(1,Math.max(0.05,(I.horas||40)/40)):1;
  function add(n,v,art,tip){v=r2(v);if(Math.abs(v)>=0.005)R.rub.push([n,v,art,tip||''])}
  /* 1. Haberes pendientes */
+ if(I.mesImp)add('Remuneraciones mensuales impagas ('+I.mesImp+' meses)',S*I.mesImp,'Arts. 80, 83 y 94');
  add('Sueldo pendiente ('+I.diasPend+' días)',S/30*I.diasPend,'Arts. 80 y 83');
+ if(I.vacGNP)add('Vacaciones gozadas y no pagadas ('+I.vacGNP+' días)',S/30*I.vacGNP,'Art. 69, inc. 2','La remuneración de vacaciones se paga por adelantado.');
  var vh=S/240;
  if(I.hSup)add('Horas suplementarias pendientes ('+I.hSup+' h × 1,5)',vh*1.5*I.hSup,'Art. 55');
  if(I.hExt)add('Horas extraordinarias pendientes ('+I.hExt+' h × 2)',vh*2*I.hExt,'Art. 55');
@@ -1369,9 +1371,23 @@ function lbCalc(I,modoOverride){
  add('Vacaciones proporcionales ('+vacProp.toFixed(2).replace('.',',')+' días)',S/30*vacProp,'Arts. 69 y 71',ant?'Incluye '+ant+' día(s) adicional(es) por antigüedad.':'');
  if(I.vacPend)add('Vacaciones no gozadas de períodos anteriores ('+I.vacPend+' días)',S/30*I.vacPend*(I.vacPost?2:1),I.vacPost?'Arts. 74 y 76 (postergadas por el empleador: 100 % de recargo)':'Art. 76');
  /* 4. Fondos de reserva */
- if(I.frPend)add('Fondos de reserva impagos ('+I.frPend+' meses)',S*0.0833*I.frPend,'Art. 196','8,33 % mensual a partir del segundo año.');
+ var mElig=Math.max(0,Math.floor(dias/30.4375)-12);R.mElig=mElig;R.frMes=r2(S*0.0833);
+ var frImp=I.frModo==='no'?mElig:I.frModo==='parcial'?Math.min(I.frPend,mElig):0;R.frImp=frImp;R.frVal=r2(S*0.0833*frImp);
+ if(frImp)add('Fondos de reserva no pagados ('+frImp+' de '+mElig+' meses con derecho)',R.frVal,'Arts. 196 y 201','8,33 % mensual de la remuneración desde el mes 13 de servicio.');
+ if(frImp&&!I.afi){R.frInt=r2(R.frVal*0.06*(frImp/2)/12);add('Intereses del 6 % anual sobre fondos de reserva (trabajador no afiliado)',R.frInt,'Art. 202')}
  if(anios<1)R.nota.push('Menos de un año de servicio: aún no genera fondo de reserva (art. 197).');
- if(I.util)add('Utilidades pendientes',I.util,'Art. 97');
+ else if(I.frModo==='mensual')R.nota.push('Fondos de reserva: pagados mensualmente en el rol ('+mElig+' meses × '+usd(R.frMes)+').');
+ else if(I.frModo==='iess')R.nota.push('Fondos de reserva: depositados en el IESS; el trabajador los retira allí ('+mElig+' meses con derecho).');
+ /* utilidades del último ejercicio cerrado */
+ var yS=parseD(I.salida).getFullYear(),yU=yS-1,ini=lbMax(yU+'-01-01',I.ingreso),fin=I.salida<yU+'-12-31'?I.salida:yU+'-12-31',dU=ini<=fin?lbDias(ini,fin):0;R.yU=yU;R.dU=dU;R.utilEst=0;
+ if(I.utModo==='no'&&dU>0){
+  var u=0;if(I.utMonto)u=I.utMonto;else if(I.utLiq&&I.utTrab){u=I.utLiq*0.10*(dU/365)/I.utTrab+(I.utCargTot?I.utLiq*0.05*(I.utCarg*dU/365)/I.utCargTot:0)}
+  var tope=24*sbu;if(u>tope){R.alert.push(['avi','La participación estimada supera 24 SBU ('+usd(tope)+'): revise el límite del art. 97.1.']);u=tope}
+  R.utilEst=r2(u);if(u)add('Utilidades no pagadas del ejercicio '+yU+' ('+dU+' días)',u,'Arts. 97 y 105','10 % en partes iguales y 5 % por cargas familiares, proporcional al tiempo trabajado. Se pagan hasta el 15 de abril.');
+  else R.alert.push(['avi','Utilidades '+yU+' marcadas como no pagadas: ingrese la utilidad líquida de la empresa y el número de trabajadores (o el monto conocido) para estimarlas.']);
+ }
+ if(I.utModo==='no'&&I.salida<yS+'-04-16')R.alert.push(['ok','Las utilidades de '+yU+' vencen el 15 de abril de '+yS+' (art. 105): si la salida es anterior, aún no son exigibles.']);
+ if(yS<=new Date().getFullYear())R.nota.push('Utilidades del ejercicio '+yS+': le corresponde la parte proporcional, pagadera hasta el 15 de abril de '+(yS+1)+' (arts. 97 y 105).');
  /* 5. Indemnizaciones y bonificaciones según el modo */
  var bon=S*0.25*anios,ind188=Math.min(25,Math.max(3,aniosArr))*S;
  var limP=I.cont==='dom'?15:90,prueba=(I.cont==='prueba'||modo==='prueba')&&dias<=limP;if(modo==='prueba'&&dias>limP){modo='despido';R.alert.push(['mal','Se excedió el período de prueba: la terminación se calcula como despido intempestivo.'])}
@@ -1390,10 +1406,23 @@ function lbCalc(I,modoOverride){
  else if(modo==='conclusion'&&I.cont==='giro')R.alert.push(['avi','Contrato por obra o servicio dentro del giro: revise si el art. 16.1 y el Acuerdo Ministerial 242-2015 reconocen bonificación al concluir. No se incluyó en el total.']);
  if(anios>=25)R.alert.push(['mal','Tiene 25 años o más de servicio: tiene derecho a jubilación patronal (art. 216), aparte de esta liquidación.']);
  /* 6. Deducciones */
- var gravable=S/30*I.diasPend+(I.hSup?vh*1.5*I.hSup:0)+(I.hExt?vh*2*I.hExt:0)+I.otros;
- if(gravable>0)R.ded.push(['Aporte personal IESS 9,45 % sobre haberes pendientes',r2(gravable*0.0945),'Ley de Seguridad Social']);
+ var gravable=S*I.mesImp+S/30*(I.diasPend+I.vacGNP)+(I.hSup?vh*1.5*I.hSup:0)+(I.hExt?vh*2*I.hExt:0)+I.otros;
+ if(gravable>0&&I.afi)R.ded.push(['Aporte personal IESS 9,45 % sobre haberes pendientes',r2(gravable*0.0945),'Ley de Seguridad Social']);
  if(I.antic)R.ded.push(['Anticipos o préstamos del empleador',r2(I.antic),'Documentados']);
  R.bruto=r2(R.rub.reduce(function(s,x){return s+x[1]},0));R.desc=r2(R.ded.reduce(function(s,x){return s+x[1]},0));R.neto=r2(R.bruto-R.desc);
+ /* rubros adicionales exigibles solo si se demanda */
+ var remImp=S*I.mesImp+S/30*I.diasPend+S/30*I.vacGNP+(I.hSup?vh*1.5*I.hSup:0)+(I.hExt?vh*2*I.hExt:0)+I.otros,baseTri=Math.min(remImp,S*3);
+ R.dem=[
+  {n:'Triple de las remuneraciones impagas del último trimestre',art:'Art. 94, inc. 1 · CNJ Res. 14-2015',ok:remImp>0,v:r2(baseTri*3),d:remImp>0?'Remuneraciones impagas durante la relación: '+usd(r2(remImp))+'; base del último trimestre '+usd(r2(baseTri))+' × 3. El juez debe ordenarlo cuando fue necesaria la acción judicial.':'No aplica: no hay remuneraciones impagas durante la relación (las indemnizaciones no generan el triple).'},
+  {n:'Recargo del 50 % sobre fondos de reserva cobrados judicialmente',art:'Art. 202, inc. final',ok:!!R.frVal,v:r2((R.frVal||0)*0.5),d:R.frVal?'50 % de '+usd(R.frVal)+'. Si el trabajador está afiliado, el IESS también es vía de cobro: verifique la competencia (CNJ, Res. 2-2024).':'No aplica: los fondos de reserva están pagados o depositados.'},
+  {n:'Recargo del 100 % por vacaciones postergadas por el empleador',art:'Art. 74',ok:!!(I.vacPost&&I.vacPend),v:0,d:I.vacPost&&I.vacPend?'Ya incluido en la liquidación.':'No aplica.'},
+  {n:'Remuneraciones pendientes con 10 % de recargo si se ordena el reintegro',art:'Art. 195.3',ok:I.modo==='ineficaz',v:0,d:I.modo==='ineficaz'?'Alternativa a la indemnización de 12 meses: si la persona vuelve a su puesto, se pagan los sueldos del tiempo de separación con 10 % de recargo.':'Solo para despido ineficaz.'},
+  {n:'Utilidades impagas con intereses (tasa máxima activa)',art:'Arts. 104 y 109',ok:I.utModo==='no',v:0,d:I.utModo==='no'?'Si hay determinación del SRI o reclamo, se pagan con intereses a la tasa máxima activa desde el incumplimiento. El monto depende de la tasa vigente.':'No aplica.'},
+  {n:'Diferencias por remuneración inferior al SBU',art:'Arts. 81, 117 y 94 inc. 2',ok:S<sbu&&I.cont!=='parcial'&&I.cont!=='apre',v:0,d:S<sbu?'Reclame la diferencia mensual de '+usd(r2(sbu-S))+' por cada mes; en vía administrativa el MDT aplica 100 % de recargo si no se paga en 5 días.':'No aplica.'},
+  {n:'Falta de afiliación al IESS',art:'COIP arts. 243-244 · Ley de Seguridad Social',ok:!I.afi,v:0,d:!I.afi?'Denuncie ante el IESS para el pago de aportes con responsabilidad patronal; es infracción penal si no se regulariza en 48 horas tras la notificación.':'No aplica: afiliado.'},
+  {n:'Jubilación patronal',art:'Arts. 188 y 216',ok:anios>=20,v:0,d:anios>=25?'Pensión vitalicia o fondo global: requiere cálculo actuarial.':anios>=20?'Parte proporcional (20 a 25 años): requiere cálculo actuarial.':'No aplica: menos de 20 años.'}
+ ];
+ R.demTot=r2(R.dem.reduce(function(s,x){return s+(x.ok?x.v:0)},0));
  return R;
 }
 function lbValidar(I){
@@ -1433,12 +1462,12 @@ function lbVB(){
   '<tr><td>Resolución del inspector (dentro del tercer día tras la investigación)</td><td>'+largo(r)+'</td><td>Art. 621</td></tr></tbody></table>'+
   '<p class="hint">Fechas estimadas en días hábiles con los feriados cargados; la notificación real puede variar. El empleador puede pedir la suspensión inmediata consignando un mes de remuneración, que se entrega al trabajador si se niega el visto bueno (art. 622). La resolución del inspector es solo un informe: puede discutirse ante el juez del trabajo (art. 183).</p>';
 }
-function lbLeer(){var g=function(id){return $('#'+id)};return {cont:g('lb-cont').value,modo:g('lb-modo').value,region:g('lb-reg').value,ingreso:g('lb-in').value,salida:g('lb-out').value,sueldo:num(g('lb-s').value),horas:num(g('lb-h').value)||40,diasPend:num(g('lb-dp').value),hSup:num(g('lb-hs').value),hExt:num(g('lb-he').value),otros:num(g('lb-ot').value),vacPend:num(g('lb-vp').value),vacPost:g('lb-vpost').checked,frPend:num(g('lb-fr').value),util:num(g('lb-ut').value),antic:num(g('lb-an').value),d13Mens:g('lb-d13').checked,d14Mens:g('lb-d14').checked,escrito:g('lb-esc').checked,injDisc:g('lb-inj').checked}}
+function lbLeer(){var g=function(id){return $('#'+id)};return {cont:g('lb-cont').value,modo:g('lb-modo').value,region:g('lb-reg').value,ingreso:g('lb-in').value,salida:g('lb-out').value,sueldo:num(g('lb-s').value),horas:num(g('lb-h').value)||40,diasPend:num(g('lb-dp').value),hSup:num(g('lb-hs').value),hExt:num(g('lb-he').value),otros:num(g('lb-ot').value),vacPend:num(g('lb-vp').value),vacGNP:num(g('lb-vg').value),mesImp:num(g('lb-mi').value),afi:g('lb-afi').checked,frModo:g('lb-frm').value,utModo:g('lb-utm').value,utLiq:num(g('lb-ul').value),utTrab:num(g('lb-nt').value),utCarg:num(g('lb-cf').value),utCargTot:num(g('lb-tc').value),utMonto:num(g('lb-ut').value),vacPost:g('lb-vpost').checked,frPend:num(g('lb-fr').value),util:0,antic:num(g('lb-an').value),d13Mens:g('lb-d13').checked,d14Mens:g('lb-d14').checked,escrito:g('lb-esc').checked,injDisc:g('lb-inj').checked}}
 function calcLab(){
  var I=lbLeer();store('lab',Object.assign(store('lab')||{},I));
- $('#lb-wh').hidden=I.cont!=='parcial';$('#lb-winj').hidden=I.modo!=='vbTrab';$('#lb-wesc').hidden=['despido','ineficaz','discrim','discap'].indexOf(I.modo)<0;
+ $('#lb-wh').hidden=I.cont!=='parcial';$('#lb-wfr').hidden=I.frModo!=='parcial';$('#lb-wut').hidden=I.utModo!=='no';$('#lb-winj').hidden=I.modo!=='vbTrab';$('#lb-wesc').hidden=['despido','ineficaz','discrim','discap'].indexOf(I.modo)<0;
  var out=$('#lb-res');
- if(!I.ingreso||!I.salida||!I.sueldo){out.innerHTML='<div class="res"><p style="margin:0">Indique fecha de ingreso, fecha de salida y la última remuneración mensual.</p></div>';$('#lb-plz').innerHTML='';$('#lb-cmp').innerHTML='';return}
+ if(!I.ingreso||!I.salida||!I.sueldo){$('#lb-dem').innerHTML='';out.innerHTML='<div class="res"><p style="margin:0">Indique fecha de ingreso, fecha de salida y la última remuneración mensual.</p></div>';$('#lb-plz').innerHTML='';$('#lb-cmp').innerHTML='';return}
  var V=lbValidar(I);if(V.length&&V[0][1].indexOf('anterior')>-1){out.innerHTML='<div class="res mal"><b>'+V[0][1]+'</b></div>';return}
  var R=lbCalc(I);LB.R=R;LB.I=I;
  var al=V.concat(R.alert);
@@ -1453,6 +1482,11 @@ function calcLab(){
   '<p class="hint">Estimación referencial: confirme la última mejor remuneración, los valores ya pagados mensualmente y el contrato. Base de indemnizaciones según art. 95 (sin décimos, utilidades ni fondos de reserva).</p>'+
   '<div class="row"><button type="button" class="btn sec mini" id="lb-cp">Copiar resumen</button><button type="button" class="btn sec mini" id="lb-wa">Enviar por WhatsApp</button></div></div>';
  /* plazos */
+ $('#lb-frh').textContent=R.mElig?'Con derecho a '+R.mElig+' meses de fondo de reserva ('+usd(R.frMes)+' por mes = '+usd(r2(R.frMes*R.mElig))+').':'Aún no tiene derecho a fondo de reserva (primer año de servicio).';
+ $('#lb-dem').innerHTML='<div class="card"><h3>Si se demanda: rubros adicionales (Código del Trabajo)</h3><p class="hint" style="margin-top:0">Se suman a la liquidación solo si el empleador no paga y se acude al juez. Verde: aplica con los datos ingresados.</p>'+
+  R.dem.map(function(x){return '<div class="cj-it '+(x.ok?'s-ok':'')+'"><div class="cj-bar"></div><div style="flex:1;min-width:0"><div class="row" style="justify-content:space-between;gap:8px;flex-wrap:nowrap"><div class="cj-t">'+esc(x.n)+'</div><b style="white-space:nowrap">'+(x.ok?(x.v?usd(x.v):'Aplica'):'No aplica')+'</b></div><div class="hint" style="margin:2px 0 0">'+esc(x.art)+' · '+esc(x.d)+'</div></div></div>'}).join('')+
+  '<table style="margin-top:10px"><tbody><tr><td>Liquidación (neto estimado)</td><td>'+usd(R.neto)+'</td></tr><tr><td>Rubros adicionales cuantificables</td><td>'+usd(R.demTot)+'</td></tr><tr class="tot"><td>TOTAL ESTIMADO A DEMANDAR</td><td>'+usd(r2(R.neto+R.demTot))+'</td></tr></tbody></table>'+
+  '<p class="hint">Más intereses y costas que fije el juez. La acción prescribe en tres años desde la terminación (art. 635).</p></div>';
  var P=lbPlazos(I),hoy=hoyISO();
  $('#lb-plz').innerHTML='<div class="card"><h3>Plazos de pago y acciones</h3>'+P.map(function(p){var d=diasEntre(hoy,p.f),cls=p.q==='urg'?'s-mal':d<0?'s-ok':d<=3?'s-avi':'';var who=p.q==='emp'?'Empleador':p.q==='trab'?'Trabajador':p.q==='urg'?'Urgente':'Límite';
   return '<div class="cj-it '+cls+'"><div class="cj-bar"></div><div style="flex:1"><div class="cj-t">'+esc(p.t)+'</div><div class="hint" style="margin:2px 0 0">'+esc(p.d)+'</div><div class="row" style="margin-top:6px;gap:6px"><span class="sem">'+who+' · '+largo(parseD(p.f))+'</span><span class="sem">'+(d<0?'ya transcurrió ('+(-d)+' días)':d===0?'hoy':'faltan '+d+' días')+'</span></div></div></div>'}).join('')+
@@ -1460,7 +1494,7 @@ function calcLab(){
  /* comparativa */
  var C=['despido','desahucio','mutuo','vbEmp','vbTrab'].map(function(m){return [m,lbCalc(I,m)]});
  $('#lb-cmp').innerHTML='<div class="card"><h3>Comparativa por modo de terminación</h3><div class="scroll"><table><thead><tr><th>Modo</th><th>Neto estimado</th></tr></thead><tbody>'+C.map(function(c){return '<tr'+(c[0]===I.modo?' class="hi"':'')+'><td>'+esc(LB_MODO.filter(function(m){return m[0]===c[0]})[0][1])+'</td><td>'+usd(c[1].neto)+'</td></tr>'}).join('')+'</tbody></table></div><p class="hint">Útil para negociar: muestra cuánto cambia la liquidación según cómo se termine la relación, con los mismos datos.</p></div>';
- var txt=function(){return '*Liquidación laboral estimada*\n'+(LB_MODO.filter(function(m){return m[0]===I.modo})[0]||[])[1]+'\nServicio: '+fCorta(I.ingreso)+' '+I.ingreso.slice(0,4)+' a '+fCorta(I.salida)+' '+I.salida.slice(0,4)+' ('+R.anios.toFixed(2).replace('.',',')+' años)\nRemuneración: '+usd(I.sueldo)+'\n\n'+R.rub.map(function(x){return '• '+x[0]+': '+usd(x[1])}).join('\n')+(R.ded.length?'\n'+R.ded.map(function(x){return '(−) '+x[0]+': '+usd(x[1])}).join('\n'):'')+'\n\n*Neto estimado: '+usd(R.neto)+'*\nPago máximo: '+largo(parseD(P.filter(function(p){return p.q==='emp'})[0].f))+' (AM MDT-2025-053).\n\nCálculo referencial · Macías Sánchez Consultores'};
+ var txt=function(){return '*Liquidación laboral estimada*\n'+(LB_MODO.filter(function(m){return m[0]===I.modo})[0]||[])[1]+'\nServicio: '+fCorta(I.ingreso)+' '+I.ingreso.slice(0,4)+' a '+fCorta(I.salida)+' '+I.salida.slice(0,4)+' ('+R.anios.toFixed(2).replace('.',',')+' años)\nRemuneración: '+usd(I.sueldo)+'\n\n'+R.rub.map(function(x){return '• '+x[0]+': '+usd(x[1])}).join('\n')+(R.ded.length?'\n'+R.ded.map(function(x){return '(−) '+x[0]+': '+usd(x[1])}).join('\n'):'')+'\n\n*Neto estimado: '+usd(R.neto)+'*'+(R.demTot?'\nSi se demanda, adicionales: '+usd(R.demTot)+' (total '+usd(r2(R.neto+R.demTot))+')':'')+'\nPago máximo: '+largo(parseD(P.filter(function(p){return p.q==='emp'})[0].f))+' (AM MDT-2025-053).\n\nCálculo referencial · Macías Sánchez Consultores'};
  $('#lb-cp').onclick=function(){copiar(txt(),'Resumen copiado.')};
  $('#lb-wa').onclick=function(){window.open('https://wa.me/?text='+encodeURIComponent(txt()),'_blank','noopener')};
 }
@@ -1480,13 +1514,23 @@ function renderLab(){
   '<label class="chk full" id="lb-winj"><input type="checkbox" id="lb-inj"'+(st.injDisc?' checked':'')+'> El visto bueno se funda en injurias discriminatorias</label>'+
  '</div></div>'+
  '<div class="card"><h3>2 · Valores pendientes</h3><div class="grid">'+
-  inp('lb-dp','Días trabajados del último mes sin pagar',st.diasPend||0,'number',{attr:'inputmode="numeric"'})+inp('lb-vp','Días de vacaciones no gozadas (años anteriores)',st.vacPend||0,'number',{attr:'inputmode="numeric"'})+
+  inp('lb-mi','Meses completos de sueldo impagos',st.mesImp||0,'number',{attr:'inputmode="numeric"'})+inp('lb-dp','Días trabajados del último mes sin pagar',st.diasPend||0,'number',{attr:'inputmode="numeric"'})+
+  '<div class="full"><label>Vacaciones</label></div>'+inp('lb-vg','Días de vacaciones gozadas pero no pagadas',st.vacGNP||0,'number',{attr:'inputmode="numeric"'})+inp('lb-vp','Días de vacaciones no gozadas (años anteriores)',st.vacPend||0,'number',{attr:'inputmode="numeric"'})+
   '<label class="chk full"><input type="checkbox" id="lb-vpost"'+(st.vacPost?' checked':'')+'> Las vacaciones fueron postergadas por el empleador (art. 74: 100 % de recargo)</label>'+
   inp('lb-hs','Horas suplementarias impagas',st.hSup||0,'number',{attr:'inputmode="decimal"'})+inp('lb-he','Horas extraordinarias impagas',st.hExt||0,'number',{attr:'inputmode="decimal"'})+
-  inp('lb-fr','Meses de fondo de reserva impagos',st.frPend||0,'number',{attr:'inputmode="numeric"'})+inp('lb-ot','Otros valores adeudados (USD)',st.otros||0,'number',{attr:'inputmode="decimal"'})+
-  inp('lb-ut','Utilidades pendientes (USD)',st.util||0,'number',{attr:'inputmode="decimal"'})+inp('lb-an','Anticipos o préstamos a descontar (USD)',st.antic||0,'number',{attr:'inputmode="decimal"'})+
+  inp('lb-ot','Otros valores adeudados (USD)',st.otros||0,'number',{attr:'inputmode="decimal"'})+inp('lb-an','Anticipos o préstamos a descontar (USD)',st.antic||0,'number',{attr:'inputmode="decimal"'})+
  '</div></div>'+
- '<div id="lb-res"></div><div id="lb-plz"></div><div id="lb-cmp"></div>'+
+ '<div class="card"><h3>3 · Fondos de reserva y utilidades</h3><div class="grid">'+
+  '<label class="chk full"><input type="checkbox" id="lb-afi"'+(st.afi===false?'':' checked')+'> El trabajador estaba afiliado al IESS</label>'+
+  sel('lb-frm','Fondos de reserva',st.frModo||'mensual',[['mensual','Se pagaban mensualmente en el rol'],['iess','Se depositaban en el IESS'],['no','No se pagaron ni depositaron'],['parcial','Se pagaron solo algunos meses']],true)+
+  '<div class="full" id="lb-wfr"><label for="lb-fr">Meses de fondo de reserva impagos</label><input id="lb-fr" type="number" inputmode="numeric" value="'+(st.frPend||0)+'"></div>'+
+  '<p class="hint full" id="lb-frh" style="margin:0"></p>'+
+  sel('lb-utm','Utilidades del último ejercicio cerrado',st.utModo||'pagadas',[['pagadas','Se pagaron'],['no','No se pagaron'],['sin','La empresa no tuvo utilidades o no está obligada']],true)+
+  '<div class="full grid" id="lb-wut" style="margin:0">'+inp('lb-ul','Utilidad líquida de la empresa (USD)',st.utLiq||'','number',{attr:'inputmode="decimal"'})+inp('lb-nt','Número de trabajadores',st.utTrab||'','number',{attr:'inputmode="numeric"'})+
+   inp('lb-cf','Cargas familiares del trabajador',st.utCarg||0,'number',{attr:'inputmode="numeric"'})+inp('lb-tc','Total de cargas en la empresa',st.utCargTot||'','number',{attr:'inputmode="numeric"'})+
+   inp('lb-ut','O monto conocido de utilidades (USD)',st.utMonto||0,'number',{full:1,attr:'inputmode="decimal"'})+'</div>'+
+ '</div><p class="hint">Fuente de la utilidad líquida: formulario 101 del SRI o el informe de utilidades en el SUT. Cargas: cónyuge o conviviente, hijos menores de 18 y con discapacidad.</p></div>'+
+ '<div id="lb-res"></div><div id="lb-dem"></div><div id="lb-plz"></div><div id="lb-cmp"></div>'+
  '<div class="card"><h3>Términos del visto bueno</h3><div class="grid">'+inp('lb-vbh','Fecha del hecho que motiva el visto bueno',st.vbh||'','date')+inp('lb-vbf','Fecha de presentación de la solicitud',st.vbf||hoy,'date')+'</div><div id="lb-vbr" style="margin-top:10px"></div></div>'+
  '<div class="card"><h3>Recordatorios útiles</h3><ul style="margin:0;padding-left:18px;font-size:13.5px;line-height:1.5">'+
   '<li>El décimo tercero no forma parte de la base de indemnizaciones ni de vacaciones (art. 112); la base es la del art. 95.</li>'+

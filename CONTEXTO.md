@@ -52,6 +52,11 @@ Editar `fuente/index.html` › `python build_pwa.py` › probar en 390 px y 1200
 - Visto bueno: notificación 24 h, contestación 2 días, resolución al tercer día (621), suspensión con consignación de un mes (622), prescripción de un mes para el empleador (636).
 - Comparativa de neto por modo y botón de resumen / WhatsApp.
 
-## 9. Siguiente
+## 9. Consultas: aceptada vs. propuesta (2026-11-11)
+- Selector «Estado de la consulta» (`CN.est`: `ok` aceptada/agendada, `prop` propuesta por confirmar), guardado en `store('cons')`.
+- Propuesta: oculta fecha, hora, lugar y modalidad; muestra «fecha y modalidad por acordar» con dos opciones: presencial tarifa normal y virtual con descuento (ahorro). `cotiz(mod)` acepta la modalidad.
+- Mensaje de WhatsApp e imagen: el valor con IVA va grande («IVA incluido») y el valor sin IVA + IVA en letra pequeña; la propuesta muestra ambas modalidades.
+
+## 10. Siguiente
 1. Habilitar Gmail API y permiso gmail.readonly; probar «Revisar Gmail» en la app instalada.
 2. Traslado a Cloudflare Pages con Access; volver privado el repositorio.

@@ -93,6 +93,7 @@ body.dark .res{background:#171B21}body.dark .herr-b,body.dark .foco-it{backgroun
 .stk{position:fixed;left:50%;transform:translateX(-50%);bottom:12px;z-index:30;width:min(560px,calc(100% - 24px));display:flex;gap:14px;align-items:center;justify-content:space-between;background:#14181E;color:#fff;border:1px solid #3A3F47;border-radius:14px;padding:10px 14px;font:inherit;box-shadow:0 10px 30px rgba(0,0,0,.25);cursor:pointer;transition:opacity .2s,transform .2s}.stk small{display:block;font-size:10.5px;color:#B9B6AA;text-transform:uppercase;letter-spacing:.04em}.stk b{font-size:16px;font-variant-numeric:tabular-nums}.stk .fl{font-size:12px;color:var(--oroc);font-weight:700}.stk.oculto{opacity:0;pointer-events:none;transform:translateX(-50%) translateY(20px)}#v-hon[hidden] .stk,#h-casos[hidden]~.stk{display:none}
 .cli-top{background:var(--card);border:1px solid var(--linea);border-left:4px solid var(--oro);border-radius:10px;padding:12px 14px;margin:0 0 12px}.cli-n{font-size:18px;font-weight:800}
 .fund{border:1px solid var(--linea);border-left:4px solid var(--oro);border-radius:8px;padding:10px 12px;background:var(--marfil);font-size:13px;line-height:1.45}.fund .estado{font-size:11px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--olivo);margin-bottom:3px}
+.opc2{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}.opc2>div{border:1px solid var(--linea);border-radius:10px;padding:10px;background:var(--card)}.opc2 .dest{border-color:var(--oro);background:rgba(160,144,70,.1)}.opc2 small{display:block;font-size:11px;font-weight:700;text-transform:uppercase;color:var(--gris)}.opc2 b{display:block;font-size:24px;margin:2px 0}.opc2 span{display:block;font-size:12px;color:var(--gris)}.opc2 em{display:inline-block;margin-top:4px;font-style:normal;font-size:12px;font-weight:800;color:var(--ok)}
 .monw{position:relative;display:block}.monw::before{content:'$';position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--gris);font-weight:700;font-size:14px;pointer-events:none}.monw input.mon{padding-left:24px;text-align:right;font-variant-numeric:tabular-nums}
 .tabla-ed .monw::before{left:6px}
 body.dark{--marfil:#0F1216;--linea:#2A3038;--gris:#9AA1AA;--card:#171B21;--okf:#14261A;--malf:#2B1714;--avif:#2A2212;--olivo:#C9BC82;background:#0F1216;color:#E7E4DA}
@@ -551,6 +552,7 @@ function renderCons(){
   '<div class="full"><label for="c-are">Materia</label><select id="c-are">'+AREAS.map(function(a){return '<option value="'+a[0]+'">'+esc(a[1])+'</option>'}).join('')+'</select></div>'+
   '<div class="full"><label for="c-tem">Tipo de consulta</label><select id="c-tem"></select></div>'+
   '<div class="full"><label for="c-asu">Asunto (breve)</label><input id="c-asu" placeholder="Ej.: revisión de pensión de 2 hijos"></div>'+
+  '<div class="full"><label>Estado de la consulta</label><div class="seg" id="c-est"><button type="button" data-e="ok">Aceptada / agendada</button><button type="button" data-e="prop">Propuesta (por confirmar)</button></div><p class="hint" id="c-esth" style="margin-top:6px"></p></div>'+
  '</div></div>'+
  '<div class="card"><h3>2 · ¿Qué complejidad cobrar?</h3>'+
   '<label class="chk"><input type="checkbox" id="c-q1"> Debo revisar documentos antes o durante la consulta</label>'+
@@ -561,12 +563,12 @@ function renderCons(){
   '<div class="seg" id="c-com" style="margin-top:8px">'+Object.keys(COMPL).map(function(k){return '<button type="button" data-c="'+k+'">'+COMPL[k][0]+'</button>'}).join('')+'</div>'+
   '<div id="c-comd" style="margin-top:8px"></div>'+
   '<div class="grid" style="margin-top:10px"><div class="full"><label for="c-tie">Tiempo de desarrollo</label><select id="c-tie">'+C.tiempo.map(function(x,i){return '<option value="'+i+'">'+esc(x[0])+'</option>'}).join('')+'</select></div>'+
-  '<div class="full"><label>Modalidad</label><div class="seg" id="c-mod"><button type="button" data-m="virtual">Virtual ('+C.virtual+'%)</button><button type="button" data-m="presencial">Presencial (+'+C.presencial+'%)</button></div></div>'+
+  '<div class="full" id="c-wmod"><label>Modalidad</label><div class="seg" id="c-mod"><button type="button" data-m="virtual">Virtual ('+C.virtual+'%)</button><button type="button" data-m="presencial">Presencial (+'+C.presencial+'%)</button></div></div>'+
   '<div class="full"><label for="c-des">Descuento puntual a este cliente (USD, antes de IVA)</label><input id="c-des" type="number" inputmode="decimal" min="0" step="1" value="0" placeholder="Ej.: 5"><p class="hint" id="c-dhint"></p></div></div>'+
  '</div>'+
  '<div class="res" id="c-res"></div>'+
  '<div class="card"><h3>Documentos a pedir al cliente</h3><ul id="c-docs" style="margin:0;padding-left:18px"></ul></div>'+
- '<div class="card"><h3>3 · Agendar y enviar por WhatsApp</h3><div class="grid">'+
+ '<div class="card"><h3 id="c-t3">3 · Agendar y enviar por WhatsApp</h3><div class="nota" id="c-pnote" style="margin:0 0 10px" hidden></div><div class="grid" id="c-agenda">'+
   '<div><label for="c-fec">Fecha</label><input id="c-fec" type="date"></div><div><label for="c-hor">Hora</label><input id="c-hor" type="time" value="10:00"></div>'+
   '<div class="full" id="c-wlink"><label for="c-link">Enlace de la reunión virtual</label><input id="c-link" placeholder="Pegue el enlace de Meet, Zoom o WhatsApp"></div>'+
   '<div class="full" id="c-wlug"><label for="c-lug">Lugar de la consulta presencial</label><input id="c-lug" placeholder="Dirección o referencia"></div>'+
@@ -590,7 +592,7 @@ function renderCons(){
  '</div><p class="hint">Baja: tarifa fija según modalidad, sin descuento. Media y alta: base × tiempo × materia × modalidad, redondeado al dólar; nunca por debajo de la tarifa baja de la misma modalidad ni sobre el techo. El descuento solo aplica en media y alta, sin bajar de ese mínimo. Luego se suma el IVA.</p>'+
  '<div class="row" style="margin-top:8px"><button class="btn sec" id="c-save" type="button" data-needs="art">Guardar parámetros</button></div><div class="msg" id="c-msg"></div></details></div>';
  var st=store('cons')||{};
- CN.com=st.com||'baja';CN.mod=st.mod||'virtual';
+ CN.com=st.com||'baja';CN.mod=st.mod||'virtual';CN.est=st.est||'ok';
  if(st.are&&AREAS.some(function(a){return a[0]===st.are}))$('#c-are').value=st.are;
  fillTemas(st.tem);if(st.tie!=null)$('#c-tie').value=st.tie;
  var man=new Date();man.setDate(man.getDate()+1);$('#c-fec').value=st.fec||iso(man);if(st.hor)$('#c-hor').value=st.hor;
@@ -606,6 +608,7 @@ function renderCons(){
  $('#c-fac').oninput=function(){C.factor[$('#c-are').value]=num(this.value)||1;calcCons()};
  $$('#c-com button').forEach(function(b){b.onclick=function(){CN.com=b.dataset.c;calcCons()}});
  $$('#c-mod button').forEach(function(b){b.onclick=function(){CN.mod=b.dataset.m;calcCons()}});
+ $$('#c-est button').forEach(function(b){b.onclick=function(){CN.est=b.dataset.e;$('#c-out').innerHTML='';calcCons()}});
  $('#c-copy').onclick=copiarMsg;$('#c-wa').onclick=function(){var l=document.createElement('a');l.href='https://wa.me/?text='+encodeURIComponent(textoMsg());l.target='_blank';l.rel='noopener';document.body.appendChild(l);l.click();l.remove()};$('#c-img').onclick=generarImg;
  $('#c-save').onclick=function(){guardar($('#c-msg'),'Parámetros de consulta guardados.')};
  refreshSave();calcCons();
@@ -620,10 +623,10 @@ function precioCons(com,tieIdx,mod,areaId){
  var bruto=C.base[com]*t*f*m,red=Math.round(bruto),min=Math.max(C.piso,bf),fin=Math.min(Math.max(red,min),C.techo);
  return {red:red,fin:fin,f:f,t:t,m:m,techo:red>C.techo,piso:red<min,min:min};
 }
-function cotiz(){
- var a=area(),ti=+$('#c-tie').value,p=precioCons(CN.com,ti,CN.mod,a[0]);
+function cotiz(mod){
+ mod=mod||CN.mod;var a=area(),ti=+$('#c-tie').value,p=precioCons(CN.com,ti,mod,a[0]);
  var des=p.fija?0:Math.max(0,Math.min(num($('#c-des').value),p.fin-p.min)),base=r2(p.fin-des),iva=r2(base*0.15);
- return {a:a,ti:ti,p:p,des:des,base:base,iva:iva,total:r2(base+iva),tema:a[2][+$('#c-tem').value]};
+ return {a:a,ti:ti,p:p,des:des,base:base,iva:iva,total:r2(base+iva),tema:a[2][+$('#c-tem').value],mod:mod};
 }
 function calcCons(){
  var C=DATA.consulta,k=cotiz(),p=k.p,s=sugerir();
@@ -633,9 +636,15 @@ function calcCons(){
  var d=COMPL[CN.com];$('#c-comd').innerHTML='<div class="nota" style="margin:0"><b>'+d[0]+' ('+(CN.com==='alta'?'hasta '+usd(C.techo):CN.com==='baja'?usd(C.bajaFija.virtual)+' virtual / '+usd(C.bajaFija.presencial)+' presencial':'promedio '+usd(C.base[CN.com]))+' + IVA):</b> '+esc(d[1])+'<ul style="margin:4px 0 0;padding-left:16px">'+d[2].map(function(x){return '<li>'+esc(x)+'</li>'}).join('')+'</ul></div>';
  $('#c-fac').value=p.f;
  $('#c-des').disabled=!!p.fija;$('#c-tie').disabled=!!p.fija;$('#c-dhint').textContent=p.fija?'En consultas de complejidad baja no se aplica descuento.':(k.des<num($('#c-des').value)?'El descuento se limitó: la consulta no puede quedar por debajo de '+usd(p.min)+' + IVA.':'');
+ var prop=CN.est==='prop',kv=cotiz('virtual'),kp=cotiz('presencial'),ahorro=r2(kp.total-kv.total);
+ $$('#c-est button').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.e===CN.est)});
+ $('#c-esth').textContent=prop?'El cliente pidió el precio antes de aceptar: se envía una propuesta con ambas modalidades; la fecha y la modalidad quedan por acordar.':'El cliente aceptó: se envía la confirmación con fecha, hora y lugar o enlace.';
+ $('#c-wmod').hidden=prop;$('#c-agenda').hidden=prop;$('#c-pnote').hidden=!prop;
+ $('#c-t3').textContent=prop?'3 · Enviar propuesta por WhatsApp':'3 · Agendar y enviar por WhatsApp';
+ $('#c-pnote').innerHTML='<b>Fecha y modalidad: por acordar.</b> La propuesta muestra la consulta presencial con la tarifa normal ('+usd(kp.total)+' con IVA) y la virtual con descuento ('+usd(kv.total)+' con IVA'+(ahorro>0?', ahorra '+usd(ahorro):'')+'). Cuando el cliente acepte, cambie a «Aceptada / agendada» y registre la fecha.';
  $('#c-wlink').hidden=CN.mod!=='virtual';$('#c-wlug').hidden=CN.mod!=='presencial';
  $('#c-res').className='res ok';
- $('#c-res').innerHTML='<div class="estado" style="color:var(--olivo)">Consulta: '+usd(k.base)+' + IVA</div><div class="big">'+usd(k.total)+'</div><div>Total con IVA 15%</div>'+
+ $('#c-res').innerHTML=(prop?'<div class="estado" style="color:var(--olivo)">Propuesta · fecha y modalidad por acordar</div><div class="opc2"><div><small>Presencial · tarifa normal</small><b>'+usd(kp.total)+'</b><span>Valor sin IVA '+usd(kp.base)+' + IVA '+usd(kp.iva)+'</span></div><div class="dest"><small>Virtual · con descuento</small><b>'+usd(kv.total)+'</b><span>Valor sin IVA '+usd(kv.base)+' + IVA '+usd(kv.iva)+'</span>'+(ahorro>0?'<em>Ahorra '+usd(ahorro)+'</em>':'')+'</div></div><div class="hint" style="margin:8px 0 0">Detalle del cálculo para la modalidad '+CN.mod+':</div>':'<div class="estado" style="color:var(--olivo)">Total a pagar (IVA incluido)</div><div class="big">'+usd(k.total)+'</div><div>Valor sin IVA '+usd(k.base)+' + IVA 15% '+usd(k.iva)+'</div>')+
   '<table style="margin-top:8px"><tbody>'+
   (p.fija?'<tr class="hi"><td>Tarifa fija baja · '+CN.mod+'</td><td>'+usd(p.fin)+'</td></tr><tr><td colspan="2" style="text-align:left;color:var(--gris);font-size:12.5px">Consulta puntual: tarifa fija, sin descuento ni recargo por tiempo.</td></tr>':'<tr><td>Base complejidad '+d[0].toLowerCase()+'</td><td>'+usd(C.base[CN.com])+'</td></tr>'+
   '<tr><td>× Tiempo ('+esc(C.tiempo[k.ti][0].toLowerCase())+')</td><td>×'+p.t.toLocaleString('es-EC')+'</td></tr>'+
@@ -647,7 +656,7 @@ function calcCons(){
   '<tr class="tot"><td>Base imponible</td><td>'+usd(k.base)+'</td></tr><tr><td>IVA 15%</td><td>'+usd(k.iva)+'</td></tr><tr class="tot"><td>Total factura</td><td>'+usd(k.total)+'</td></tr></tbody></table>'+
   '<p class="hint">Factúrela como "Consulta legal – '+esc(k.a[1])+'".</p>';
  $('#c-docs').innerHTML=[CED].concat(k.tema[1]).map(function(x){return '<li style="margin-bottom:4px">'+esc(x[0])+' <span style="color:var(--gris);font-size:13px">('+esc(x[1])+')</span></li>'}).join('');
- store('cons',{are:k.a[0],tem:+$('#c-tem').value,tie:k.ti,com:CN.com,mod:CN.mod,fec:$('#c-fec').value,hor:$('#c-hor').value,asu:$('#c-asu').value,link:$('#c-link').value,lug:$('#c-lug').value});
+ store('cons',{are:k.a[0],tem:+$('#c-tem').value,tie:k.ti,com:CN.com,mod:CN.mod,est:CN.est,fec:$('#c-fec').value,hor:$('#c-hor').value,asu:$('#c-asu').value,link:$('#c-link').value,lug:$('#c-lug').value});
 }
 function cita(){
  var k=cotiz(),f=$('#c-fec').value,h=$('#c-hor').value;
@@ -656,10 +665,18 @@ function cita(){
 }
 function textoMsg(){
  var c=cita(),k=c.k;
+ if(CN.est==='prop'){var kv=cotiz('virtual'),kp=cotiz('presencial'),ah=r2(kp.total-kv.total);
+  return '*MACÍAS SÁNCHEZ CONSULTORES*\nAbg. Mariano X. Macías Sánchez\n\n*Propuesta de consulta legal*\n'+
+  '• Tipo de consulta: '+k.tema[0]+'\n• Materia: '+k.a[1]+'\n• Asunto: '+c.asunto+'\n\n'+
+  '*Fecha y modalidad*\nPor acordar según su disponibilidad.\n\n'+
+  '*Valor a pagar (IVA incluido)*\n• Presencial: *'+usd(kp.total)+'*\n   (valor sin IVA '+usd(kp.base)+' + IVA '+usd(kp.iva)+')\n• Virtual: *'+usd(kv.total)+'*'+(ah>0?' (descuento de '+usd(ah)+')':'')+'\n   (valor sin IVA '+usd(kv.base)+' + IVA '+usd(kv.iva)+')\n\n'+
+  'Si está de acuerdo, indíqueme la modalidad y el día que prefiere para agendar la consulta. El pago se realiza al confirmar la cita.\n\n'+
+  '*Método de pago*\n'+(c.metodo||'—')+(c.cuentas?'\n'+c.cuentas:'')+'\n\n'+
+  '*Documentos para la consulta*\n'+[CED].concat(k.tema[1]).map(function(d){return '• '+docTxt(d)}).join('\n')+'\n\n'+(c.gracias||'')}
  var txt='*MACÍAS SÁNCHEZ CONSULTORES*\nAbg. Mariano X. Macías Sánchez\n\n*Confirmación de consulta legal*\n'+
   '• Tipo de consulta: '+k.tema[0]+'\n• Materia: '+k.a[1]+'\n• Asunto: '+c.asunto+'\n\n'+
   '*Agenda*\n• Fecha: '+c.fecha+'\n• Hora: '+c.hora+'\n• Modalidad: '+(CN.mod==='virtual'?'Virtual\n• Enlace: ':'Presencial\n• Lugar: ')+c.lugar+'\n\n'+
-  '*Costo*\n• Consulta: '+usd(k.base)+' + IVA ('+usd(k.iva)+') = *'+usd(k.total)+'*\n\n'+
+  '*Valor a pagar*\n• *'+usd(k.total)+' (IVA incluido)*\n   Valor sin IVA '+usd(k.base)+' + IVA 15% '+usd(k.iva)+'\n\n'+
   '*Método de pago*\n'+(c.metodo||'—')+(c.cuentas?'\n'+c.cuentas:'')+'\n\n'+
   '*Documentos para la consulta*\n'+[CED].concat(k.tema[1]).map(function(d){return '• '+docTxt(d)}).join('\n')+'\n\n'+(c.gracias||'');
  return txt;
@@ -676,24 +693,33 @@ function generarImg(){
  var W=1080,P=72,FF="'Archivo',system-ui,sans-serif";
  var cv=document.createElement('canvas'),x=cv.getContext('2d');
  function wrap(t,max,font){x.font=font;var out=[];String(t).split('\n').forEach(function(par){var w=par.split(' '),l='';w.forEach(function(s){var tt=l?l+' '+s:s;if(x.measureText(tt).width>max&&l){out.push(l);l=s}else l=tt});out.push(l)});return out}
- var rows=[['Tipo de consulta',k.tema[0]],['Materia',k.a[1]],['Asunto',c.asunto],['Fecha',c.fecha],['Hora',c.hora],[CN.mod==='virtual'?'Modalidad virtual · enlace':'Modalidad presencial · lugar',c.lugar]];
+ var prop=CN.est==='prop',kv=cotiz('virtual'),kp=cotiz('presencial');
+ var rows=prop?[['Tipo de consulta',k.tema[0]],['Materia',k.a[1]],['Asunto',c.asunto],['Fecha y modalidad','Por acordar según su disponibilidad']]:[['Tipo de consulta',k.tema[0]],['Materia',k.a[1]],['Asunto',c.asunto],['Fecha',c.fecha],['Hora',c.hora],[CN.mod==='virtual'?'Modalidad virtual · enlace':'Modalidad presencial · lugar',c.lugar]];
+ var CB=prop?320:200;
  Promise.all([logoImg(),(document.fonts&&document.fonts.ready)||Promise.resolve()]).then(function(r){
   var lg=r[0],fl='500 34px '+FF,fv='700 38px '+FF;
   cv.width=W;cv.height=10;x=cv.getContext('2d');
   var blocks=rows.map(function(rw){return {l:rw[0],v:wrap(rw[1],W-2*P,fv)}});
   var pago=wrap((c.metodo||'')+(c.cuentas?'\n'+c.cuentas:''),W-2*P,'500 32px '+FF);
   var gra=wrap(c.gracias||'',W-2*P,'italic 500 32px '+FF);
-  var H=300+blocks.reduce(function(s,b){return s+52+b.v.length*48+18},0)+190+70+pago.length*44+60+gra.length*44+150;
+  var H=300+blocks.reduce(function(s,b){return s+52+b.v.length*48+18},0)+CB+70+70+pago.length*44+60+gra.length*44+150;
   cv.width=W;cv.height=H;x=cv.getContext('2d');
   x.fillStyle='#F7F5EE';x.fillRect(0,0,W,H);
   x.fillStyle='#14181E';x.fillRect(0,0,W,240);
   if(lg){var lh=130,lw=lg.width&&lg.height?Math.min(lh*lg.width/lg.height,W-2*P):lh;x.drawImage(lg,P,55,lw,lh);if(!DATA.logo){x.fillStyle='#A09046';x.font='700 40px '+FF;x.fillText('MACÍAS SÁNCHEZ CONSULTORES',P+lw+30,112);x.fillStyle='#C9BC82';x.font='500 28px '+FF;x.fillText('Abg. Mariano X. Macías Sánchez',P+lw+30,160)}}
   x.fillStyle='#A09046';x.fillRect(0,240,W,8);
-  var y=310;x.fillStyle='#14181E';x.font='800 50px '+FF;x.fillText('Confirmación de consulta legal',P,y);y+=30;
+  var y=310;x.fillStyle='#14181E';x.font='800 50px '+FF;x.fillText(prop?'Propuesta de consulta legal':'Confirmación de consulta legal',P,y);y+=30;
   blocks.forEach(function(b){y+=52;x.fillStyle='#6E6230';x.font='600 28px '+FF;x.fillText(b.l.toUpperCase(),P,y);x.fillStyle='#14181E';x.font=fv;b.v.forEach(function(l){y+=48;x.fillText(l,P,y)});y+=18});
-  y+=30;x.fillStyle='#14181E';x.fillRect(P,y,W-2*P,150);x.fillStyle='#C9BC82';x.font='600 28px '+FF;x.fillText('COSTO DE LA CONSULTA',P+36,y+50);
-  x.fillStyle='#fff';x.font='800 52px '+FF;x.fillText(usd(k.base)+' + IVA',P+36,y+115);x.fillStyle='#C9BC82';x.font='600 30px '+FF;var tt='Total '+usd(k.total);x.fillText(tt,W-P-36-x.measureText(tt).width,y+113);
-  y+=150+70;x.fillStyle='#6E6230';x.font='600 28px '+FF;x.fillText('MÉTODO DE PAGO',P,y);x.fillStyle='#14181E';x.font='500 32px '+FF;pago.forEach(function(l){y+=44;x.fillText(l,P,y)});
+  y+=30;x.fillStyle='#14181E';x.fillRect(P,y,W-2*P,CB);x.fillStyle='#C9BC82';x.font='600 28px '+FF;x.fillText(prop?'VALOR A PAGAR (IVA INCLUIDO)':'VALOR A PAGAR',P+36,y+52);
+  if(prop){var cw=(W-2*P-72-24)/2,op=[['PRESENCIAL · TARIFA NORMAL',kp,false],['VIRTUAL · CON DESCUENTO',kv,true]];
+   op.forEach(function(o,i){var ox=P+36+i*(cw+24),oy=y+80;x.fillStyle=o[2]?'#A09046':'#2A2F36';x.fillRect(ox,oy,cw,210);
+    x.fillStyle=o[2]?'#14181E':'#C9BC82';x.font='700 22px '+FF;x.fillText(o[0],ox+22,oy+40);
+    x.fillStyle=o[2]?'#14181E':'#fff';x.font='800 64px '+FF;x.fillText(usd(o[1].total),ox+22,oy+118);
+    x.font='500 24px '+FF;x.fillStyle=o[2]?'#14181E':'#B9B6AA';x.fillText('Sin IVA '+usd(o[1].base)+' + IVA '+usd(o[1].iva),ox+22,oy+158);
+    if(o[2]&&kp.total>kv.total){x.font='700 24px '+FF;x.fillText('Ahorra '+usd(r2(kp.total-kv.total)),ox+22,oy+192)}});
+  }else{x.fillStyle='#fff';x.font='800 80px '+FF;x.fillText(usd(k.total),P+36,y+132);var tw=x.measureText(usd(k.total)).width;x.fillStyle='#C9BC82';x.font='700 28px '+FF;x.fillText('IVA incluido',P+36+tw+20,y+130);
+   x.font='500 24px '+FF;x.fillStyle='#B9B6AA';x.fillText('Valor sin IVA '+usd(k.base)+' + IVA 15% '+usd(k.iva),P+36,y+176)}
+  y+=CB+70;x.fillStyle='#6E6230';x.font='600 28px '+FF;x.fillText('MÉTODO DE PAGO',P,y);x.fillStyle='#14181E';x.font='500 32px '+FF;pago.forEach(function(l){y+=44;x.fillText(l,P,y)});
   y+=60;x.fillStyle='#3A3F47';x.font='italic 500 32px '+FF;gra.forEach(function(l){y+=44;x.fillText(l,P,y)});
   x.fillStyle='#A09046';x.fillRect(0,H-90,W,90);x.fillStyle='#14181E';x.font='600 28px '+FF;var ft='0979151014 · msconsultores.ec@gmail.com · Guayaquil';x.fillText(ft,(W-x.measureText(ft).width)/2,H-36);
   cv.toBlob(function(blob){
